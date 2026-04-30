@@ -82,69 +82,53 @@ nav.scrolled{
 }
 
 /* ═══════════════════════════════════════
-   HERO
+   OUVERTURE — logo + questionnaire + slogan
 ═══════════════════════════════════════ */
-#hero{
-  min-height:100svh;
+#configure{
   background:var(--w);
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
-  text-align:center;
+  padding:6.5rem 4rem 5rem;
   position:relative;overflow:hidden;
-  padding:6rem 2rem 4rem;
 }
-/* subtle grain */
-#hero::before{
+#configure::before{
   content:'';position:absolute;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events:none;opacity:.6;
+  pointer-events:none;opacity:.5;
 }
-.hero-eyebrow{
-  font-size:.7rem;letter-spacing:.55em;text-transform:uppercase;
-  color:var(--g);margin-bottom:2.5rem;
-  opacity:0;animation:fadeUp .7s var(--ease) .2s forwards;
+.ouv-top{
+  text-align:center;
+  margin-bottom:3.5rem;
+  position:relative;
 }
-.hero-logo{
+.ouv-logo{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(5rem,18vw,14rem);
+  font-size:clamp(2rem,5vw,3.5rem);
   font-weight:300;
-  color:var(--b);
-  line-height:.9;
-  opacity:0;letter-spacing:2em;padding-right:2em;
-  animation:logoReveal 1.4s var(--ease) .4s forwards;
+  letter-spacing:.65em;padding-right:.65em;
+  color:var(--b);display:block;
+  opacity:0;
+  animation:ouv-fadeUp .9s var(--ease) .1s forwards;
 }
-.hero-line{
-  width:70px;height:1px;
+.ouv-line{
+  width:50px;height:1px;
   background:var(--g);
-  margin:2.2rem auto;
+  margin:1.2rem auto 0;
   transform:scaleX(0);transform-origin:center;
-  animation:lineIn .8s var(--ease) 1.2s forwards;
+  animation:ouv-lineIn .7s var(--ease) .8s forwards;
 }
-.hero-slogan{
+.ouv-slogan{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.1rem,2.5vw,1.6rem);
+  font-size:clamp(.95rem,1.8vw,1.22rem);
   font-weight:300;font-style:italic;
-  color:rgba(10,10,10,.62);
-  opacity:0;animation:fadeUp .8s var(--ease) 1.5s forwards;
+  color:rgba(10,10,10,.42);
+  text-align:center;
+  margin-top:3rem;
+  opacity:0;
+  animation:ouv-fadeUp .9s var(--ease) .5s forwards;
+  position:relative;
 }
-.hero-scroll{
-  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.6rem;
-  opacity:0;animation:fadeUp .8s var(--ease) 2s forwards;
-}
-.hero-scroll span{
-  font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;
-  color:rgba(10,10,10,.35);
-}
-.scroll-line{
-  width:1px;height:44px;
-  background:linear-gradient(var(--g),transparent);
-  animation:scrollDrop 1.6s ease-in-out 2.2s infinite;
-}
-@keyframes logoReveal{to{opacity:1;letter-spacing:.65em;padding-right:.65em}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@keyframes lineIn{to{transform:scaleX(1)}}
-@keyframes scrollDrop{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.6);opacity:.4}}
+
+@keyframes ouv-fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ouv-lineIn{to{transform:scaleX(1)}}
 
 /* ═══════════════════════════════════════
    MANIFESTE
@@ -265,7 +249,6 @@ nav.scrolled{
   padding:2rem 1.5rem;
   overflow:hidden;
 }
-/* animated glow background */
 .artwork-inner::before{
   content:'';position:absolute;
   width:260px;height:260px;border-radius:50%;
@@ -371,21 +354,13 @@ nav.scrolled{
 }
 
 /* ═══════════════════════════════════════
-   CONFIGURATEUR
+   CONFIGURATEUR (questionnaire)
 ═══════════════════════════════════════ */
-#configure{
-  background:#F2EFE9;padding:9rem 4rem;
-}
-.cfg-head{text-align:center;margin-bottom:5rem}
-.cfg-label{font-size:.65rem;letter-spacing:.5em;text-transform:uppercase;color:var(--g);display:block;margin-bottom:1.2rem}
-.cfg-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--b);
-}
 .cfg-grid{
   display:grid;grid-template-columns:1fr 1fr;
   gap:5rem;max-width:1200px;margin:0 auto;
   align-items:start;
+  position:relative;
 }
 @media(max-width:900px){.cfg-grid{grid-template-columns:1fr;gap:3rem}}
 
@@ -476,9 +451,8 @@ nav.scrolled{
     0 0 0 1px rgba(201,168,76,.25),
     0 0 0 5px #040406,
     0 0 0 6px rgba(201,168,76,.35),
-    0 0 40px rgba(0,0,0,.5);
+    0 0 40px rgba(0,0,0,.18);
 }
-/* corner ornaments */
 .cfg-frame-outer::before,.cfg-frame-outer::after{
   content:'';position:absolute;width:14px;height:14px;
   border-color:var(--g);border-style:solid;
@@ -645,24 +619,152 @@ footer{
 
 <!-- ════════════════════════ NAV ════════════════════════ -->
 <nav id="nav">
-  <a href="#hero" class="nav-brand">DAÖ</a>
+  <a href="#configure" class="nav-brand">DAÖ</a>
   <div class="nav-links">
     <a href="#totems">Totems</a>
-    <a href="#configure">Personnaliser</a>
     <a href="#commander" class="nav-cta">Commander — 320 €</a>
   </div>
 </nav>
 
-<!-- ════════════════════════ HERO ════════════════════════ -->
-<section id="hero">
-  <span class="hero-eyebrow">Artisanat français · Édition limitée</span>
-  <h1 class="hero-logo">DAÖ</h1>
-  <div class="hero-line"></div>
-  <p class="hero-slogan">Brille dans l'obscurité. Comme toi.</p>
-  <div class="hero-scroll">
-    <span>Découvrir</span>
-    <div class="scroll-line"></div>
+<!-- ════════════════════════ OUVERTURE + CONFIGURATEUR ════════════════════════ -->
+<section id="configure">
+
+  <!-- Logo -->
+  <div class="ouv-top">
+    <span class="ouv-logo">DAÖ</span>
+    <div class="ouv-line"></div>
   </div>
+
+  <!-- Questionnaire -->
+  <div class="cfg-grid">
+
+    <!-- Steps -->
+    <div class="cfg-steps">
+
+      <!-- Step 1 : Animal -->
+      <div class="cfg-step r">
+        <div class="step-num">01 — Ton animal totem</div>
+        <div class="cfg-animals">
+          <div class="cfg-animal" data-animal="loup" onclick="selectAnimal('loup')">
+            <svg viewBox="0 0 100 110" fill="none">
+              <polygon points="50,8 68,16 84,36 82,63 70,80 50,90 30,80 18,63 16,36 32,16" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round"/>
+              <polygon points="32,16 16,2 40,15" stroke="#C9A84C" stroke-width="1.2"/>
+              <polygon points="68,16 84,2 60,15" stroke="#C9A84C" stroke-width="1.2"/>
+              <polygon points="35,44 43,36 51,44 43,52" stroke="#C9A84C" stroke-width="1.1"/>
+              <circle cx="43" cy="44" r="2" fill="#C9A84C"/>
+              <polygon points="49,44 57,36 65,44 57,52" stroke="#C9A84C" stroke-width="1.1"/>
+              <circle cx="57" cy="44" r="2" fill="#C9A84C"/>
+              <polygon points="44,63 50,57 56,63 50,68" fill="#C9A84C"/>
+              <line x1="50" y1="8" x2="50" y2="36" stroke="#C9A84C" stroke-width=".7"/>
+              <polygon points="50,12 55,21 50,30 45,21" stroke="#C9A84C" stroke-width=".7"/>
+            </svg>
+            <div class="cfg-animal-name">Loup</div>
+          </div>
+          <div class="cfg-animal" data-animal="aigle" onclick="selectAnimal('aigle')">
+            <svg viewBox="0 0 110 100" fill="none">
+              <polyline points="55,44 18,28 5,44 22,50 8,62 36,56 20,76 52,58" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
+              <polyline points="55,44 92,28 105,44 88,50 102,62 74,56 90,76 58,58" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
+              <circle cx="55" cy="28" r="10" stroke="#C9A84C" stroke-width="1.1"/>
+              <circle cx="52" cy="25" r="2.5" stroke="#C9A84C" stroke-width="1"/>
+              <circle cx="52" cy="25" r="1" fill="#C9A84C"/>
+              <polyline points="55,18 58,12 55,16 52,12 55,18" stroke="#C9A84C" stroke-width=".8" fill="none"/>
+            </svg>
+            <div class="cfg-animal-name">Aigle</div>
+          </div>
+          <div class="cfg-animal" data-animal="ours" onclick="selectAnimal('ours')">
+            <svg viewBox="0 0 100 112" fill="none">
+              <path d="M50,14 C72,14 86,30 86,52 C86,72 74,88 50,96 C26,88 14,72 14,52 C14,30 28,14 50,14 Z" stroke="#C9A84C" stroke-width="1.2"/>
+              <path d="M28,22 C20,10 38,6 40,20" stroke="#C9A84C" stroke-width="1.1" fill="none"/>
+              <path d="M72,22 C80,10 62,6 60,20" stroke="#C9A84C" stroke-width="1.1" fill="none"/>
+              <circle cx="37" cy="50" r="6" stroke="#C9A84C" stroke-width="1.1"/>
+              <circle cx="37" cy="50" r="2" fill="#C9A84C"/>
+              <circle cx="63" cy="50" r="6" stroke="#C9A84C" stroke-width="1.1"/>
+              <circle cx="63" cy="50" r="2" fill="#C9A84C"/>
+              <ellipse cx="50" cy="70" rx="15" ry="10" stroke="#C9A84C" stroke-width="1.1"/>
+              <polygon points="44,63 50,59 56,63 50,68" fill="#C9A84C"/>
+            </svg>
+            <div class="cfg-animal-name">Ours</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 : Citation -->
+      <div class="cfg-step r d1">
+        <div class="step-num">02 — Ta citation</div>
+        <div class="cfg-cites" id="cfgCites">
+          <div class="cfg-cite" data-i="0"  onclick="selectCite(0)">"Tout ce qui brille dans l'obscurité révèle ce qui ne peut être éteint."</div>
+          <div class="cfg-cite" data-i="1"  onclick="selectCite(1)">"La force véritable ne fait pas de bruit."</div>
+          <div class="cfg-cite" data-i="2"  onclick="selectCite(2)">"L'obscurité n'est que la lumière qui attend d'être libérée."</div>
+          <div class="cfg-cite" data-i="3"  onclick="selectCite(3)">"Je suis fait·e de la même matière que les étoiles."</div>
+          <div class="cfg-cite" data-i="4"  onclick="selectCite(4)">"La nuit appartient à ceux qui n'ont pas peur d'y briller."</div>
+          <div class="cfg-cite" data-i="5"  onclick="selectCite(5)">"Certaines âmes sont des phares dans la tempête."</div>
+          <div class="cfg-cite" data-i="6"  onclick="selectCite(6)">"Ce qui te définit, c'est ce que tu es dans l'obscurité."</div>
+          <div class="cfg-cite" data-i="7"  onclick="selectCite(7)">"Le silence des forts est plus éloquent que les cris des faibles."</div>
+          <div class="cfg-cite" data-i="8"  onclick="selectCite(8)">"Chaque nuit porte en elle l'éclat de l'aube qui vient."</div>
+          <div class="cfg-cite" data-i="9"  onclick="selectCite(9)">"Tu portes une lumière trop grande pour rester cachée."</div>
+          <div class="cfg-cite" data-i="10" onclick="selectCite(10)">"Tu es rare. Tu es entier·e. Tu brilles."</div>
+        </div>
+      </div>
+
+      <!-- Step 3 : Prénom -->
+      <div class="cfg-step r d2">
+        <div class="step-num">03 — Ton prénom</div>
+        <input class="cfg-name-input" id="cfgName" type="text" maxlength="30"
+               placeholder="Entre ton prénom…" oninput="updatePreview()">
+      </div>
+
+      <!-- Step 4 : Lueur -->
+      <div class="cfg-step r d3">
+        <div class="step-num">04 — Couleur de ta lueur</div>
+        <div class="cfg-glows">
+          <div class="cfg-glow sel" data-color="#39FF5A" data-label="Vert Spectre" onclick="selectGlow(this)">
+            <div class="gw-dot" style="background:#39FF5A;box-shadow:0 0 10px #39FF5A88"></div>
+            <span class="gw-lbl">Vert<br>Spectre</span>
+          </div>
+          <div class="cfg-glow" data-color="#00D4FF" data-label="Bleu Arctique" onclick="selectGlow(this)">
+            <div class="gw-dot" style="background:#00D4FF;box-shadow:0 0 10px #00D4FF88"></div>
+            <span class="gw-lbl">Bleu<br>Arctique</span>
+          </div>
+          <div class="cfg-glow" data-color="#CC5FFF" data-label="Violet Aura" onclick="selectGlow(this)">
+            <div class="gw-dot" style="background:#CC5FFF;box-shadow:0 0 10px #CC5FFF88"></div>
+            <span class="gw-lbl">Violet<br>Aura</span>
+          </div>
+          <div class="cfg-glow" data-color="#DCEEFF" data-label="Blanc Polaire" onclick="selectGlow(this)">
+            <div class="gw-dot" style="background:#DCEEFF;box-shadow:0 0 10px #DCEEFF88"></div>
+            <span class="gw-lbl">Blanc<br>Polaire</span>
+          </div>
+          <div class="cfg-glow" data-color="#FFD060" data-label="Or Liquide" onclick="selectGlow(this)">
+            <div class="gw-dot" style="background:#FFD060;box-shadow:0 0 10px #FFD06088"></div>
+            <span class="gw-lbl">Or<br>Liquide</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cfg-steps -->
+
+    <!-- Preview -->
+    <div class="cfg-preview r d2">
+      <div class="cfg-preview-lbl">Aperçu de votre œuvre</div>
+      <div class="cfg-frame-outer">
+        <div class="cfg-corner-tr"></div>
+        <div class="cfg-corner-bl"></div>
+        <div class="cfg-glow-bg" id="cfgGlowBg"></div>
+
+        <div class="cfg-svg-wrap" id="cfgSvgWrap">
+          <div class="cfg-prv-empty" id="cfgEmpty">Choisissez<br>votre animal<br>totem</div>
+        </div>
+
+        <div class="cfg-prv-name" id="cfgName2"></div>
+        <div class="cfg-prv-hr" id="cfgHr"></div>
+        <div class="cfg-prv-cite" id="cfgCite2"></div>
+      </div>
+    </div>
+
+  </div><!-- /cfg-grid -->
+
+  <!-- Slogan -->
+  <p class="ouv-slogan">Brille dans l'obscurité. Comme toi.</p>
+
 </section>
 
 <!-- ════════════════════════ MANIFESTE ════════════════════════ -->
@@ -847,139 +949,6 @@ footer{
   </div>
 </section>
 
-<!-- ════════════════════════ CONFIGURATEUR ════════════════════════ -->
-<section id="configure">
-  <div class="cfg-head">
-    <span class="cfg-label r">Personnalisation</span>
-    <h2 class="cfg-title r d1">Créez votre tableau totem</h2>
-  </div>
-  <div class="cfg-grid">
-
-    <!-- Steps -->
-    <div class="cfg-steps">
-
-      <!-- Step 1 : Animal -->
-      <div class="cfg-step r">
-        <div class="step-num">01 — Ton animal totem</div>
-        <div class="cfg-animals">
-          <div class="cfg-animal" data-animal="loup" onclick="selectAnimal('loup')">
-            <svg viewBox="0 0 100 110" fill="none">
-              <polygon points="50,8 68,16 84,36 82,63 70,80 50,90 30,80 18,63 16,36 32,16" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round"/>
-              <polygon points="32,16 16,2 40,15" stroke="#C9A84C" stroke-width="1.2"/>
-              <polygon points="68,16 84,2 60,15" stroke="#C9A84C" stroke-width="1.2"/>
-              <polygon points="35,44 43,36 51,44 43,52" stroke="#C9A84C" stroke-width="1.1"/>
-              <circle cx="43" cy="44" r="2" fill="#C9A84C"/>
-              <polygon points="49,44 57,36 65,44 57,52" stroke="#C9A84C" stroke-width="1.1"/>
-              <circle cx="57" cy="44" r="2" fill="#C9A84C"/>
-              <polygon points="44,63 50,57 56,63 50,68" fill="#C9A84C"/>
-              <line x1="50" y1="8" x2="50" y2="36" stroke="#C9A84C" stroke-width=".7"/>
-              <polygon points="50,12 55,21 50,30 45,21" stroke="#C9A84C" stroke-width=".7"/>
-            </svg>
-            <div class="cfg-animal-name">Loup</div>
-          </div>
-          <div class="cfg-animal" data-animal="aigle" onclick="selectAnimal('aigle')">
-            <svg viewBox="0 0 110 100" fill="none">
-              <polyline points="55,44 18,28 5,44 22,50 8,62 36,56 20,76 52,58" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
-              <polyline points="55,44 92,28 105,44 88,50 102,62 74,56 90,76 58,58" stroke="#C9A84C" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
-              <circle cx="55" cy="28" r="10" stroke="#C9A84C" stroke-width="1.1"/>
-              <circle cx="52" cy="25" r="2.5" stroke="#C9A84C" stroke-width="1"/>
-              <circle cx="52" cy="25" r="1" fill="#C9A84C"/>
-              <polyline points="55,18 58,12 55,16 52,12 55,18" stroke="#C9A84C" stroke-width=".8" fill="none"/>
-            </svg>
-            <div class="cfg-animal-name">Aigle</div>
-          </div>
-          <div class="cfg-animal" data-animal="ours" onclick="selectAnimal('ours')">
-            <svg viewBox="0 0 100 112" fill="none">
-              <path d="M50,14 C72,14 86,30 86,52 C86,72 74,88 50,96 C26,88 14,72 14,52 C14,30 28,14 50,14 Z" stroke="#C9A84C" stroke-width="1.2"/>
-              <path d="M28,22 C20,10 38,6 40,20" stroke="#C9A84C" stroke-width="1.1" fill="none"/>
-              <path d="M72,22 C80,10 62,6 60,20" stroke="#C9A84C" stroke-width="1.1" fill="none"/>
-              <circle cx="37" cy="50" r="6" stroke="#C9A84C" stroke-width="1.1"/>
-              <circle cx="37" cy="50" r="2" fill="#C9A84C"/>
-              <circle cx="63" cy="50" r="6" stroke="#C9A84C" stroke-width="1.1"/>
-              <circle cx="63" cy="50" r="2" fill="#C9A84C"/>
-              <ellipse cx="50" cy="70" rx="15" ry="10" stroke="#C9A84C" stroke-width="1.1"/>
-              <polygon points="44,63 50,59 56,63 50,68" fill="#C9A84C"/>
-            </svg>
-            <div class="cfg-animal-name">Ours</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 2 : Citation -->
-      <div class="cfg-step r d1">
-        <div class="step-num">02 — Ta citation</div>
-        <div class="cfg-cites" id="cfgCites">
-          <div class="cfg-cite" data-i="0"  onclick="selectCite(0)">"Tout ce qui brille dans l'obscurité révèle ce qui ne peut être éteint."</div>
-          <div class="cfg-cite" data-i="1"  onclick="selectCite(1)">"La force véritable ne fait pas de bruit."</div>
-          <div class="cfg-cite" data-i="2"  onclick="selectCite(2)">"L'obscurité n'est que la lumière qui attend d'être libérée."</div>
-          <div class="cfg-cite" data-i="3"  onclick="selectCite(3)">"Je suis fait·e de la même matière que les étoiles."</div>
-          <div class="cfg-cite" data-i="4"  onclick="selectCite(4)">"La nuit appartient à ceux qui n'ont pas peur d'y briller."</div>
-          <div class="cfg-cite" data-i="5"  onclick="selectCite(5)">"Certaines âmes sont des phares dans la tempête."</div>
-          <div class="cfg-cite" data-i="6"  onclick="selectCite(6)">"Ce qui te définit, c'est ce que tu es dans l'obscurité."</div>
-          <div class="cfg-cite" data-i="7"  onclick="selectCite(7)">"Le silence des forts est plus éloquent que les cris des faibles."</div>
-          <div class="cfg-cite" data-i="8"  onclick="selectCite(8)">"Chaque nuit porte en elle l'éclat de l'aube qui vient."</div>
-          <div class="cfg-cite" data-i="9"  onclick="selectCite(9)">"Tu portes une lumière trop grande pour rester cachée."</div>
-          <div class="cfg-cite" data-i="10" onclick="selectCite(10)">"Tu es rare. Tu es entier·e. Tu brilles."</div>
-        </div>
-      </div>
-
-      <!-- Step 3 : Prénom -->
-      <div class="cfg-step r d2">
-        <div class="step-num">03 — Ton prénom</div>
-        <input class="cfg-name-input" id="cfgName" type="text" maxlength="30"
-               placeholder="Entre ton prénom…" oninput="updatePreview()">
-      </div>
-
-      <!-- Step 4 : Lueur -->
-      <div class="cfg-step r d3">
-        <div class="step-num">04 — Couleur de ta lueur</div>
-        <div class="cfg-glows">
-          <div class="cfg-glow sel" data-color="#39FF5A" data-label="Vert Spectre" onclick="selectGlow(this)">
-            <div class="gw-dot" style="background:#39FF5A;box-shadow:0 0 10px #39FF5A88"></div>
-            <span class="gw-lbl">Vert<br>Spectre</span>
-          </div>
-          <div class="cfg-glow" data-color="#00D4FF" data-label="Bleu Arctique" onclick="selectGlow(this)">
-            <div class="gw-dot" style="background:#00D4FF;box-shadow:0 0 10px #00D4FF88"></div>
-            <span class="gw-lbl">Bleu<br>Arctique</span>
-          </div>
-          <div class="cfg-glow" data-color="#CC5FFF" data-label="Violet Aura" onclick="selectGlow(this)">
-            <div class="gw-dot" style="background:#CC5FFF;box-shadow:0 0 10px #CC5FFF88"></div>
-            <span class="gw-lbl">Violet<br>Aura</span>
-          </div>
-          <div class="cfg-glow" data-color="#DCEEFF" data-label="Blanc Polaire" onclick="selectGlow(this)">
-            <div class="gw-dot" style="background:#DCEEFF;box-shadow:0 0 10px #DCEEFF88"></div>
-            <span class="gw-lbl">Blanc<br>Polaire</span>
-          </div>
-          <div class="cfg-glow" data-color="#FFD060" data-label="Or Liquide" onclick="selectGlow(this)">
-            <div class="gw-dot" style="background:#FFD060;box-shadow:0 0 10px #FFD06088"></div>
-            <span class="gw-lbl">Or<br>Liquide</span>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /cfg-steps -->
-
-    <!-- Preview -->
-    <div class="cfg-preview r d2">
-      <div class="cfg-preview-lbl">Aperçu de votre œuvre</div>
-      <div class="cfg-frame-outer">
-        <div class="cfg-corner-tr"></div>
-        <div class="cfg-corner-bl"></div>
-        <div class="cfg-glow-bg" id="cfgGlowBg"></div>
-
-        <div class="cfg-svg-wrap" id="cfgSvgWrap">
-          <div class="cfg-prv-empty" id="cfgEmpty">Choisissez<br>votre animal<br>totem</div>
-        </div>
-
-        <div class="cfg-prv-name" id="cfgName2"></div>
-        <div class="cfg-prv-hr" id="cfgHr"></div>
-        <div class="cfg-prv-cite" id="cfgCite2"></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <!-- ════════════════════════ COMMANDER ════════════════════════ -->
 <section id="commander">
   <div class="cmd-inner">
@@ -1080,20 +1049,6 @@ const revealObs = new IntersectionObserver((entries)=>{
 },{threshold:.12});
 
 document.querySelectorAll('.r,.rfade').forEach(el=>revealObs.observe(el));
-
-/* ══════════════════════════════════════════
-   HERO MOUSE PARALLAX
-══════════════════════════════════════════ */
-const heroLogo = document.querySelector('.hero-logo');
-document.getElementById('hero').addEventListener('mousemove',(e)=>{
-  const {innerWidth:w,innerHeight:h} = window;
-  const dx = (e.clientX/w-.5)*12;
-  const dy = (e.clientY/h-.5)*6;
-  heroLogo.style.transform = `translate(${dx}px,${dy}px)`;
-},{passive:true});
-document.getElementById('hero').addEventListener('mouseleave',()=>{
-  heroLogo.style.transform='';
-},{passive:true});
 
 /* ══════════════════════════════════════════
    SVG TEMPLATES
@@ -1219,7 +1174,6 @@ function updatePreview(){
   const cite2 = document.getElementById('cfgCite2');
   const glowBg= document.getElementById('cfgGlowBg');
 
-  // glow background
   glowBg.style.background=`radial-gradient(circle,${S.glowColor}22 0%,transparent 70%)`;
 
   if(S.animal){
@@ -1234,7 +1188,6 @@ function updatePreview(){
     wrap.innerHTML='<div class="cfg-prv-empty">Choisissez<br>votre animal<br>totem</div>';
   }
 
-  // name
   if(S.prenom){
     name2.textContent = S.prenom.toUpperCase();
     name2.style.textShadow = `0 0 10px ${S.glowColor}88`;
@@ -1247,7 +1200,6 @@ function updatePreview(){
     name2.textContent=''; hr.style.display='none';
   }
 
-  // citation
   cite2.textContent = S.citeIdx!==null
     ? document.querySelector(`.cfg-cite[data-i="${S.citeIdx}"]`).textContent
     : '';
