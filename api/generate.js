@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
 
   const geminiUrl =
     `https://generativelanguage.googleapis.com/v1beta/models/` +
-    `gemini-2.0-flash-preview-image-generation:generateContent?key=${apiKey}`;
+    `gemini-2.0-flash-exp-image-generation:generateContent?key=${apiKey}`;
 
   try {
     const geminiRes = await fetch(geminiUrl, {
