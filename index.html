@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DAÖ — Découvre ton animal totem</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -12,13 +13,13 @@
   --border:#2a2a2a;--text:#f0ece4;--text2:#888;--text3:#555;
   --r:10px;--rl:16px;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .wrap{width:100%;max-width:560px}
 
 /* HEADER */
 .dao-header{text-align:center;margin-bottom:40px;animation:fadeIn .8s ease}
 .dao-logo{font-size:13px;letter-spacing:.35em;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
-.dao-title{font-size:28px;font-weight:300;letter-spacing:.08em;color:var(--text);margin-bottom:4px}
+.dao-title{font-family:'Libre Baskerville',serif;font-size:28px;font-weight:400;letter-spacing:.08em;color:var(--text);margin-bottom:4px}
 .dao-sub{font-size:13px;color:var(--text2);letter-spacing:.04em}
 
 /* CARD */
@@ -26,7 +27,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* DATE SCREEN */
 .date-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.date-title{font-size:20px;font-weight:400;color:var(--text);margin-bottom:6px}
+.date-title{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:6px}
 .date-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6}
 .date-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text);font-size:15px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:16px;-webkit-appearance:none;color-scheme:dark}
 .date-input:focus{border-color:var(--gold)}
@@ -43,7 +44,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
 
 /* QUESTION */
-.q-text{font-size:17px;font-weight:400;color:var(--text);line-height:1.55;margin-bottom:24px}
+.q-text{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:400;color:var(--text);line-height:1.55;margin-bottom:24px}
 .answers{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
 .answer-btn{width:100%;padding:14px 16px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:14px;font-family:inherit;text-align:left;cursor:pointer;transition:all .2s;line-height:1.45}
 .answer-btn:hover{border-color:var(--gold-border);color:var(--text);background:var(--gold-dim)}
@@ -58,7 +59,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* RESULT */
 .result-animal{text-align:center;margin-bottom:32px}
 .result-emoji{font-size:52px;margin-bottom:12px;display:block;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275)}
-.result-name{font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;letter-spacing:.04em}
+.result-name{font-family:'Libre Baskerville',serif;font-size:26px;font-weight:400;color:var(--text);margin-bottom:6px;letter-spacing:.04em}
 .result-role{font-size:13px;font-style:italic;color:var(--gold);margin-bottom:20px}
 .result-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
 .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
@@ -68,7 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .info-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:18px 16px}
 .info-icon{font-size:22px;margin-bottom:8px;display:block}
 .info-type{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
-.info-name{font-size:15px;font-weight:400;color:var(--text);margin-bottom:6px}
+.info-name{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:6px}
 .info-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
 .info-link{font-size:12px;color:var(--gold);font-style:italic;line-height:1.4}
 .btn-restart{width:100%;padding:13px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.04em}
