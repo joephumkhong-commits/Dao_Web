@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAÖ — Découvre ton animal totem</title>
+<title>DAÖ — Génère ton tableau totem</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.12);--gold-border:rgba(201,169,110,0.25);
   --neon:#00FFB2;--neon-dim:rgba(0,255,178,.09);--neon-border:rgba(0,255,178,.2);
   --bg:#0a0a0a;--bg2:#111;--bg3:#161616;
   --border:#2a2a2a;--text:#f0ece4;--text2:#888;--text3:#555;
@@ -23,66 +22,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .dao-title{font-family:'Libre Baskerville',serif;font-size:28px;font-weight:400;letter-spacing:.08em;color:var(--text);margin-bottom:4px}
 .dao-sub{font-size:13px;color:var(--text2);letter-spacing:.04em}
 
-/* CARD */
-.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px;animation:slideUp .5s ease}
-
-/* DATE SCREEN */
-.date-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.date-title{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:6px}
-.date-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6}
-.date-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text);font-size:15px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:16px;-webkit-appearance:none;color-scheme:dark}
-.date-input:focus{border-color:var(--gold)}
-.btn-start{width:100%;padding:14px;background:var(--gold);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:opacity .2s}
-.btn-start:hover{opacity:.88}
-.btn-start:disabled{opacity:.4;cursor:not-allowed}
-
-/* PROGRESS */
-.progress-wrap{margin-bottom:28px}
-.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.progress-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
-.progress-count{font-size:13px;color:var(--text2)}
-.progress-bar{height:1px;background:var(--border);border-radius:1px;overflow:hidden}
-.progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
-
-/* QUESTION */
-.q-text{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:400;color:var(--text);line-height:1.55;margin-bottom:24px}
-.answers{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
-.answer-btn{width:100%;padding:14px 16px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:14px;font-family:inherit;text-align:left;cursor:pointer;transition:all .2s;line-height:1.45}
-.answer-btn:hover{border-color:var(--gold-border);color:var(--text);background:var(--gold-dim)}
-.answer-btn.selected{border-color:var(--gold);background:var(--gold-dim);color:var(--text)}
-.nav-row{display:flex;gap:10px}
-.btn-back{flex:1;padding:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
-.btn-back:hover{border-color:var(--text3);color:var(--text)}
-.btn-next{flex:2;padding:12px;background:var(--gold);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:opacity .2s}
-.btn-next:hover{opacity:.88}
-.btn-next:disabled{opacity:.35;cursor:not-allowed}
-
-/* RESULT */
-.result-animal{text-align:center;margin-bottom:32px}
-.result-emoji{font-size:52px;margin-bottom:12px;display:block;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275)}
-.result-name{font-family:'Libre Baskerville',serif;font-size:26px;font-weight:400;color:var(--text);margin-bottom:6px;letter-spacing:.04em}
-.result-role{font-size:13px;font-style:italic;color:var(--gold);margin-bottom:20px}
-.result-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
-.tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.tag{padding:5px 14px;border:0.5px solid var(--gold-border);border-radius:20px;font-size:12px;color:var(--gold);letter-spacing:.06em}
-.divider{height:0.5px;background:var(--border);margin-bottom:24px}
-.cards-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
-.info-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:18px 16px}
-.info-icon{font-size:22px;margin-bottom:8px;display:block}
-.info-type{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
-.info-name{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:6px}
-.info-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
-.info-link{font-size:12px;color:var(--gold);font-style:italic;line-height:1.4}
-.btn-restart{width:100%;padding:13px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.04em}
-.btn-restart:hover{border-color:var(--text3);color:var(--text)}
-
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-
 /* GENERATOR STEPPER */
-.gen-section{margin-top:20px;animation:fadeIn .8s ease .2s both}
-.gen-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px}
+.gen-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px;animation:slideUp .5s ease}
 .gen-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
 .gen-progress{display:flex;align-items:center;gap:12px;margin-bottom:26px}
 .gen-dots{display:flex;gap:6px;flex:1}
@@ -116,12 +57,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .gen-restart{width:100%;padding:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;margin-top:14px;letter-spacing:.04em}
 .gen-restart:hover{border-color:var(--text3);color:var(--text)}
 .gen-error-msg{font-size:13px;color:var(--text2);text-align:center;padding:48px 24px}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 @media(max-width:480px){
   body{padding:16px}
-  .card{padding:24px}
-  .cards-row{grid-template-columns:1fr}
   .gen-card{padding:24px}
 }
 </style>
@@ -130,272 +72,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="wrap">
   <div class="dao-header">
     <div class="dao-logo">DAÖ</div>
-    <div class="dao-title">Découvre ton animal totem</div>
-    <div class="dao-sub">12 questions · Profil complet · Gratuit</div>
+    <div class="dao-title">Génère ton tableau totem</div>
+    <div class="dao-sub">4 questions · Tableau unique · Généré par IA</div>
   </div>
-  <div class="card" id="app"></div>
-
-  <div class="gen-section">
-    <div class="gen-card" id="gen-app"></div>
-  </div>
+  <div class="gen-card" id="gen-app"></div>
 </div>
 
 <script>
-const ANIMALS={
-  cheval:{name:"Le Cheval",emoji:"🐴",role:"Esprit du mouvement perpétuel",tags:["Liberté","Vitesse","Élan"],desc:"Tu es incapable de rester immobile. Là où les autres attendent, tu avances déjà. Tu n'as pas besoin qu'on t'indique le chemin — tu le crées. Ton énergie est contagieuse et tu entraînes les autres dans ton sillage sans même t'en rendre compte. Ton défi : choisir une direction et t'y tenir."},
-  cerf:{name:"Le Cerf",emoji:"🦌",role:"Gardien de la noblesse intérieure",tags:["Noblesse","Persévérance","Vision longue"],desc:"Tu travailles sur le temps long sans jamais baisser tes standards. Là où d'autres abandonnent, tu surpasses tes limites en silence. Tu inspires le respect naturellement — non par la force, mais par ta constance et ton intégrité. Ton défi : ne pas te fermer aux autres par excès de noblesse."},
-  sanglier:{name:"Le Sanglier",emoji:"🐗",role:"Gardien du courage brut",tags:["Courage","Protection","Fougue"],desc:"Tu fonces sans calculer, tu protèges sans conditions. L'adversité ne t'arrête pas — elle t'allume. Tu es le premier levé et le dernier à lâcher. Les gens autour de toi savent qu'ils peuvent compter sur toi dans la tempête. Ton défi : écouter avant d'attaquer."},
-  loup:{name:"Le Loup",emoji:"🐺",role:"Esprit de la meute et de l'instinct",tags:["Instinct","Loyauté","Meute"],desc:"Tu sens les dynamiques avant tout le monde. Ta loyauté envers ton cercle est absolue — mais ce cercle est choisi, pas subi. Tu fonctionnes mieux entouré des bonnes personnes. Ton intelligence sociale est ta plus grande arme. Ton défi : t'ouvrir à ceux qui ne ressemblent pas à ce que tu connais."},
-  ours:{name:"L'Ours",emoji:"🐻",role:"Pilier de force tranquille",tags:["Endurance","Force","Protection"],desc:"Tu es le roc. Là où les autres craquent, tu tiens. Ta force n'est pas dans les éclats — elle est dans ta capacité à encaisser, à durer, à rester stable quand tout vacille autour de toi. Les gens se sentent en sécurité près de toi. Ton défi : ne pas garder tout pour toi jusqu'à l'explosion."},
-  aigle:{name:"L'Aigle",emoji:"🦅",role:"Visionnaire du panthéon celtique",tags:["Vision","Ambition","Clarté"],desc:"Tu vois où les autres ne regardent pas encore. Ta pensée est systémique, ton regard est long. Tu ne te contentes jamais de ce qui existe — tu imagines ce qui devrait exister. Les détails t'ennuient, les grandes idées t'enflamment. Ton défi : redescendre pour exécuter ce que tu as imaginé."},
-  serpent:{name:"Le Serpent",emoji:"🐍",role:"Maître de la transformation",tags:["Résilience","Adaptation","Renaissance"],desc:"L'échec est ton carburant, pas ton frein. Tu te réinventes là où les autres s'effondrent. Chaque obstacle devient une mutation — tu repars toujours différent, mais plus fort. Ton adaptabilité est presque troublante pour ceux qui t'entourent. Ton défi : trouver une direction stable au milieu de tes transformations."},
-  cygne:{name:"Le Cygne",emoji:"🦢",role:"Gardien de la grâce et de l'idéal",tags:["Excellence","Grâce","Profondeur"],desc:"Tu n'es jamais satisfait de moins que le meilleur. Sous ton élégance se cache une exigence de fer — envers toi-même avant tout. Tu transformes ce que tu touches en quelque chose de beau. Mais cette quête de perfection peut parfois te bloquer. Ton défi : accepter que l'imparfait peut aussi être puissant."},
-  chat:{name:"Le Chat sauvage",emoji:"🐱",role:"Sentinelle à l'instinct acéré",tags:["Acuité","Indépendance","Sixième sens"],desc:"Tu détectes ce que les autres ratent. Ton regard acéré capte les failles et les opportunités avant qu'elles se révèlent. Tu travailles mieux seul et à ton rythme — non par arrogance, mais parce que ta clarté dépend de ton espace. Ton défi : partager ce que tu vois plutôt que de tout garder pour toi."},
-  taureau:{name:"Le Taureau",emoji:"🐂",role:"Combattant des temps celtiques",tags:["Détermination","Compétition","Puissance"],desc:"Quand tu décides, tu finis. Pas de demi-mesure, pas de recul. La compétition est ton moteur — contre les autres ou contre tes propres limites d'hier. Tu respectes la force, pas les titres. Ton énergie dans l'effort est impressionnante et rarissime. Ton défi : savoir quand plier sans rompre."},
-  corbeau:{name:"Le Corbeau",emoji:"🐦",role:"Animal de Lug, maître du jeu",tags:["Stratégie","Intelligence","Mystère"],desc:"Tu penses plusieurs coups à l'avance. Tu observes longuement avant d'agir, et quand tu agis, c'est rarement par hasard. Ton influence est réelle sans être toujours visible. Tu retiens tout — les erreurs passées, les dynamiques cachées, les patterns que personne n'a vus. Ton défi : sortir de l'ombre quand le moment l'exige."},
-  renard:{name:"Le Renard",emoji:"🦊",role:"Esprit de la vivacité et de l'élan",tags:["Intelligence vive","Créativité","Légèreté"],desc:"Tu trouves naturellement l'angle que les autres n'ont pas vu. Là où certains avancent frontalement, toi tu trouves le chemin le plus fluide — pas par facilité, mais par intelligence de la situation. Tu lis une pièce en quelques secondes et tu t'adaptes avec une légèreté qui impressionne. Ton défi : aller au bout des choses plutôt que de passer au suivant."}
-};
-
-const QUESTIONS=[
-  {q:"Tu viens de rater ton objectif du mois. Ce soir tu :",answers:[{text:"Repasses en revue chaque erreur pour ne plus jamais les répéter",animal:"corbeau"},{text:"Te lèves plus tôt demain — tu rattraperas en doublant l'effort",animal:"taureau"},{text:"Passes à autre chose — ruminer ne t'a jamais aidé",animal:"serpent"},{text:"Réfléchis à l'angle que tu n'avais pas encore exploré",animal:"renard"}]},
-  {q:"On te propose un projet risqué mais potentiellement énorme. Tu :",answers:[{text:"Demandes à voir le plan complet avant de t'engager",animal:"aigle"},{text:"Dis oui immédiatement — l'inconnu ne t'a jamais arrêté",animal:"sanglier"},{text:"Observes d'abord les personnes impliquées — le projet c'est les gens",animal:"loup"},{text:"Cherches instinctivement ce que tout le monde a raté dans l'opportunité",animal:"renard"}]},
-  {q:"Dans une pièce pleine d'inconnus, tu es celui qui :",answers:[{text:"Observe silencieusement et sait déjà qui est qui",animal:"corbeau"},{text:"Crée l'élan — les gens te suivent sans savoir pourquoi",animal:"cheval"},{text:"Repère les personnes qui comptent vraiment et va vers elles",animal:"chat"},{text:"Met tout le monde à l'aise avec une aisance naturelle",animal:"renard"}]},
-  {q:"Un ami proche te trahit. Ta réaction :",answers:[{text:"Tu coupes — la loyauté est sacrée, pas de deuxième chance",animal:"loup"},{text:"Tu encaisses en silence et tu continues",animal:"ours"},{text:"Tu l'affrontes directement — tu n'as pas peur de la confrontation",animal:"sanglier"},{text:"Tu analyses pour comprendre et ne plus jamais te retrouver là",animal:"corbeau"}]},
-  {q:"Tu as une grande décision à prendre. Tu :",answers:[{text:"Fais confiance à ton instinct — tu sens rarement faux",animal:"chat"},{text:"Prends le temps qu'il faut — la précipitation coûte cher",animal:"cerf"},{text:"Cherches la solution la plus élégante dans les détails",animal:"cygne"},{text:"Décides vite et assumes — l'action vaut mieux que la réflexion infinie",animal:"cheval"}]},
-  {q:"Ce qui te définit le mieux dans l'effort :",answers:[{text:"Je ne lâche jamais un objectif une fois décidé",animal:"taureau"},{text:"Je m'adapte — je ne refais pas deux fois la même erreur",animal:"serpent"},{text:"Je dure là où les autres s'épuisent",animal:"ours"},{text:"Je protège ce qui compte et je me bats pour ça",animal:"sanglier"}]},
-  {q:"Un projet que tu construis depuis longtemps ne décolle pas. Tu :",answers:[{text:"Continues avec la même constance — la durée fait la différence",animal:"cerf"},{text:"Pivotes — si ça ne marche pas, tu changes d'approche",animal:"serpent"},{text:"Analyses en profondeur avant de changer quoi que ce soit",animal:"corbeau"},{text:"Cherches un nouvel angle — le fond est bon, c'est la forme qui cloche",animal:"renard"}]},
-  {q:"Ce que les gens disent de toi sans que tu leur aies demandé :",answers:[{text:"Que tu es quelqu'un sur qui on peut compter dans les moments difficiles",animal:"ours"},{text:"Que tu es toujours en mouvement, toujours sur quelque chose",animal:"cheval"},{text:"Que tu as une façon de voir les choses que personne d'autre n'a",animal:"aigle"},{text:"Que tu as une vivacité d'esprit qui rend les choses plus légères",animal:"renard"}]},
-  {q:"Ce qui t'énerve le plus dans une équipe :",answers:[{text:"Le manque de loyauté — les gens qui ne se couvrent pas",animal:"loup"},{text:"L'absence de vision — faire sans savoir pourquoi",animal:"aigle"},{text:"La médiocrité acceptée — personne ne cherche à faire mieux",animal:"cygne"},{text:"L'immobilisme — les réunions infinies sans agir",animal:"sanglier"}]},
-  {q:"Le paysage qui te ressemble le plus :",answers:[{text:"Une forêt dense la nuit — calme en surface, vivante en dessous",animal:"loup"},{text:"Une plaine sans horizon — liberté totale",animal:"cheval"},{text:"Un sommet — là où la vue est impossible depuis le bas",animal:"aigle"},{text:"Un sentier sinueux entre les arbres — tu avances curieux de ce qui vient",animal:"renard"}]},
-  {q:"Ce que tu veux que ton travail provoque chez les autres :",answers:[{text:"Que la persévérance dans le temps crée quelque chose d'irréversible",animal:"cerf"},{text:"Qu'ils soient impressionnés par le soin apporté à chaque détail",animal:"cygne"},{text:"Qu'ils aient envie de se dépasser",animal:"taureau"},{text:"Qu'ils voient les choses différemment après t'avoir rencontré",animal:"renard"}]},
-  {q:"Seul face à un défi que tu n'as jamais affronté, tu :",answers:[{text:"Avances quand même — l'expérience viendra en marchant",animal:"cheval"},{text:"Observes tout ce que tu peux avant d'agir",animal:"chat"},{text:"Cherches le pattern caché — tout problème a une logique",animal:"corbeau"},{text:"Te souviens d'un échec similaire et tu fais différemment",animal:"serpent"}]}
-];
-
-const SIGNS=[
-  {name:"Capricorne",symbol:"♑",dates:[[1,1],[19,1],[22,12],[31,12]]},
-  {name:"Verseau",symbol:"♒",dates:[[20,1],[18,2]]},
-  {name:"Poissons",symbol:"♓",dates:[[19,2],[20,3]]},
-  {name:"Bélier",symbol:"♈",dates:[[21,3],[19,4]]},
-  {name:"Taureau",symbol:"♉",dates:[[20,4],[20,5]]},
-  {name:"Gémeaux",symbol:"♊",dates:[[21,5],[20,6]]},
-  {name:"Cancer",symbol:"♋",dates:[[21,6],[22,7]]},
-  {name:"Lion",symbol:"♌",dates:[[23,7],[22,8]]},
-  {name:"Vierge",symbol:"♍",dates:[[23,8],[22,9]]},
-  {name:"Balance",symbol:"♎",dates:[[23,9],[22,10]]},
-  {name:"Scorpion",symbol:"♏",dates:[[23,10],[21,11]]},
-  {name:"Sagittaire",symbol:"♐",dates:[[22,11],[21,12]]}
-];
-
-const SIGN_DESC={
-  "Capricorne":"Patient, ambitieux, méthodique. Tu construis sur le long terme.",
-  "Verseau":"Visionnaire, original, indépendant. Tu penses en avance.",
-  "Poissons":"Intuitif, créatif, empathique. Tu ressens ce que les autres n'expriment pas.",
-  "Bélier":"Pionnier, direct, énergique. Tu fonces et tu ouvres le chemin.",
-  "Taureau":"Déterminé, loyal, ancré. Tu construis solide et tu dures.",
-  "Gémeaux":"Vif, adaptable, curieux. Tu t'adaptes à tout et rapidement.",
-  "Cancer":"Protecteur, intuitif, loyal. Tu portes les autres naturellement.",
-  "Lion":"Charismatique, ambitieux, généreux. Tu rayonnes sans effort.",
-  "Vierge":"Précis, analytique, exigeant. Tu vois ce que les autres ratent.",
-  "Balance":"Équitable, charmant, stratégique. Tu trouves l'équilibre juste.",
-  "Scorpion":"Intense, perçant, transformateur. Tu vas là où peu osent aller.",
-  "Sagittaire":"Libre, optimiste, visionnaire. Tu vises toujours plus loin."
-};
-
-const LIFE_DESC={
-  1:"Indépendant, pionnier, leader naturel. Tu traces ta route.",
-  2:"Diplomate, intuitif, médiateur. Tu sens les équilibres.",
-  3:"Créatif, expressif, communicant. Tu inspires par tes mots.",
-  4:"Solide, méthodique, fiable. Tu construis ce qui dure.",
-  5:"Libre, aventurier, adaptable. Tu es fait pour le changement.",
-  6:"Responsable, protecteur, harmonieux. Tu prends soin des autres.",
-  7:"Analytique, intuitif, chercheur. Tu cherches la vérité.",
-  8:"Ambitieux, déterminé, puissant. Tu es fait pour accomplir.",
-  9:"Sage, généreux, universel. Tu as une mission plus grande.",
-  11:"Intuitif, inspirant, visionnaire. Nombre maître — sensibilité extrême.",
-  22:"Bâtisseur, pragmatique, visionnaire. Nombre maître — pouvoir de réalisation.",
-  33:"Maître enseignant, compassion totale. Nombre maître — service universel."
-};
-
-function getSign(day,month){
-  if((month===1&&day>=1&&day<=19)||(month===12&&day>=22))return SIGNS[0];
-  for(let i=1;i<SIGNS.length;i++){
-    const s=SIGNS[i];
-    const [d1,m1,d2,m2]=s.dates.flat?s.dates.flat():[...s.dates[0],...s.dates[1]];
-    if(month===m1&&day>=d1||month===m2&&day<=d2)return s;
-  }
-  return SIGNS[0];
-}
-
-function getSignForDate(d,m){
-  const ranges=[
-    {s:SIGNS[0],m1:1,d1:1,m2:1,d2:19},{s:SIGNS[1],m1:1,d1:20,m2:2,d2:18},
-    {s:SIGNS[2],m1:2,d1:19,m2:3,d2:20},{s:SIGNS[3],m1:3,d1:21,m2:4,d2:19},
-    {s:SIGNS[4],m1:4,d1:20,m2:5,d2:20},{s:SIGNS[5],m1:5,d1:21,m2:6,d2:20},
-    {s:SIGNS[6],m1:6,d1:21,m2:7,d2:22},{s:SIGNS[7],m1:7,d1:23,m2:8,d2:22},
-    {s:SIGNS[8],m1:8,d1:23,m2:9,d2:22},{s:SIGNS[9],m1:9,d1:23,m2:10,d2:22},
-    {s:SIGNS[10],m1:10,d1:23,m2:11,d2:21},{s:SIGNS[11],m1:11,d1:22,m2:12,d2:21},
-    {s:SIGNS[0],m1:12,d1:22,m2:12,d2:31}
-  ];
-  for(const r of ranges){
-    if((m===r.m1&&d>=r.d1)||(m===r.m2&&d<=r.d2))return r.s;
-  }
-  return SIGNS[0];
-}
-
-function lifeNumber(dateStr){
-  const digits=dateStr.replace(/-/g,'').split('').map(Number);
-  let s=digits.reduce((a,b)=>a+b,0);
-  while(s>9&&s!==11&&s!==22&&s!==33){
-    s=String(s).split('').map(Number).reduce((a,b)=>a+b,0);
-  }
-  return s;
-}
-
-function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
-
-// State
-let state={screen:'date',dateVal:'',qIndex:0,answers:{},shuffled:[],scores:{}};
-
-function render(){
-  const app=document.getElementById('app');
-  if(state.screen==='date')app.innerHTML=dateScreen();
-  else if(state.screen==='quiz')app.innerHTML=quizScreen();
-  else if(state.screen==='result')app.innerHTML=resultScreen();
-  attachEvents();
-}
-
-function dateScreen(){
-  return`<div class="date-label">Étape 1 / 2</div>
-<div class="date-title">Entre ta date de naissance</div>
-<div class="date-sub">Elle servira à calculer ton signe astrologique et ton chiffre de vie automatiquement.</div>
-<input type="date" class="date-input" id="dob" value="${state.dateVal}" max="${new Date().toISOString().split('T')[0]}">
-<button class="btn-start" id="btn-start" ${state.dateVal?'':'disabled'}>Commencer le questionnaire →</button>`;
-}
-
-function quizScreen(){
-  const q=state.shuffled[state.qIndex];
-  const pct=Math.round((state.qIndex/12)*100);
-  const sel=state.answers[state.qIndex];
-  return`<div class="progress-wrap">
-<div class="progress-top"><span class="progress-label">Question</span><span class="progress-count">${state.qIndex+1} / 12</span></div>
-<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-</div>
-<div class="q-text">${q.q}</div>
-<div class="answers">${q.answers.map((a,i)=>`<button class="answer-btn${sel===i?' selected':''}" data-idx="${i}">${a.text}</button>`).join('')}</div>
-<div class="nav-row">
-${state.qIndex>0?`<button class="btn-back" id="btn-back">← Retour</button>`:''}
-<button class="btn-next" id="btn-next" ${sel!==undefined?'':'disabled'}>${state.qIndex===11?'Voir mon profil →':'Suivant →'}</button>
-</div>`;
-}
-
-function resultScreen(){
-  // Compute scores
-  const sc={};
-  state.shuffled.forEach((q,qi)=>{
-    const ai=state.answers[qi];
-    if(ai!==undefined){const a=q.answers[ai].animal;sc[a]=(sc[a]||0)+1;}
-  });
-  const winner=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0][0];
-  const animal=ANIMALS[winner];
-  
-  // Astro & life
-  const dob=new Date(state.dateVal);
-  const d=dob.getDate()+1,m=dob.getMonth()+1;
-  const sign=getSignForDate(d,m);
-  const life=lifeNumber(state.dateVal);
-  
-  const animalLinks={
-    cheval:{sign:"Comme toi, ce signe avance sans attendre la permission.",life:"Ce chiffre amplifie ta capacité à créer ton propre chemin."},
-    cerf:{sign:"Ce signe partage ton sens de la durée et de la noblesse.",life:"Ce chiffre renforce ta vision sur le long terme."},
-    sanglier:{sign:"Comme toi, ce signe ne recule pas face à l'adversité.",life:"Ce chiffre amplifie ta fougue et ton besoin de protéger."},
-    loup:{sign:"Ce signe partage ton intelligence sociale profonde.",life:"Ce chiffre renforce ton instinct et ta loyauté."},
-    ours:{sign:"Comme toi, ce signe est un pilier naturel pour les autres.",life:"Ce chiffre amplifie ta force tranquille et ton endurance."},
-    aigle:{sign:"Ce signe partage ta vision haute et ta pensée systémique.",life:"Ce chiffre renforce ton ambition et ta clarté."},
-    serpent:{sign:"Comme toi, ce signe est maître de la transformation.",life:"Ce chiffre amplifie ta capacité à te réinventer."},
-    cygne:{sign:"Ce signe partage ton exigence d'excellence absolue.",life:"Ce chiffre renforce ta quête de perfection et de beauté."},
-    chat:{sign:"Comme toi, ce signe capte ce que les autres ne voient pas.",life:"Ce chiffre amplifie ton sixième sens et ton indépendance."},
-    taureau:{sign:"Ce signe partage ta détermination sans faille.",life:"Ce chiffre renforce ta puissance dans l'effort."},
-    corbeau:{sign:"Comme toi, ce signe observe avant d'agir avec précision.",life:"Ce chiffre amplifie ta stratégie et ton intelligence cachée."},
-    renard:{sign:"Ce signe partage ta vivacité d'esprit naturelle.",life:"Ce chiffre renforce ta créativité et ton sens de l'adaptation."}
-  };
-  
-  const link=animalLinks[winner]||{sign:"Ce signe résonne avec ton animal totem.",life:"Ce chiffre amplifie les qualités de ton animal."};
-  
-  return`<div class="result-animal">
-<span class="result-emoji">${animal.emoji}</span>
-<div class="result-name">${animal.name}</div>
-<div class="result-role">${animal.role}</div>
-<div class="result-desc">${animal.desc}</div>
-<div class="tags">${animal.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-</div>
-<div class="divider"></div>
-<div class="cards-row">
-<div class="info-card">
-<span class="info-icon">${sign.symbol}</span>
-<div class="info-type">Signe astrologique</div>
-<div class="info-name">${sign.name}</div>
-<div class="info-desc">${SIGN_DESC[sign.name]||''}</div>
-<div class="info-link">${link.sign}</div>
-</div>
-<div class="info-card">
-<span class="info-icon">✦</span>
-<div class="info-type">Chiffre de vie</div>
-<div class="info-name">${life}</div>
-<div class="info-desc">${LIFE_DESC[life]||''}</div>
-<div class="info-link">${link.life}</div>
-</div>
-</div>
-<button class="btn-restart" id="btn-restart">Recommencer</button>`;
-}
-
-function attachEvents(){
-  if(state.screen==='date'){
-    const dob=document.getElementById('dob');
-    const btn=document.getElementById('btn-start');
-    dob.addEventListener('change',()=>{state.dateVal=dob.value;btn.disabled=!dob.value;});
-    btn.addEventListener('click',()=>{
-      if(!state.dateVal)return;
-      state.screen='quiz';
-      state.qIndex=0;
-      state.answers={};
-      state.shuffled=QUESTIONS.map(q=>({...q,answers:shuffle(q.answers)}));
-      render();
-    });
-  }
-  if(state.screen==='quiz'){
-    document.querySelectorAll('.answer-btn').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        state.answers[state.qIndex]=parseInt(btn.dataset.idx);
-        render();
-      });
-    });
-    const next=document.getElementById('btn-next');
-    if(next)next.addEventListener('click',()=>{
-      if(state.answers[state.qIndex]===undefined)return;
-      if(state.qIndex===11){state.screen='result';render();}
-      else{state.qIndex++;render();}
-    });
-    const back=document.getElementById('btn-back');
-    if(back)back.addEventListener('click',()=>{state.qIndex--;render();});
-  }
-  if(state.screen==='result'){
-    document.getElementById('btn-restart').addEventListener('click',()=>{
-      state={screen:'date',dateVal:'',qIndex:0,answers:{},shuffled:[],scores:{}};
-      render();
-    });
-  }
-}
-
-render();
-
-// ── GENERATOR STEPPER ─────────────────────────────────────────
 const ZODIAC=['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 
 const GEN_STEPS=[
-  {q:'Quel est ton animal totem ?',           sub:'Entre le nom révélé par le quiz, ou un animal que tu ressens comme le tien.',        type:'text',   ph:'Ex : loup, aigle, renard…',      key:'animal'},
-  {q:'Quel est ton chiffre ?',                sub:'Ton chiffre de vie — de 1 à 9, ou un nombre maître (11, 22, 33).',                   type:'number', ph:'Ex : 7',                          key:'chiffre'},
-  {q:'Quel est ton signe astrologique ?',     sub:'Sélectionne ton signe du zodiaque.',                                                 type:'select', ph:null,                              key:'signe'},
-  {q:'Ta ville ou coordonnées de naissance ?',sub:'Ville ou coordonnées GPS — elles figureront discrètement sur ton tableau.',          type:'text',   ph:'Ex : Paris, ou 48.8566, 2.3522', key:'lieu'},
+  {q:'Quel est ton animal totem ?',            sub:'Entre le nom de l\'animal qui te représente — instinct, force, nature profonde.',     type:'text',   ph:'Ex : loup, aigle, renard…',      key:'animal'},
+  {q:'Quel est ton chiffre ?',                 sub:'Ton chiffre de vie — de 1 à 9, ou un nombre maître (11, 22, 33).',                    type:'number', ph:'Ex : 7',                          key:'chiffre'},
+  {q:'Quel est ton signe astrologique ?',      sub:'Sélectionne ton signe du zodiaque.',                                                  type:'select', ph:null,                              key:'signe'},
+  {q:'Ta ville ou coordonnées de naissance ?', sub:'Ville ou coordonnées GPS — elles figureront discrètement sur ton tableau.',           type:'text',   ph:'Ex : Paris, ou 48.8566, 2.3522', key:'lieu'},
 ];
 
 let genState={step:0,data:{animal:'',chiffre:'',signe:'',lieu:''},loading:false,image:null,error:null};
