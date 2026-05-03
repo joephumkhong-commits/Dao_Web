@@ -5,7 +5,6 @@ const CORS_HEADERS = {
 };
 
 module.exports = async (req, res) => {
-  // CORS preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, CORS_HEADERS);
     res.end();
@@ -18,7 +17,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { animal } = req.body || {};
+  const { animal, chiffre, signe, lieu } = req.body || {};
   if (!animal) {
     res.writeHead(400, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Missing "animal" field' }));
@@ -26,9 +25,16 @@ module.exports = async (req, res) => {
   }
 
   const prompt =
-    `Hyper-realistic product photography of a premium black epoxy resin art panel 30x40cm, ` +
-    `${animal} tribal lineart 3D sculpture embedded in the resin, phosphorescent green glowing lines, ` +
-    `luxury black frame, dark studio lighting, ultra detailed`;
+    `Fine art premium tableau, deep matte black background, no border. ` +
+    `Centered ultra-realistic intaglio engraving portrait of a ${animal}, ` +
+    `black and white, extreme detail in fur/feathers/scales, dramatic chiaroscuro lighting. ` +
+    `On the forehead of the animal: the number ${chiffre || ''} glowing phosphorescent green #00FFB2, ` +
+    `luminous and sharp, integrated naturally into the animal's markings. ` +
+    `Bottom quarter of image: ${signe || ''} astrological symbol rendered as a constellation ` +
+    `of phosphorescent green #00FFB2 dots connected by fine luminous lines, floating subtly. ` +
+    `Bottom edge: the text "${lieu || ''}" in small discreet monospace typography, ` +
+    `color #00FFB2 at low opacity, right-aligned. ` +
+    `Overall mood: mystical, high-end, museum-quality. No frame, no white space, full bleed black.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -59,7 +65,6 @@ module.exports = async (req, res) => {
     }
 
     const data = await geminiRes.json();
-
     const imagePart = data?.candidates?.[0]?.content?.parts?.find(
       (p) => p.inlineData?.mimeType?.startsWith('image/')
     );

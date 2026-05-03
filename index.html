@@ -9,6 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.12);--gold-border:rgba(201,169,110,0.25);
+  --neon:#00FFB2;--neon-dim:rgba(0,255,178,.09);--neon-border:rgba(0,255,178,.2);
   --bg:#0a0a0a;--bg2:#111;--bg3:#161616;
   --border:#2a2a2a;--text:#f0ece4;--text2:#888;--text3:#555;
   --r:10px;--rl:16px;
@@ -79,10 +80,49 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 
+/* GENERATOR STEPPER */
+.gen-section{margin-top:20px;animation:fadeIn .8s ease .2s both}
+.gen-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px}
+.gen-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+.gen-progress{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.gen-dots{display:flex;gap:6px;flex:1}
+.gen-dot{flex:1;height:2px;background:var(--border);border-radius:2px;transition:background .3s}
+.gen-dot.done{background:var(--neon)}
+.gen-dot.active{background:var(--neon);opacity:.5}
+.gen-step-counter{font-size:11px;color:var(--text3);letter-spacing:.08em;white-space:nowrap}
+.gen-q{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:400;color:var(--text);margin-bottom:6px}
+.gen-sub{font-size:13px;color:var(--text2);margin-bottom:22px;line-height:1.6}
+.gen-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text);font-size:15px;padding:14px 16px;outline:none;transition:border-color .2s;font-family:inherit;display:block}
+.gen-input:focus{border-color:var(--neon)}
+.gen-input::placeholder{color:var(--text3)}
+.gen-input[type=number]{-moz-appearance:textfield}
+.gen-input[type=number]::-webkit-inner-spin-button,.gen-input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+.gen-select{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text);font-size:15px;padding:14px 16px;outline:none;transition:border-color .2s;font-family:inherit;-webkit-appearance:none;cursor:pointer;display:block;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.gen-select:focus{border-color:var(--neon)}
+.gen-select option{background:#161616}
+.gen-nav{display:flex;gap:10px;margin-top:20px}
+.btn-gen-back{flex:1;padding:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
+.btn-gen-back:hover{border-color:var(--text3);color:var(--text)}
+.btn-gen-next{flex:2;padding:12px;background:var(--neon);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:opacity .2s;letter-spacing:.04em}
+.btn-gen-next:hover{opacity:.88}
+.btn-gen-next:disabled{opacity:.35;cursor:not-allowed}
+.gen-loading{display:flex;flex-direction:column;align-items:center;gap:16px;padding:64px 24px;color:var(--text2);font-size:12px;letter-spacing:.1em}
+.gen-spinner{width:28px;height:28px;border:1.5px solid var(--border);border-top-color:var(--neon);border-radius:50%;animation:spin .9s linear infinite}
+.gen-result-header{margin-bottom:16px}
+.gen-result-title{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:400;color:var(--text);margin-bottom:5px}
+.gen-result-meta{font-size:12px;color:var(--text3);letter-spacing:.06em}
+.gen-frame{background:#000;border:0.5px solid #1e1e1e;border-radius:10px;overflow:hidden;box-shadow:0 0 80px rgba(0,255,178,.04),inset 0 0 0 1px rgba(0,255,178,.03)}
+.gen-frame img{width:100%;display:block;animation:fadeIn .6s ease}
+.gen-restart{width:100%;padding:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;margin-top:14px;letter-spacing:.04em}
+.gen-restart:hover{border-color:var(--text3);color:var(--text)}
+.gen-error-msg{font-size:13px;color:var(--text2);text-align:center;padding:48px 24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 @media(max-width:480px){
   body{padding:16px}
   .card{padding:24px}
   .cards-row{grid-template-columns:1fr}
+  .gen-card{padding:24px}
 }
 </style>
 </head>
@@ -94,6 +134,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="dao-sub">12 questions · Profil complet · Gratuit</div>
   </div>
   <div class="card" id="app"></div>
+
+  <div class="gen-section">
+    <div class="gen-card" id="gen-app"></div>
+  </div>
 </div>
 
 <script>
@@ -343,6 +387,107 @@ function attachEvents(){
 }
 
 render();
+
+// ── GENERATOR STEPPER ─────────────────────────────────────────
+const ZODIAC=['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
+
+const GEN_STEPS=[
+  {q:'Quel est ton animal totem ?',           sub:'Entre le nom révélé par le quiz, ou un animal que tu ressens comme le tien.',        type:'text',   ph:'Ex : loup, aigle, renard…',      key:'animal'},
+  {q:'Quel est ton chiffre ?',                sub:'Ton chiffre de vie — de 1 à 9, ou un nombre maître (11, 22, 33).',                   type:'number', ph:'Ex : 7',                          key:'chiffre'},
+  {q:'Quel est ton signe astrologique ?',     sub:'Sélectionne ton signe du zodiaque.',                                                 type:'select', ph:null,                              key:'signe'},
+  {q:'Ta ville ou coordonnées de naissance ?',sub:'Ville ou coordonnées GPS — elles figureront discrètement sur ton tableau.',          type:'text',   ph:'Ex : Paris, ou 48.8566, 2.3522', key:'lieu'},
+];
+
+let genState={step:0,data:{animal:'',chiffre:'',signe:'',lieu:''},loading:false,image:null,error:null};
+
+function renderGen(){
+  const app=document.getElementById('gen-app');
+  if(genState.loading){
+    app.innerHTML=`<div class="gen-label">Tableau personnalisé</div><div class="gen-loading"><div class="gen-spinner"></div><span>Génération de ton tableau…</span></div>`;
+    return;
+  }
+  if(genState.image){
+    app.innerHTML=`<div class="gen-label">Tableau personnalisé</div>
+<div class="gen-result-header">
+  <div class="gen-result-title">Ton tableau Daö</div>
+  <div class="gen-result-meta">${genState.data.animal} · ${genState.data.signe} · ${genState.data.chiffre}</div>
+</div>
+<div class="gen-frame"><img src="${genState.image}" alt="Tableau Daö ${genState.data.animal}"></div>
+<button class="gen-restart" id="gen-restart">Générer un nouveau tableau</button>`;
+    document.getElementById('gen-restart').addEventListener('click',()=>{
+      genState={step:0,data:{animal:'',chiffre:'',signe:'',lieu:''},loading:false,image:null,error:null};
+      renderGen();
+    });
+    return;
+  }
+  if(genState.error){
+    app.innerHTML=`<div class="gen-label">Tableau personnalisé</div><div class="gen-error-msg">${genState.error}</div><button class="gen-restart" id="gen-restart">Réessayer</button>`;
+    document.getElementById('gen-restart').addEventListener('click',()=>{
+      genState.error=null;genState.step=3;renderGen();
+    });
+    return;
+  }
+  const s=GEN_STEPS[genState.step];
+  const val=genState.data[s.key];
+  const isLast=genState.step===3;
+  const dots=GEN_STEPS.map((_,i)=>`<div class="gen-dot${i<genState.step?' done':i===genState.step?' active':''}"></div>`).join('');
+  let field='';
+  if(s.type==='select'){
+    const opts=ZODIAC.map(z=>`<option value="${z}"${val===z?' selected':''}>${z}</option>`).join('');
+    field=`<select class="gen-select" id="gen-field"><option value="" disabled${!val?' selected':''}>Sélectionne ton signe…</option>${opts}</select>`;
+  }else{
+    field=`<input type="${s.type}" class="gen-input" id="gen-field" value="${val}" placeholder="${s.ph||''}"${s.type==='number'?' min="1" max="33"':''} enterkeyhint="${isLast?'go':'next'}">`;
+  }
+  app.innerHTML=`<div class="gen-label">Tableau personnalisé</div>
+<div class="gen-progress"><div class="gen-dots">${dots}</div><span class="gen-step-counter">Étape ${genState.step+1} / 4</span></div>
+<div class="gen-q">${s.q}</div>
+<div class="gen-sub">${s.sub}</div>
+${field}
+<div class="gen-nav">
+  ${genState.step>0?`<button class="btn-gen-back" id="gen-back">← Précédent</button>`:''}
+  <button class="btn-gen-next" id="gen-next"${val?'':' disabled'}>${isLast?'Générer mon tableau →':'Suivant →'}</button>
+</div>`;
+  const fieldEl=document.getElementById('gen-field');
+  const nextEl=document.getElementById('gen-next');
+  const backEl=document.getElementById('gen-back');
+  fieldEl.addEventListener('input',()=>{
+    genState.data[s.key]=fieldEl.value.trim();
+    nextEl.disabled=!genState.data[s.key];
+  });
+  fieldEl.addEventListener('change',()=>{
+    genState.data[s.key]=fieldEl.value.trim();
+    nextEl.disabled=!genState.data[s.key];
+  });
+  fieldEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!nextEl.disabled)nextEl.click();});
+  nextEl.addEventListener('click',async()=>{
+    if(genState.step<3){genState.step++;renderGen();}
+    else{await generateTableau();}
+  });
+  if(backEl)backEl.addEventListener('click',()=>{genState.step--;renderGen();});
+  setTimeout(()=>fieldEl.focus(),60);
+}
+
+async function generateTableau(){
+  genState.loading=true;
+  renderGen();
+  try{
+    const res=await fetch('/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(genState.data)
+    });
+    const data=await res.json();
+    genState.loading=false;
+    if(data.image){genState.image=data.image;}
+    else{genState.error=data.error||'Erreur inconnue';}
+  }catch(err){
+    genState.loading=false;
+    genState.error='Erreur de connexion. Réessaie dans un instant.';
+  }
+  renderGen();
+}
+
+renderGen();
 </script>
 </body>
 </html>
