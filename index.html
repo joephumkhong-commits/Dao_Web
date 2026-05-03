@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DAÖ — Tableaux totem en époxy phosphorescent</title>
+<link rel="icon" href="images/favicon.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
@@ -46,7 +47,8 @@ section[id]{scroll-margin-top:var(--nav-h)}
 /* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(10,10,10,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:.5px solid var(--border)}
 .nav-inner{max-width:1180px;margin:0 auto;padding:0 40px;height:100%;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:'Libre Baskerville',serif;font-size:22px;letter-spacing:.15em;color:var(--text);cursor:pointer}
+.nav-logo{display:flex;align-items:center;cursor:pointer}
+.nav-logo img{height:40px;width:auto;display:block}
 .nav-links{display:flex;align-items:center;gap:36px;list-style:none}
 .nav-links a{font-size:13px;letter-spacing:.03em;color:var(--text2);transition:color .2s}
 .nav-links a:hover{color:var(--cyan)}
@@ -80,12 +82,9 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .histoire-text p{font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:18px}
 .histoire-text p:last-child{margin-bottom:0}
 .histoire-text strong{color:var(--text);font-weight:500}
-.histoire-visual{aspect-ratio:4/5;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
-.histoire-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(0,229,255,.06) 0%,transparent 65%)}
-.histoire-visual-inner{position:relative;text-align:center;z-index:1}
-.histoire-visual-inner .big-letter{font-family:'Libre Baskerville',serif;font-size:88px;color:rgba(0,229,255,.07);line-height:1;letter-spacing:.12em;display:block}
-.histoire-visual-inner .sub{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--text3);margin-top:12px}
-.histoire-visual-bottom{position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:.3}
+.histoire-visual{aspect-ratio:4/5;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;position:relative}
+.histoire-visual img{width:100%;height:100%;object-fit:cover;display:block}
+.histoire-visual-bottom{position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:.4}
 
 /* ── PROCESS ── */
 #process{background:var(--bg2);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
@@ -102,31 +101,47 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .process-card-desc{font-size:13px;color:var(--text2);line-height:1.72}
 .process-card-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
 .process-card:hover .process-card-line{opacity:.45}
+.process-ambient{margin-top:48px;border-radius:var(--rl);overflow:hidden;border:.5px solid var(--border);position:relative}
+.process-ambient img{width:100%;height:320px;object-fit:cover;display:block;filter:brightness(.65)}
+.process-ambient::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.7) 0%,transparent 50%)}
 
 /* ── GALERIE ── */
 #galerie{border-top:.5px solid var(--border)}
 .galerie-header{margin-bottom:48px}
 .galerie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.galerie-item{aspect-ratio:3/4;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
-.galerie-item::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(0,229,255,.05) 0%,transparent 65%);opacity:0;transition:opacity .3s}
-.galerie-item:hover{border-color:var(--cyan-border);box-shadow:0 0 32px rgba(0,229,255,.08)}
-.galerie-item:hover::before{opacity:1}
-.galerie-emoji{font-size:38px;filter:grayscale(1) brightness(.4);transition:filter .3s;position:relative;z-index:1}
-.galerie-item:hover .galerie-emoji{filter:grayscale(.3) brightness(.65)}
-.galerie-animal{font-family:'Libre Baskerville',serif;font-style:italic;font-size:13px;color:rgba(0,229,255,.5);letter-spacing:.08em;position:relative;z-index:1}
-.galerie-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);position:relative;z-index:1}
-.galerie-glow{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
-.galerie-item:hover .galerie-glow{opacity:.5}
+.galerie-item{aspect-ratio:3/4;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.galerie-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease,filter .3s ease;filter:brightness(.82)}
+.galerie-item:hover{border-color:var(--cyan-border);box-shadow:0 0 32px rgba(0,229,255,.15)}
+.galerie-item:hover img{transform:scale(1.04);filter:brightness(.95)}
+.galerie-glow{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s;z-index:2}
+.galerie-item:hover .galerie-glow{opacity:.6}
+
+/* ── ANIMAUX CELTIQUES ── */
+#animaux{background:var(--bg2);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+.animaux-header{text-align:center;margin-bottom:52px}
+.animaux-header .section-badge{display:block;text-align:center}
+.animaux-header .section-badge::before{display:none}
+.animaux-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.animal-card{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--rl);padding:28px 20px;text-align:center;transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+.animal-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,.07) 0%,transparent 65%);opacity:0;transition:opacity .3s}
+.animal-card:hover{border-color:var(--cyan-border);box-shadow:0 0 28px rgba(0,229,255,.1)}
+.animal-card:hover::before{opacity:1}
+.animal-card-emoji{font-size:38px;margin-bottom:12px;display:block;filter:grayscale(.3);transition:filter .3s}
+.animal-card:hover .animal-card-emoji{filter:grayscale(0)}
+.animal-card-name{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:400;color:var(--text);margin-bottom:5px;letter-spacing:.03em}
+.animal-card-role{font-size:11px;color:var(--cyan);opacity:.65;letter-spacing:.06em;font-style:italic;line-height:1.4}
+.animal-card-line{position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
+.animal-card:hover .animal-card-line{opacity:.5}
 
 /* ── TÉMOIGNAGES ── */
-#temoignages{background:var(--bg2);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+#temoignages{border-top:.5px solid var(--border)}
 .temoignages-header{text-align:center;margin-bottom:52px}
 .temoignages-header .section-badge{display:block;text-align:center}
 .temoignages-header .section-badge::before{display:none}
 .temoignages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .temoignage-card{background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--rl);padding:32px 26px;display:flex;flex-direction:column;gap:20px;transition:border-color .3s}
 .temoignage-card:hover{border-color:rgba(0,229,255,.15)}
-.temoignage-stars{color:var(--gold);font-size:13px;letter-spacing:2px}
+.temoignage-stars{color:var(--cyan);font-size:13px;letter-spacing:2px;opacity:.8}
 .temoignage-quote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--text);line-height:1.7;flex:1}
 .temoignage-footer{display:flex;align-items:center;gap:12px;padding-top:4px;border-top:.5px solid var(--border)}
 .temoignage-avatar{width:34px;height:34px;border-radius:50%;background:var(--bg2);border:.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:13px;color:var(--text3);flex-shrink:0}
@@ -142,61 +157,61 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .quiz-header .section-sub{margin:0 auto}
 .quiz-wrap{max-width:560px;margin:0 auto}
 
-/* ── QUIZ (intact) ── */
+/* ── QUIZ ── */
 .card{background:var(--bg2);border:.5px solid var(--border2);border-radius:var(--rl);padding:32px;animation:slideUp .5s ease}
 .date-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
 .date-title{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:6px}
 .date-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6}
 .date-input{width:100%;background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:15px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:16px;-webkit-appearance:none;color-scheme:dark;font-family:'Inter',sans-serif}
-.date-input:focus{border-color:var(--gold)}
+.date-input:focus{border-color:var(--cyan)}
 .date-input::placeholder{color:var(--text3)}
-.btn-start{width:100%;padding:14px;background:var(--gold);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:opacity .2s;font-family:'Inter',sans-serif}
-.btn-start:hover{opacity:.88}
-.btn-start:disabled{opacity:.4;cursor:not-allowed}
+.btn-start{width:100%;padding:14px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,box-shadow .2s;font-family:'Inter',sans-serif;box-shadow:0 0 28px rgba(0,229,255,.2)}
+.btn-start:hover{opacity:.88;box-shadow:0 0 40px rgba(0,229,255,.35)}
+.btn-start:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 .progress-wrap{margin-bottom:28px}
 .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .progress-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
-.progress-count{font-size:13px;color:var(--text2)}
+.progress-count{font-size:13px;color:var(--cyan);opacity:.8}
 .progress-bar{height:1px;background:var(--border2);border-radius:1px;overflow:hidden}
-.progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
+.progress-fill{height:100%;background:var(--cyan);border-radius:1px;transition:width .4s ease}
 .q-text{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:400;color:var(--text);line-height:1.55;margin-bottom:24px}
 .answers{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
 .answer-btn{width:100%;padding:14px 16px;background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:14px;font-family:inherit;text-align:left;cursor:pointer;transition:all .2s;line-height:1.45}
-.answer-btn:hover{border-color:var(--gold-border);color:var(--text);background:var(--gold-dim)}
-.answer-btn.selected{border-color:var(--gold);background:var(--gold-dim);color:var(--text)}
+.answer-btn:hover{border-color:var(--cyan-border);color:var(--text);background:var(--cyan-dim)}
+.answer-btn.selected{border-color:var(--cyan);background:var(--cyan-dim);color:var(--text)}
 .nav-row{display:flex;gap:10px}
 .btn-back{flex:1;padding:12px;background:transparent;border:.5px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
 .btn-back:hover{border-color:var(--text3);color:var(--text)}
-.btn-next{flex:2;padding:12px;background:var(--gold);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:opacity .2s}
-.btn-next:hover{opacity:.88}
-.btn-next:disabled{opacity:.35;cursor:not-allowed}
+.btn-next{flex:2;padding:12px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .2s,box-shadow .2s;box-shadow:0 0 20px rgba(0,229,255,.15)}
+.btn-next:hover{opacity:.88;box-shadow:0 0 32px rgba(0,229,255,.28)}
+.btn-next:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 .result-animal{text-align:center;margin-bottom:32px}
 .result-emoji{font-size:52px;margin-bottom:12px;display:block;animation:popIn .6s cubic-bezier(.175,.885,.32,1.275)}
 .result-name{font-family:'Libre Baskerville',serif;font-size:26px;font-weight:400;color:var(--text);margin-bottom:6px;letter-spacing:.04em}
-.result-role{font-size:13px;font-style:italic;color:var(--gold);margin-bottom:20px}
+.result-role{font-size:13px;font-style:italic;color:var(--cyan);margin-bottom:20px;opacity:.85}
 .result-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
 .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.tag{padding:5px 14px;border:.5px solid var(--gold-border);border-radius:20px;font-size:12px;color:var(--gold);letter-spacing:.06em}
+.tag{padding:5px 14px;border:.5px solid var(--cyan-border);border-radius:20px;font-size:12px;color:var(--cyan);letter-spacing:.06em;opacity:.85}
 .divider{height:.5px;background:var(--border2);margin-bottom:24px}
 .cards-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
 .info-card{background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;padding:18px 16px}
-.info-icon{font-size:22px;margin-bottom:8px;display:block}
+.info-icon{font-size:22px;margin-bottom:8px;display:block;color:var(--cyan)}
 .info-type{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
 .info-name{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:6px}
 .info-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
-.info-link{font-size:12px;color:var(--gold);font-style:italic;line-height:1.4}
+.info-link{font-size:12px;color:var(--cyan);font-style:italic;line-height:1.4;opacity:.8}
 .btn-restart{width:100%;padding:13px;background:transparent;border:.5px solid var(--border2);border-radius:var(--r);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.04em}
 .btn-restart:hover{border-color:var(--text3);color:var(--text)}
-.btn-neon{width:100%;padding:14px;background:var(--neon);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:opacity .2s;margin-bottom:10px;font-family:'Inter',sans-serif}
-.btn-neon:hover{opacity:.88}
-.btn-neon:disabled{opacity:.35;cursor:not-allowed}
+.btn-neon{width:100%;padding:14px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,box-shadow .2s;margin-bottom:10px;font-family:'Inter',sans-serif;box-shadow:0 0 28px rgba(0,229,255,.2)}
+.btn-neon:hover{opacity:.88;box-shadow:0 0 44px rgba(0,229,255,.38)}
+.btn-neon:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 .tableau-header{text-align:center;margin-bottom:16px}
 .tableau-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:400;color:var(--text);margin-bottom:5px}
-.tableau-meta{font-size:12px;color:var(--text3);letter-spacing:.06em}
-.tableau-frame{background:#000;border:.5px solid #1e1e1e;border-radius:10px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,178,.07),0 0 0 1px rgba(0,255,178,.04);margin-bottom:14px}
+.tableau-meta{font-size:12px;color:var(--cyan);letter-spacing:.06em;opacity:.75}
+.tableau-frame{background:#000;border:.5px solid #1e1e1e;border-radius:10px;overflow:hidden;box-shadow:0 0 60px rgba(0,229,255,.1),0 0 0 1px rgba(0,229,255,.06);margin-bottom:14px}
 .tableau-frame img{width:100%;display:block;animation:fadeIn .6s ease}
 .loading-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:64px 24px;color:var(--text2);font-size:12px;letter-spacing:.1em}
-.spinner{width:28px;height:28px;border:1.5px solid var(--border2);border-top-color:var(--neon);border-radius:50%;animation:spin .9s linear infinite}
+.spinner{width:28px;height:28px;border:1.5px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin .9s linear infinite}
 .error-msg{font-size:13px;color:var(--text2);text-align:center;padding:32px 0 24px}
 
 /* ── FOOTER ── */
@@ -222,6 +237,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .histoire-visual{aspect-ratio:16/9}
   .process-grid{grid-template-columns:1fr}
   .galerie-grid{grid-template-columns:repeat(2,1fr)}
+  .animaux-grid{grid-template-columns:repeat(3,1fr)}
   .temoignages-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr 1fr;padding:0 24px}
   .footer-bottom{padding:20px 24px 0}
@@ -231,6 +247,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .nav-burger{display:flex}
   .section{padding:72px 0}
   .galerie-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .animaux-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .cards-row{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;gap:8px;text-align:center}
@@ -242,7 +259,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-logo" href="#top">DAÖ</a>
+    <a class="nav-logo" href="#top"><img src="images/Logo.png" alt="DAÖ"></a>
     <ul class="nav-links">
       <li><a href="#histoire">Notre Histoire</a></li>
       <li><a href="#process">Comment ça marche</a></li>
@@ -265,7 +282,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 <section class="hero" id="top">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
-    <div class="hero-badge fade-up">✦ Artisanat Lyonnais</div>
+    <div class="hero-badge fade-up">✦ Artisanat en Haute-Savoie</div>
     <h1 class="hero-title fade-up d1">Ton univers,<br><em>gravé dans la lumière</em></h1>
     <p class="hero-sub fade-up d2">Des tableaux uniques en époxy phosphorescent, créés à partir de ton identité profonde — animal totem, signe astrologique, chiffre de vie.</p>
     <a href="#questionnaire" class="hero-cta fade-up d3">
@@ -282,16 +299,15 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="histoire-grid">
       <div class="fade-up">
         <div class="section-badge">Notre Histoire</div>
-        <h2 class="section-title">Né à Lyon, entre les étoiles et la résine</h2>
-        <p>Joe et sa fiancée sont artisans lyonnais. Ensemble, ils ont créé <strong>Daö</strong> — un mot thaï qui signifie <strong>"étoiles"</strong> — pour transformer l'identité profonde des gens en œuvres d'art uniques.</p>
-        <p>Chaque tableau est <strong>fabriqué à la main</strong> dans leur atelier. Des formes en 3D imprimées sont soigneusement remplies d'époxy phosphorescent : elles brillent dans l'obscurité d'une lumière douce et mystérieuse, comme des étoiles figées dans la résine.</p>
-        <p>Daö n'est pas un simple objet décoratif. C'est un <strong>miroir de qui tu es</strong> — ton animal totem, ton signe, ton chiffre, ton lieu de naissance — gravés pour toujours dans la matière.</p>
+        <h2 class="section-title">Né d'un rêve, entre deux étoiles</h2>
+        <p><strong>DAÖ est né fin 2025</strong> dans un appartement de Haute-Savoie, entre deux rêves et un CDI à quitter.</p>
+        <p>Joe est thaïlandais. Alyz est passionnée par les astres. <strong>DAÖ — étoile en thaïlandais</strong> — c'était une évidence. Un nom qui nous ressemble, comme nos tableaux qui brillent dans le noir.</p>
+        <p>On a tout remis en question. La direction artistique. Le produit. Le prix. On s'est perdus, on s'est retrouvés. Mais jamais on n'a pensé à abandonner. Parce qu'on se le dit tous les jours — <strong>on n'a jamais rien perdu. On a juste appris.</strong></p>
+        <p>Chaque tableau qu'on fabrique à la main est un pas de plus vers la liberté.</p>
+        <p><strong>DAÖ c'est notre histoire.</strong> Et bientôt — peut-être la tienne aussi.</p>
       </div>
       <div class="histoire-visual fade-up d2">
-        <div class="histoire-visual-inner">
-          <span class="big-letter">DAÖ</span>
-          <div class="sub">Atelier · Lyon · France</div>
-        </div>
+        <img src="images/nous.jpeg" alt="Joe et Alyz — fondateurs de DAÖ">
         <div class="histoire-visual-bottom"></div>
       </div>
     </div>
@@ -329,6 +345,9 @@ section[id]{scroll-margin-top:var(--nav-h)}
         <div class="process-card-line"></div>
       </div>
     </div>
+    <div class="process-ambient fade-up d2">
+      <img src="images/behidthescene2.jpeg" alt="Atelier DAÖ — fabrication">
+    </div>
   </div>
 </section>
 
@@ -340,12 +359,97 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <h2 class="section-title">Chaque tableau raconte une histoire</h2>
     </div>
     <div class="galerie-grid">
-      <div class="galerie-item fade-up d1"><div class="galerie-emoji">🐺</div><div class="galerie-animal">Le Loup</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d2"><div class="galerie-emoji">🦅</div><div class="galerie-animal">L'Aigle</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d3"><div class="galerie-emoji">🦊</div><div class="galerie-animal">Le Renard</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d1"><div class="galerie-emoji">🐻</div><div class="galerie-animal">L'Ours</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d2"><div class="galerie-emoji">🦌</div><div class="galerie-animal">Le Cerf</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d3"><div class="galerie-emoji">🐦</div><div class="galerie-animal">Le Corbeau</div><div class="galerie-label">Tableau époxy · 30×40</div><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d1"><img src="images/tableaux.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d2"><img src="images/tableaux2.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d3"><img src="images/tableaux3.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d1"><img src="images/tableaux4.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d2"><img src="images/tableaux5.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d3"><img src="images/behindthescene.jpeg" alt="Atelier DAÖ"><div class="galerie-glow"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ANIMAUX CELTIQUES -->
+<section class="section" id="animaux">
+  <div class="container">
+    <div class="animaux-header fade-up">
+      <div class="section-badge">Les 12 Animaux Celtiques</div>
+      <h2 class="section-title">Quel est ton animal totem ?</h2>
+      <p class="section-sub" style="margin:0 auto">Douze gardiens, douze forces. Chaque animal porte une énergie unique — la tienne t'attend.</p>
+    </div>
+    <div class="animaux-grid">
+      <div class="animal-card fade-up d1">
+        <span class="animal-card-emoji">🐴</span>
+        <div class="animal-card-name">Le Cheval</div>
+        <div class="animal-card-role">Gardien de la liberté</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d2">
+        <span class="animal-card-emoji">🦌</span>
+        <div class="animal-card-name">Le Cerf</div>
+        <div class="animal-card-role">Gardien de la noblesse intérieure</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d3">
+        <span class="animal-card-emoji">🐗</span>
+        <div class="animal-card-name">Le Sanglier</div>
+        <div class="animal-card-role">Gardien du courage brut</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d4">
+        <span class="animal-card-emoji">🐺</span>
+        <div class="animal-card-name">Le Loup</div>
+        <div class="animal-card-role">Esprit de la meute et de l'instinct</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d1">
+        <span class="animal-card-emoji">🐻</span>
+        <div class="animal-card-name">L'Ours</div>
+        <div class="animal-card-role">Pilier de force tranquille</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d2">
+        <span class="animal-card-emoji">🦅</span>
+        <div class="animal-card-name">L'Aigle</div>
+        <div class="animal-card-role">Visionnaire du panthéon celtique</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d3">
+        <span class="animal-card-emoji">🐍</span>
+        <div class="animal-card-name">Le Serpent</div>
+        <div class="animal-card-role">Maître de la transformation</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d4">
+        <span class="animal-card-emoji">🦢</span>
+        <div class="animal-card-name">Le Cygne</div>
+        <div class="animal-card-role">Gardien de la grâce et de l'idéal</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d1">
+        <span class="animal-card-emoji">🐱</span>
+        <div class="animal-card-name">Le Chat sauvage</div>
+        <div class="animal-card-role">Sentinelle à l'instinct acéré</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d2">
+        <span class="animal-card-emoji">🐂</span>
+        <div class="animal-card-name">Le Taureau</div>
+        <div class="animal-card-role">Combattant des temps celtiques</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d3">
+        <span class="animal-card-emoji">🐦‍⬛</span>
+        <div class="animal-card-name">Le Corbeau</div>
+        <div class="animal-card-role">Animal de Lug, maître du jeu</div>
+        <div class="animal-card-line"></div>
+      </div>
+      <div class="animal-card fade-up d4">
+        <span class="animal-card-emoji">🦊</span>
+        <div class="animal-card-name">Le Renard</div>
+        <div class="animal-card-role">Esprit de la vivacité et de l'élan</div>
+        <div class="animal-card-line"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -405,7 +509,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   <div class="footer-grid">
     <div class="footer-col">
       <div class="footer-logo">DAÖ</div>
-      <div class="footer-tagline">Fait avec ✦ à Lyon</div>
+      <div class="footer-tagline">Fait avec ✦ en Haute-Savoie</div>
     </div>
     <div class="footer-col">
       <h4>Navigation</h4>
@@ -430,7 +534,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   </div>
   <div class="footer-bottom">
     <span>© 2025 Daö — Tous droits réservés</span>
-    <span>Lyon, France ✦ Fait à la main</span>
+    <span>Haute-Savoie, France ✦ Fait à la main</span>
   </div>
 </footer>
 
