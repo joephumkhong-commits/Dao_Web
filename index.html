@@ -271,6 +271,21 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .nav-inner{padding:0 16px}
   .section{padding:48px 0}
 }
+/* ── COMMANDER ── */
+.btn-commander{display:block;width:100%;padding:18px 24px;background:var(--cyan);color:#0A0A0A;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:.06em;border:none;border-radius:var(--r);cursor:pointer;transition:opacity .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,229,255,.35);margin-bottom:12px}
+.btn-commander:hover{opacity:.88;box-shadow:0 0 60px rgba(0,229,255,.5)}
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-box{position:relative;background:#111;border:.5px solid var(--cyan-border);border-radius:var(--rl);padding:40px 36px;max-width:480px;width:100%;box-shadow:0 0 80px rgba(0,229,255,.15);animation:fadeIn .3s ease}
+.modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1;transition:color .2s}
+.modal-close:hover{color:var(--text)}
+.modal-title{font-family:'Libre Baskerville',serif;font-size:22px;color:var(--text);margin-bottom:6px;letter-spacing:.03em}
+.modal-price{font-size:34px;font-weight:700;color:var(--cyan);margin-bottom:22px}
+.modal-recap{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:18px;font-size:13px;color:var(--text2);line-height:2}
+.modal-recap strong{color:var(--text)}
+.modal-info{font-size:13px;color:var(--text3);line-height:1.65;margin-bottom:28px;font-style:italic}
+.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 24px;background:#25D366;color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;border:none;border-radius:var(--r);cursor:pointer;transition:opacity .2s;text-decoration:none}
+.btn-whatsapp:hover{opacity:.88}
+@media(max-width:600px){.modal-box{padding:28px 20px}}
 </style>
 </head>
 <body>
@@ -682,7 +697,7 @@ function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult;
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${r.animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö ${r.winner}"></div><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${r.animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö ${r.winner}"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function attachEvents(){
@@ -725,10 +740,31 @@ function attachEvents(){
     });
   }
   if(state.screen==='image'){
-    const btnRetry=document.getElementById('btn-retry'),btnRestart=document.getElementById('btn-restart');
+    const btnRetry=document.getElementById('btn-retry'),btnRestart=document.getElementById('btn-restart'),btnCommander=document.getElementById('btn-commander');
     if(btnRetry)btnRetry.addEventListener('click',()=>{state.screen='lieu';state.tableau={loading:false,image:null,error:null};render();});
     if(btnRestart)btnRestart.addEventListener('click',()=>{state=freshState();render();});
+    if(btnCommander)btnCommander.addEventListener('click',openCommanderModal);
   }
+}
+
+function openCommanderModal(){
+  const r=state.quizResult;
+  const animal=r.animal.name,signe=r.sign.name,chiffre=String(r.life),lieu=state.lieu;
+  const _n=atob('NDE3ODMwMDY3OTY=');
+  const msg=`Bonjour, je souhaite commander mon tableau Daö 🎨\nAnimal : ${animal} | Signe : ${signe} | Chiffre : ${chiffre} | Lieu : ${lieu}\nPrix : 180€`;
+  const waUrl=`https://wa.me/${_n}?text=${encodeURIComponent(msg)}`;
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay';
+  overlay.id='modal-commander';
+  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('modal-close').addEventListener('click',closeCommanderModal);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeCommanderModal();});
+}
+
+function closeCommanderModal(){
+  const m=document.getElementById('modal-commander');
+  if(m)m.remove();
 }
 
 render();
