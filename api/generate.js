@@ -25,19 +25,21 @@ module.exports = async (req, res) => {
   }
 
   const prompt =
-    `Fine art premium wall art, portrait format 3:4, deep matte black background, ` +
-    `full bleed black, no white space, no frame visible inside.\n` +
-    `Centered ultra-realistic intaglio engraving portrait of a ${animal}, ` +
-    `black and white only, dramatic chiaroscuro lighting, ` +
-    `extreme detail in fur/feathers/scales.\n` +
-    `On the forehead of the animal: the astrological symbol ${signe || ''} ` +
-    `glowing phosphorescent cyan #00E5FF, neon light effect, sharp and luminous.\n` +
-    `Below the animal face, centered: the number ${chiffre || ''} ` +
-    `large, glowing phosphorescent cyan #00E5FF, neon effect.\n` +
-    `At the very bottom edge: the text "${lieu || ''}" in tiny discreet ` +
-    `monospace typography, subtle cyan color, very low opacity.\n` +
-    `Overall mood: mystical, luxury, museum-quality dark artwork.\n` +
-    `No white background. No realistic photo style. Engraving art style only.`;
+    `Premium luxury wall art in a thick black frame, portrait format 3:4.\n` +
+    `Deep matte black background inside the frame.\n` +
+    `A hyper-realistic 3D sculpture of a ${animal} head, ` +
+    `appearing to emerge from the black background in relief, ` +
+    `like a trophy mount or epoxy resin 3D art piece.\n` +
+    `The sculpture is black and dark grey, highly detailed, ` +
+    `with dramatic studio lighting creating strong depth and shadows.\n` +
+    `On the forehead of the ${animal}: the astrological symbol ${signe || ''} ` +
+    `glowing phosphorescent cyan #00E5FF, neon effect, sharp and luminous.\n` +
+    `Below the animal face, centered in the lower third: ` +
+    `the number ${chiffre || ''} large, glowing phosphorescent cyan #00E5FF, neon effect.\n` +
+    `At the very bottom: the text "${lieu || ''}" in tiny monospace typography, ` +
+    `subtle cyan, very low opacity.\n` +
+    `The thick black frame has a subtle glossy reflection.\n` +
+    `Overall: mystical, luxury, 3D epoxy resin art, museum-quality.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
