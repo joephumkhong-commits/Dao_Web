@@ -25,16 +25,19 @@ module.exports = async (req, res) => {
   }
 
   const prompt =
-    `Fine art premium tableau, deep matte black background, no border. ` +
+    `Fine art premium wall art, portrait format 3:4, deep matte black background, ` +
+    `full bleed black, no white space, no frame visible inside.\n` +
     `Centered ultra-realistic intaglio engraving portrait of a ${animal}, ` +
-    `black and white, extreme detail in fur/feathers/scales, dramatic chiaroscuro lighting. ` +
-    `On the forehead of the animal: the number ${chiffre || ''} glowing phosphorescent green #00FFB2, ` +
-    `luminous and sharp, integrated naturally into the animal's markings. ` +
-    `Bottom quarter of image: ${signe || ''} astrological symbol rendered as a constellation ` +
-    `of phosphorescent green #00FFB2 dots connected by fine luminous lines, floating subtly. ` +
-    `Bottom edge: the text "${lieu || ''}" in small discreet monospace typography, ` +
-    `color #00FFB2 at low opacity, right-aligned. ` +
-    `Overall mood: mystical, high-end, museum-quality. No frame, no white space, full bleed black.`;
+    `black and white only, dramatic chiaroscuro lighting, ` +
+    `extreme detail in fur/feathers/scales.\n` +
+    `On the forehead of the animal: the astrological symbol ${signe || ''} ` +
+    `glowing phosphorescent cyan #00E5FF, neon light effect, sharp and luminous.\n` +
+    `Below the animal face, centered: the number ${chiffre || ''} ` +
+    `large, glowing phosphorescent cyan #00E5FF, neon effect.\n` +
+    `At the very bottom edge: the text "${lieu || ''}" in tiny discreet ` +
+    `monospace typography, subtle cyan color, very low opacity.\n` +
+    `Overall mood: mystical, luxury, museum-quality dark artwork.\n` +
+    `No white background. No realistic photo style. Engraving art style only.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
