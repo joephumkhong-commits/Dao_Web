@@ -1,13 +1,32 @@
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://mydao.fr',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
+
+const RATE_LIMIT = 3;
+const RATE_WINDOW = 60 * 1000;
+const ipMap = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const times = (ipMap.get(ip) || []).filter(t => now - t < RATE_WINDOW);
+  if (times.length >= RATE_LIMIT) return true;
+  ipMap.set(ip, [...times, now]);
+  return false;
+}
 
 module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, CORS_HEADERS);
     res.end();
+    return;
+  }
+
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  if (isRateLimited(ip)) {
+    res.writeHead(429, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Trop de requêtes. Attends une minute avant de réessayer.' }));
     return;
   }
 
@@ -17,12 +36,15 @@ module.exports = async (req, res) => {
     return;
   }
 
+  const VALID_ANIMALS = ['cheval','cerf','sanglier','loup','ours','aigle','serpent','cygne','chat','taureau','corbeau','renard'];
   const { animal, chiffre, signe, lieu } = req.body || {};
-  if (!animal) {
+  if (!animal || !VALID_ANIMALS.includes(animal)) {
     res.writeHead(400, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Missing "animal" field' }));
+    res.end(JSON.stringify({ error: 'Paramètre invalide.' }));
     return;
   }
+
+  const safeLieu = (lieu || '').slice(0, 80).replace(/["\\\n\r]/g, '');
 
   const prompt =
     `Premium luxury wall art in a thick black frame, portrait format 3:4.\n` +
@@ -36,7 +58,7 @@ module.exports = async (req, res) => {
     `glowing phosphorescent cyan #00E5FF, neon effect, sharp and luminous.\n` +
     `Below the animal face, centered in the lower third: ` +
     `the number ${chiffre || ''} large, glowing phosphorescent cyan #00E5FF, neon effect.\n` +
-    `At the very bottom: the text "${lieu || ''}" in tiny monospace typography, ` +
+    `At the very bottom: the text "${safeLieu}" in tiny monospace typography, ` +
     `subtle cyan, very low opacity.\n` +
     `The thick black frame has a subtle glossy reflection.\n` +
     `Overall: mystical, luxury, 3D epoxy resin art, museum-quality.`;
@@ -63,9 +85,8 @@ module.exports = async (req, res) => {
     });
 
     if (!geminiRes.ok) {
-      const errText = await geminiRes.text();
       res.writeHead(502, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: `Gemini error: ${errText}` }));
+      res.end(JSON.stringify({ error: 'La génération a échoué. Réessaie dans un instant.' }));
       return;
     }
 
@@ -85,6 +106,6 @@ module.exports = async (req, res) => {
     res.end(JSON.stringify({ image: `data:${mimeType};base64,${b64}` }));
   } catch (err) {
     res.writeHead(500, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: err.message }));
+    res.end(JSON.stringify({ error: 'Erreur serveur inattendue. Réessaie.' }));
   }
 };

@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0A0A0A">
 <title>DAÖ — Tableaux totem en époxy phosphorescent</title>
 <link rel="icon" href="images/favicon.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
@@ -233,9 +236,11 @@ section[id]{scroll-margin-top:var(--nav-h)}
 @media(max-width:900px){
   .container{padding:0 24px}
   .nav-inner{padding:0 24px}
+  .section{padding:80px 0}
   .histoire-grid{grid-template-columns:1fr;gap:40px}
   .histoire-visual{aspect-ratio:16/9}
   .process-grid{grid-template-columns:1fr}
+  .process-card{padding:32px 24px}
   .galerie-grid{grid-template-columns:repeat(2,1fr)}
   .animaux-grid{grid-template-columns:repeat(3,1fr)}
   .temoignages-grid{grid-template-columns:1fr}
@@ -245,12 +250,26 @@ section[id]{scroll-margin-top:var(--nav-h)}
 @media(max-width:600px){
   .nav-links{display:none}
   .nav-burger{display:flex}
-  .section{padding:72px 0}
+  .section{padding:60px 0}
+  .histoire-visual{aspect-ratio:4/3}
   .galerie-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .animaux-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .cards-row{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .card{padding:20px}
+  .date-input{font-size:16px}
+  .process-card{padding:24px 16px}
+  .result-emoji{font-size:40px}
+  .result-name{font-size:22px}
+  .temoignage-card{padding:24px 18px}
+}
+@media(max-width:400px){
+  .hero-title{font-size:2rem}
+  .section-title{font-size:1.6rem}
+  .container{padding:0 16px}
+  .nav-inner{padding:0 16px}
+  .section{padding:48px 0}
 }
 </style>
 </head>
@@ -300,7 +319,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 <section class="section" id="histoire">
   <div class="container">
     <div class="histoire-grid">
-      <div class="fade-up">
+      <div class="fade-up histoire-text">
         <div class="section-badge">Notre Histoire</div>
         <h2 class="section-title">Né d'un rêve, entre deux étoiles</h2>
         <p><strong>DAÖ est né fin 2025</strong> dans un appartement de Haute-Savoie, entre deux rêves et un CDI à quitter.</p>
@@ -310,7 +329,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
         <p><strong>DAÖ c'est notre histoire.</strong> Et bientôt — peut-être la tienne aussi.</p>
       </div>
       <div class="histoire-visual fade-up d2">
-        <img src="images/joealyz.jpeg" alt="Joe et Alyz — fondateurs de DAÖ">
+        <img src="images/joealyz.jpeg" alt="Joe et Alyz — fondateurs de DAÖ" loading="lazy">
         <div class="histoire-visual-bottom"></div>
       </div>
     </div>
@@ -349,7 +368,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
       </div>
     </div>
     <div class="process-ambient fade-up d2">
-      <video autoplay muted loop playsinline style="width:100%; max-height:400px; object-fit:cover; object-position:center; border-radius:12px">
+      <video autoplay muted loop playsinline preload="none" style="width:100%; max-height:400px; object-fit:cover; object-position:center; border-radius:12px">
         <source src="images/production.mp4" type="video/mp4">
       </video>
     </div>
@@ -364,12 +383,12 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <h2 class="section-title">Chaque tableau raconte une histoire</h2>
     </div>
     <div class="galerie-grid">
-      <div class="galerie-item fade-up d1"><img src="images/tableaux.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d2"><img src="images/tableaux2.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d3"><img src="images/tableaux3.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d1"><img src="images/tableaux4.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d2"><img src="images/tableaux5.jpeg" alt="Tableau DAÖ"><div class="galerie-glow"></div></div>
-      <div class="galerie-item fade-up d3"><img src="images/behindthescene.jpeg" alt="Atelier DAÖ"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d1"><img src="images/tableaux.jpeg" alt="Tableau DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d2"><img src="images/tableaux2.jpeg" alt="Tableau DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d3"><img src="images/tableaux3.jpeg" alt="Tableau DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d1"><img src="images/tableaux4.jpeg" alt="Tableau DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d2"><img src="images/tableaux5.jpeg" alt="Tableau DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
+      <div class="galerie-item fade-up d3"><img src="images/behindthescene.jpeg" alt="Atelier DAÖ" loading="lazy"><div class="galerie-glow"></div></div>
     </div>
   </div>
 </section>
@@ -559,6 +578,8 @@ section[id]{scroll-margin-top:var(--nav-h)}
   }
   for(let i=0;i<65;i++)pts.push(new Pt());
   function draw(){
+    requestAnimationFrame(draw);
+    if(document.hidden)return;
     ctx.clearRect(0,0,W,H);
     pts.forEach(p=>{
       p.x+=p.vx;p.y+=p.vy;
@@ -568,7 +589,6 @@ section[id]{scroll-margin-top:var(--nav-h)}
       ctx.fillStyle='#00E5FF';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
       ctx.restore();
     });
-    requestAnimationFrame(draw);
   }
   resize();draw();
   window.addEventListener('resize',resize);
@@ -696,7 +716,7 @@ function attachEvents(){
       if(!state.lieu)return;
       state.screen='image';state.tableau={loading:true,image:null,error:null};render();
       try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu})});
+        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
         const data=await res.json();
         state.tableau.loading=false;
         if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
