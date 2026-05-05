@@ -762,7 +762,7 @@ function resultScreen(){
 }
 
 function emailScreen(){return`<div class="date-label">Presque là</div><div class="date-title">Entre ton adresse email</div><div class="date-sub">Pour recevoir ton tableau et être informé des prochaines créations Daö.</div><input type="email" class="date-input" id="email-input" value="${state.email}" placeholder="ton@email.com"><button class="btn-start" id="btn-email-next" ${state.email?'':'disabled'}>Continuer →</button>`;}
-function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ta ville ou lieu de naissance</div><div class="date-sub">Elle figurera discrètement sur ton tableau — une coordonnée ancrée dans ta naissance.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : Paris, ou 48.8566, 2.3522"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
+function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date… qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
 
 function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
