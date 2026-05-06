@@ -7,7 +7,7 @@ const CORS_HEADERS = {
 };
 
 const SHEET_ID = '1-Y37eX_WI19AUWxF08Je9V0Y0q1DvKFkAdiUBu0G03c';
-const RANGE = 'Sheet1!A:G';
+const RANGE = 'A:G';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 function b64url(data) {
