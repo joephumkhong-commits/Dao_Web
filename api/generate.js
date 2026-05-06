@@ -1,3 +1,8 @@
+
+  const fond = req.body.fond || 'noir';
+  const style = req.body.style || 'realiste';
+  const isBlanc = fond === 'blanc';
+  const isLowPoly = style === 'lowpoly';
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://mydao.fr',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -48,8 +53,8 @@ module.exports = async (req, res) => {
 
   const prompt =
     `Premium luxury wall art in a thick black frame, portrait format 3:4.\n` +
-    `Deep matte black background inside the frame.\n` +
-    `A hyper-realistic 3D sculpture of a ${animal} head, ` +
+    (isBlanc ? `Pure white matte background inside the frame.\n` : `Deep matte black background inside the frame.\n`) +
+    (isLowPoly ? `A geometric low-poly 3D sculpture of a ${animal} head, angular facets, minimal abstract style, matte black material.\n` : `A hyper-realistic 3D sculpture of a ${animal} head, `) +
     `appearing to emerge from the black background in relief, ` +
     `like a trophy mount or epoxy resin 3D art piece.\n` +
     `The sculpture is black and dark grey, highly detailed, ` +

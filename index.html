@@ -864,7 +864,7 @@ function attachEvents(){
       if(!state.lieu)return;
       state.screen='image';state.tableau={loading:true,image:null,error:null};render();
       try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
+        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu,fond:state.design,style:state.style,slice(0,80)})});
         const data=await res.json();
         state.tableau.loading=false;
         if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
