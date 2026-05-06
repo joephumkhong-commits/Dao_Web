@@ -1,8 +1,3 @@
-
-  const fond = req.body.fond || 'noir';
-  const style = req.body.style || 'realiste';
-  const isBlanc = fond === 'blanc';
-  const isLowPoly = style === 'lowpoly';
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://mydao.fr',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -49,6 +44,10 @@ module.exports = async (req, res) => {
     return;
   }
 
+  const fond = req.body.fond || 'noir';
+  const style = req.body.style || 'realiste';
+  const isBlanc = fond === 'blanc';
+  const isLowPoly = style === 'lowpoly';
   const safeLieu = (lieu || '').slice(0, 80).replace(/["\\\n\r]/g, '');
 
   const prompt =
