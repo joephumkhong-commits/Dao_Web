@@ -786,7 +786,18 @@ function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner];
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><div style="display:flex;gap:12px;justify-content:center;margin:16px 0">
+  <div id="design-noir" style="cursor:pointer;border:2px solid ${state.design==='noir'?'var(--cyan)':'rgba(255,255,255,.15)'};border-radius:10px;overflow:hidden;transition:border .2s;width:110px">
+    <img src="images/dao-loup-7-gemeaux-noir.png" alt="Fond noir" style="width:100%;display:block">
+    <div style="text-align:center;padding:6px;font-size:11px;color:var(--text2)">Fond noir</div>
+  </div>
+  <div id="design-blanc" style="cursor:pointer;border:2px solid ${state.design==='blanc'?'var(--cyan)':'rgba(255,255,255,.15)'};border-radius:10px;overflow:hidden;transition:border .2s;width:110px">
+    <img src="images/dao-cerf-13-capricorne-blanc.png" alt="Fond blanc" style="width:100%;display:block">
+    <div style="text-align:center;padding:6px;font-size:11px;color:var(--text2)">Fond blanc</div>
+  </div>
+</div>
+<p style="font-size:11px;color:var(--text3);font-style:italic;margin:0 0 16px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
+<button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function animateAxes(){
