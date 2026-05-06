@@ -885,7 +885,7 @@ function advanceAfterAnswer(idx,delay){
         const el=document.getElementById('rd'+dot);
         if(el)el.classList.add('on');
         dot++;
-        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);sendLead();},800);}
+        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
       },600);
     }else{state.qIndex++;render();}
   },delay);
@@ -998,7 +998,7 @@ function attachEvents(){
     const btnRetry=document.getElementById('btn-retry'),btnRestart=document.getElementById('btn-restart'),btnCommander=document.getElementById('btn-commander');
     if(btnRetry)btnRetry.addEventListener('click',()=>{state.screen='lieu';state.tableau={loading:false,image:null,error:null};render();});
     if(btnRestart)btnRestart.addEventListener('click',()=>{state=freshState();render();});
-    if(btnCommander)btnCommander.addEventListener('click',openCommanderModal);
+    if(btnCommander)btnCommander.addEventListener('click',()=>{sendLead();openCommanderModal();});
   }
 }
 
