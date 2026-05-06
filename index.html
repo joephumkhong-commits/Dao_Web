@@ -713,7 +713,7 @@ function getAnimal(answers){
   return best;
 }
 
-function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',design:'',tableau:{loading:false,image:null,error:null}};}
+function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',tableau:{loading:false,image:null,error:null}};}
 let state=freshState();
 
 function render(){
@@ -764,40 +764,11 @@ function resultScreen(){
 function emailScreen(){return`<div class="date-label">Presque là</div><div class="date-title">Entre ton adresse email</div><div class="date-sub">Pour recevoir ton tableau et être informé des prochaines créations Daö.</div><input type="email" class="date-input" id="email-input" value="${state.email}" placeholder="ton@email.com"><button class="btn-start" id="btn-email-next" ${state.email?'':'disabled'}>Continuer →</button>`;}
 function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date… qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
 
-function designScreen(){
-  return `<div class="date-label">Ton tableau Daö</div>
-  <div class="date-title">Choisis ton univers</div>
-  <div class="date-sub">Fond noir ou fond blanc — celui qui te ressemble.</div>
-  <div style="display:flex;gap:16px;justify-content:center;margin:24px 0">
-    <div id="design-noir" style="cursor:pointer;border:2px solid ${state.design==='noir'?'var(--cyan)':'var(--border2)'};border-radius:12px;overflow:hidden;transition:border .2s;width:140px">
-      <img src="images/dao-loup-7-gemeaux-noir.png" alt="Fond noir" style="width:100%;display:block">
-      <div style="text-align:center;padding:8px;font-size:12px;color:var(--text2)">Fond noir</div>
-    </div>
-    <div id="design-blanc" style="cursor:pointer;border:2px solid ${state.design==='blanc'?'var(--cyan)':'var(--border2)'};border-radius:12px;overflow:hidden;transition:border .2s;width:140px">
-      <img src="images/dao-cerf-13-capricorne-blanc.png" alt="Fond blanc" style="width:100%;display:block">
-      <div style="text-align:center;padding:8px;font-size:12px;color:var(--text2)">Fond blanc</div>
-    </div>
-  </div>
-  <p style="font-size:11px;color:var(--text3);font-style:italic;margin:16px 0 20px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
-  <button class="btn-neon" id="btn-design" ${state.design?'':'disabled'}>Générer mon tableau Daö ✦</button>`;
-}
-
 function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner];
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><div style="display:flex;gap:12px;justify-content:center;margin:16px 0">
-  <div id="design-noir" style="cursor:pointer;border:2px solid ${state.design==='noir'?'var(--cyan)':'rgba(255,255,255,.15)'};border-radius:10px;overflow:hidden;transition:border .2s;width:110px">
-    <img src="images/dao-loup-7-gemeaux-noir.png" alt="Fond noir" style="width:100%;display:block">
-    <div style="text-align:center;padding:6px;font-size:11px;color:var(--text2)">Fond noir</div>
-  </div>
-  <div id="design-blanc" style="cursor:pointer;border:2px solid ${state.design==='blanc'?'var(--cyan)':'rgba(255,255,255,.15)'};border-radius:10px;overflow:hidden;transition:border .2s;width:110px">
-    <img src="images/dao-cerf-13-capricorne-blanc.png" alt="Fond blanc" style="width:100%;display:block">
-    <div style="text-align:center;padding:6px;font-size:11px;color:var(--text2)">Fond blanc</div>
-  </div>
-</div>
-<p style="font-size:11px;color:var(--text3);font-style:italic;margin:0 0 16px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
-<button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function animateAxes(){
@@ -833,12 +804,6 @@ function attachEvents(){
       },550);
     }));
   }
-  if(state.screen==='image-result'||state.screen==='result'){
-    const dn=document.getElementById('design-noir');
-    const db=document.getElementById('design-blanc');
-    if(dn)dn.addEventListener('click',()=>{state.design='noir';render();});
-    if(db)db.addEventListener('click',()=>{state.design='blanc';render();});
-  }
   if(state.screen==='result'){
     document.getElementById('btn-tableau').addEventListener('click',()=>{state.screen='email';render();});
     document.getElementById('btn-restart').addEventListener('click',()=>{state=freshState();render();});
@@ -849,22 +814,15 @@ function attachEvents(){
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
     btn.addEventListener('click',()=>{if(!state.email)return;state.screen='lieu';render();});
   }
-  if(state.screen==='design'){
-    document.getElementById('design-noir').addEventListener('click',()=>{state.design='noir';render();});
-    document.getElementById('design-blanc').addEventListener('click',()=>{state.design='blanc';render();});
-    const btnD=document.getElementById('btn-design');
-    if(btnD)btnD.addEventListener('click',()=>{if(!state.design)return;state.screen='image';state.tableau={loading:true,image:null,error:null};render();generateImage();});
-  }
   if(state.screen==='lieu'){
     const inp=document.getElementById('lieu-input'),btn=document.getElementById('btn-gen');
     inp.addEventListener('input',()=>{state.lieu=inp.value.trim();btn.disabled=!state.lieu;});
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
-    btn.addEventListener('click',()=>{if(!state.lieu)return;state.screen='design';render();});
     btn.addEventListener('click',async()=>{
       if(!state.lieu)return;
       state.screen='image';state.tableau={loading:true,image:null,error:null};render();
       try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu,fond:state.design,style:state.style,slice(0,80)})});
+        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
         const data=await res.json();
         state.tableau.loading=false;
         if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
@@ -889,7 +847,7 @@ function openCommanderModal(){
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';
   overlay.id='modal-commander';
-  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Message personnel</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
+  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
   document.body.appendChild(overlay);
   document.getElementById('modal-close').addEventListener('click',closeCommanderModal);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeCommanderModal();});
