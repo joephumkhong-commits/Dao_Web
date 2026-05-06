@@ -859,8 +859,12 @@ function sendLead(){
   if(!r)return;
   const answerTexts=Array.from({length:12},(_,i)=>{
     const idx=state.answers[i];
-    return idx!==undefined?MBTI_Q[i].a[idx].t:'';
+    if(idx===undefined||idx===null)return 'Non répondu';
+    const q=MBTI_Q[i];
+    if(!q||!q.a||!q.a[idx])return 'Non répondu';
+    return q.a[idx].t||'';
   });
+  console.log('sendLead data:',{answers:state.answers,answerTexts});
   fetch('/api/sheet',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
