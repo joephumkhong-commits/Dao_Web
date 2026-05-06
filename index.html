@@ -266,6 +266,18 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .gauge-item-text{font-size:13px;color:var(--text2);line-height:1.4;transition:color .15s}
 .gauge-item:hover .gauge-item-text,.gauge-item.drag-hover .gauge-item-text,.gauge-item.selected .gauge-item-text{color:var(--text)}
 
+/* ── DESIGN PICKER ── */
+.design-picker-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.design-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.design-card{background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;overflow:hidden;transition:border-color .2s,box-shadow .2s;padding:0;display:flex;flex-direction:column;width:100%;font-family:inherit}
+.design-card:hover{border-color:var(--cyan-border);box-shadow:0 0 20px rgba(0,229,255,.1)}
+.design-card.selected{border-color:var(--cyan);box-shadow:0 0 26px rgba(0,229,255,.2)}
+.design-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:filter .2s}
+.design-card:hover img{filter:brightness(1.05)}
+.design-card-label{font-size:12px;color:var(--text2);padding:9px 0 10px;text-align:center;letter-spacing:.05em;transition:color .2s}
+.design-card.selected .design-card-label{color:var(--cyan)}
+.result-disclaimer{font-size:12px;font-style:italic;color:var(--text3);line-height:1.65;margin-bottom:16px;text-align:center;padding:0 4px}
+
 /* ── FOOTER ── */
 .footer{background:var(--bg2);border-top:.5px solid var(--border);padding:56px 0 28px}
 .footer-grid{max-width:1180px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px}
@@ -744,7 +756,7 @@ function getAnimal(answers){
   return best;
 }
 
-function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',tableau:{loading:false,image:null,error:null}};}
+function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',design:'noir',tableau:{loading:false,image:null,error:null}};}
 let state=freshState();
 
 function render(){
@@ -819,6 +831,12 @@ function resultScreen(){
 <div class="result-axes">${axes.map(a=>`<div class="result-axis-row"><div class="result-axis-top"><span class="result-axis-label">${a.label}</span><span class="result-axis-side">${a.s>=2?a.pos:a.neg} · ${a.s}/3</span></div><div class="result-axis-bar"><div class="result-axis-fill ${a.cls}" style="width:0%" data-target="${Math.round(a.s/3*100)}"></div></div></div>`).join('')}</div>
 <div class="divider"></div>
 <div class="cards-row"><div class="info-card"><span class="info-icon">${r.sign.symbol}</span><div class="info-type">Signe astrologique</div><div class="info-name">${r.sign.name}</div><div class="info-desc">${SIGN_DESC[r.sign.name]||''}</div></div><div class="info-card"><span class="info-icon">✦</span><div class="info-type">Chiffre de vie</div><div class="info-name">${r.life}</div><div class="info-desc">${LIFE_DESC[r.life]||''}</div></div></div>
+<div class="design-picker-title">Choisis ton fond</div>
+<div class="design-picker">
+  <button class="design-card${state.design==='noir'?' selected':''}" data-design="noir"><img src="images/dao-loup-7-gemeaux-noir.png" alt="Fond noir" loading="lazy"><div class="design-card-label">Fond noir</div></button>
+  <button class="design-card${state.design==='blanc'?' selected':''}" data-design="blanc"><img src="images/dao-cerf-13-capricorne-blanc.png" alt="Fond blanc" loading="lazy"><div class="design-card-label">Fond blanc</div></button>
+</div>
+<p class="result-disclaimer">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
 <button class="btn-neon" id="btn-tableau">Générer mon tableau →</button><button class="btn-restart" id="btn-restart">Recommencer</button>`;
 }
 
@@ -930,6 +948,9 @@ function attachEvents(){
     }
   }
   if(state.screen==='result'){
+    document.querySelectorAll('.design-card').forEach(btn=>{
+      btn.addEventListener('click',()=>{state.design=btn.dataset.design;render();setTimeout(animateAxes,60);});
+    });
     document.getElementById('btn-tableau').addEventListener('click',()=>{state.screen='email';render();});
     document.getElementById('btn-restart').addEventListener('click',()=>{state=freshState();render();});
   }
@@ -947,7 +968,7 @@ function attachEvents(){
       if(!state.lieu)return;
       state.screen='image';state.tableau={loading:true,image:null,error:null};render();
       try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
+        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'})});
         const data=await res.json();
         state.tableau.loading=false;
         if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
