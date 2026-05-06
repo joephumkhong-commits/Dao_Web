@@ -7,7 +7,7 @@ const CORS_HEADERS = {
 };
 
 const SHEET_ID = '1-Y37eX_WI19AUWxF08Je9V0Y0q1DvKFkAdiUBu0G03c';
-const RANGE = 'A:G';
+const RANGE = 'A:S';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 function b64url(data) {
@@ -88,7 +88,7 @@ module.exports = async (req, res) => {
 
   try {
     const creds = JSON.parse(credsRaw);
-    const { date, animal, signe, chiffre, message, email, fond } = req.body || {};
+    const { date, animal, signe, chiffre, message, email, fond, answers } = req.body || {};
 
     const token = await getAccessToken(creds.private_key, creds.client_email);
 
@@ -109,6 +109,7 @@ module.exports = async (req, res) => {
           message || '',
           email || '',
           fond || '',
+          ...Array.from({length:12}, (_,i) => (answers && answers[i]) ? answers[i] : ''),
         ]],
       }),
     });

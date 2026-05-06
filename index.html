@@ -857,6 +857,10 @@ function animateAxes(){
 function sendLead(){
   const r=state.quizResult;
   if(!r)return;
+  const answerTexts=Array.from({length:12},(_,i)=>{
+    const idx=state.answers[i];
+    return idx!==undefined?MBTI_Q[i].a[idx].t:'';
+  });
   fetch('/api/sheet',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -867,7 +871,8 @@ function sendLead(){
       chiffre:r.life,
       message:state.lieu,
       email:state.email,
-      fond:state.design||'noir'
+      fond:state.design||'noir',
+      answers:answerTexts
     })
   }).catch(()=>{});
 }
