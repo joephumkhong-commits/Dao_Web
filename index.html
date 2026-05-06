@@ -894,7 +894,7 @@ function advanceAfterAnswer(idx,delay){
         const el=document.getElementById('rd'+dot);
         if(el)el.classList.add('on');
         dot++;
-        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
+        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);sendLead();},800);}
       },600);
     }else{state.qIndex++;render();}
   },delay);
