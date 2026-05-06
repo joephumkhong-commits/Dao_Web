@@ -854,6 +854,24 @@ function animateAxes(){
   document.querySelectorAll('.result-axis-fill').forEach(el=>{el.style.width=el.dataset.target+'%';});
 }
 
+function sendLead(){
+  const r=state.quizResult;
+  if(!r)return;
+  fetch('/api/sheet',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      date:new Date().toLocaleDateString('fr-FR'),
+      animal:r.winner,
+      signe:r.sign.name,
+      chiffre:r.life,
+      message:state.lieu,
+      email:state.email,
+      fond:state.design||'noir'
+    })
+  }).catch(()=>{});
+}
+
 function advanceAfterAnswer(idx,delay){
   state.answers[state.qIndex]=idx;
   setTimeout(()=>{
@@ -867,7 +885,7 @@ function advanceAfterAnswer(idx,delay){
         const el=document.getElementById('rd'+dot);
         if(el)el.classList.add('on');
         dot++;
-        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
+        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);sendLead();},800);}
       },600);
     }else{state.qIndex++;render();}
   },delay);
