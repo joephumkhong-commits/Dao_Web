@@ -46,6 +46,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+@keyframes cardSelect{0%{transform:scale(1)}30%{transform:scale(.94)}100%{transform:scale(1)}}
 
 /* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(10,10,10,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:.5px solid var(--border)}
@@ -184,10 +185,10 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .q-num{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
 .q-title{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:400;color:var(--text);line-height:1.55;margin-bottom:22px}
 .answers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
-.answer-card{display:flex;flex-direction:column;gap:8px;padding:16px 14px;background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;text-align:left;width:100%;font-family:inherit}
-.answer-card:hover{border-color:var(--cyan-border);background:var(--cyan-dim);box-shadow:0 0 18px rgba(0,229,255,.1)}
-.answer-card.selected{border-color:var(--cyan);background:var(--cyan-dim);animation:pulseCyan .5s ease}
-.answer-card-icon{font-size:22px;line-height:1}
+.answer-card{display:flex;flex-direction:column;gap:10px;padding:20px 16px;background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s,transform .15s;text-align:left;width:100%;font-family:inherit}
+.answer-card:hover{border-color:var(--cyan-border);background:var(--cyan-dim);box-shadow:0 0 22px rgba(0,229,255,.12);transform:translateY(-1px)}
+.answer-card.selected{border-color:var(--cyan);background:var(--cyan-dim);animation:cardSelect .35s ease,pulseCyan .5s ease}
+.answer-card-icon{font-size:28px;line-height:1}
 .answer-card-text{font-size:13px;color:var(--text2);line-height:1.4}
 .answer-card:hover .answer-card-text,.answer-card.selected .answer-card-text{color:var(--text)}
 .reveal-wrap{text-align:center;padding:52px 16px}
@@ -234,6 +235,36 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .spinner{width:28px;height:28px;border:1.5px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin .9s linear infinite}
 .error-msg{font-size:13px;color:var(--text2);text-align:center;padding:32px 0 24px}
 @media(max-width:520px){.answers-grid{grid-template-columns:1fr}.axis-progress{grid-template-columns:1fr}}
+
+/* ── SLIDER ── */
+.slider-q-wrap{margin-bottom:8px}
+.slider-extremes{display:flex;justify-content:space-between;gap:8px;margin-bottom:20px}
+.slider-extreme{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px}
+.slider-extreme.slider-right{align-items:flex-end;text-align:right}
+.slider-ext-icon{font-size:30px;line-height:1}
+.slider-ext-text{font-size:11px;color:var(--text2);line-height:1.35}
+.quiz-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;margin:2px 0 14px;background:linear-gradient(to right,var(--cyan) 0%,var(--border2) 0%)}
+.quiz-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 16px rgba(0,229,255,.55);border:3px solid #0A0A0A;transition:transform .15s}
+.quiz-slider::-webkit-slider-thumb:active{transform:scale(1.28)}
+.quiz-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 16px rgba(0,229,255,.55);border:3px solid #0A0A0A}
+.slider-current{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--cyan);text-align:center;min-height:22px;margin-bottom:18px;opacity:.9;transition:opacity .12s}
+.btn-slider-confirm{width:100%;padding:13px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,box-shadow .2s;font-family:'Inter',sans-serif;box-shadow:0 0 24px rgba(0,229,255,.2)}
+.btn-slider-confirm:hover{opacity:.88;box-shadow:0 0 38px rgba(0,229,255,.38)}
+
+/* ── GAUGE ── */
+.gauge-q-wrap{margin-bottom:8px}
+.gauge-grid{display:flex;flex-direction:column;gap:8px}
+.gauge-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .15s,transform .12s;user-select:none;touch-action:none}
+.gauge-item:hover,.gauge-item.drag-hover{border-color:var(--cyan-border);background:var(--cyan-dim);transform:translateX(2px)}
+.gauge-item.selected{border-color:var(--cyan);background:var(--cyan-dim);box-shadow:0 0 20px rgba(0,229,255,.15)}
+.gauge-lvl-num{font-size:10px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;width:14px;flex-shrink:0;text-align:center;font-weight:600}
+.gauge-bar-col{width:4px;height:36px;background:var(--border2);border-radius:2px;flex-shrink:0;position:relative;overflow:hidden}
+.gauge-bar-fill{position:absolute;bottom:0;left:0;right:0;background:var(--cyan);border-radius:2px;opacity:.55;transition:opacity .2s}
+.gauge-item:hover .gauge-bar-fill,.gauge-item.drag-hover .gauge-bar-fill,.gauge-item.selected .gauge-bar-fill{opacity:1}
+.gauge-item-body{flex:1;display:flex;align-items:center;gap:10px}
+.gauge-item-icon{font-size:22px;line-height:1}
+.gauge-item-text{font-size:13px;color:var(--text2);line-height:1.4;transition:color .15s}
+.gauge-item:hover .gauge-item-text,.gauge-item.drag-hover .gauge-item-text,.gauge-item.selected .gauge-item-text{color:var(--text)}
 
 /* ── FOOTER ── */
 .footer{background:var(--bg2);border-top:.5px solid var(--border);padding:56px 0 28px}
@@ -738,9 +769,39 @@ function axisProgressHTML(){
   }).join('')}</div>`;
 }
 
+const SLIDER_QS=[1,6,8];
+const GAUGE_QS=[5,9,11];
+
+function cardsHTML(q){
+  return`<div class="answers-grid">${q.a.map((a,i)=>`<button class="answer-card" data-idx="${i}"><span class="answer-card-icon">${a.i}</span><span class="answer-card-text">${a.t}</span></button>`).join('')}</div>`;
+}
+
+function sliderHTML(q){
+  return`<div class="slider-q-wrap">
+    <div class="slider-extremes">
+      <div class="slider-extreme"><span class="slider-ext-icon">${q.a[0].i}</span><span class="slider-ext-text">${q.a[0].t}</span></div>
+      <div class="slider-extreme slider-right"><span class="slider-ext-icon">${q.a[3].i}</span><span class="slider-ext-text">${q.a[3].t}</span></div>
+    </div>
+    <input type="range" min="0" max="3" step="1" class="quiz-slider" id="quiz-slider" value="0">
+    <div class="slider-current" id="slider-current">${q.a[0].i} ${q.a[0].t}</div>
+    <button class="btn-slider-confirm" id="btn-slider-confirm">Valider →</button>
+  </div>`;
+}
+
+function gaugeHTML(q){
+  return`<div class="gauge-q-wrap"><div class="gauge-grid" id="gauge-grid">${q.a.map((a,i)=>{
+    const lvl=i+1,pct=Math.round((lvl/4)*100);
+    return`<div class="gauge-item" data-idx="${i}"><div class="gauge-lvl-num">${lvl}</div><div class="gauge-bar-col"><div class="gauge-bar-fill" style="height:${pct}%"></div></div><div class="gauge-item-body"><span class="gauge-item-icon">${a.i}</span><span class="gauge-item-text">${a.t}</span></div></div>`;
+  }).join('')}</div></div>`;
+}
+
 function quizScreen(){
-  const q=MBTI_Q[state.qIndex];
-  return`${axisProgressHTML()}<div class="quiz-q-wrap"><div class="q-num">Question ${state.qIndex+1} / 12</div><div class="q-title">${q.q}</div><div class="answers-grid">${q.a.map((a,i)=>`<button class="answer-card" data-idx="${i}"><span class="answer-card-icon">${a.i}</span><span class="answer-card-text">${a.t}</span></button>`).join('')}</div></div>`;
+  const qi=state.qIndex,q=MBTI_Q[qi];
+  let body;
+  if(SLIDER_QS.includes(qi))body=sliderHTML(q);
+  else if(GAUGE_QS.includes(qi))body=gaugeHTML(q);
+  else body=cardsHTML(q);
+  return`${axisProgressHTML()}<div class="quiz-q-wrap"><div class="q-num">Question ${qi+1} / 12</div><div class="q-title">${q.q}</div>${body}</div>`;
 }
 
 function revealScreen(){return`<div class="reveal-wrap"><div class="reveal-title">Révélation de ton animal totem…</div><div class="reveal-dots"><span class="reveal-dot" id="rd0"></span><span class="reveal-dot" id="rd1"></span><span class="reveal-dot" id="rd2"></span></div></div>`;}
@@ -775,6 +836,25 @@ function animateAxes(){
   document.querySelectorAll('.result-axis-fill').forEach(el=>{el.style.width=el.dataset.target+'%';});
 }
 
+function advanceAfterAnswer(idx,delay){
+  state.answers[state.qIndex]=idx;
+  setTimeout(()=>{
+    if(state.qIndex===11){
+      const winner=getAnimal(state.answers);
+      const dob=new Date(state.dateVal),d=dob.getDate()+1,m=dob.getMonth()+1;
+      state.quizResult={winner,sign:getSignForDate(d,m),life:lifeNumber(state.dateVal)};
+      state.screen='reveal';render();
+      let dot=0;
+      const iv=setInterval(()=>{
+        const el=document.getElementById('rd'+dot);
+        if(el)el.classList.add('on');
+        dot++;
+        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
+      },600);
+    }else{state.qIndex++;render();}
+  },delay);
+}
+
 function attachEvents(){
   if(state.screen==='date'){
     const dob=document.getElementById('dob'),btn=document.getElementById('btn-start');
@@ -782,27 +862,72 @@ function attachEvents(){
     btn.addEventListener('click',()=>{if(!state.dateVal)return;state.screen='quiz';state.qIndex=0;state.answers={};render();});
   }
   if(state.screen==='quiz'){
-    document.querySelectorAll('.answer-card').forEach(b=>b.addEventListener('click',()=>{
-      if(document.querySelector('.answer-card.selected'))return;
-      b.classList.add('selected');
-      const idx=parseInt(b.dataset.idx);
-      state.answers[state.qIndex]=idx;
-      setTimeout(()=>{
-        if(state.qIndex===11){
-          const winner=getAnimal(state.answers);
-          const dob=new Date(state.dateVal),d=dob.getDate()+1,m=dob.getMonth()+1;
-          state.quizResult={winner,sign:getSignForDate(d,m),life:lifeNumber(state.dateVal)};
-          state.screen='reveal';render();
-          let dot=0;
-          const iv=setInterval(()=>{
-            const el=document.getElementById('rd'+dot);
-            if(el)el.classList.add('on');
-            dot++;
-            if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
-          },600);
-        }else{state.qIndex++;render();}
-      },550);
-    }));
+    const qi=state.qIndex;
+    if(SLIDER_QS.includes(qi)){
+      const slider=document.getElementById('quiz-slider');
+      const label=document.getElementById('slider-current');
+      const btn=document.getElementById('btn-slider-confirm');
+      const q=MBTI_Q[qi];
+      function updateSlider(){
+        const v=parseInt(slider.value);
+        label.textContent=q.a[v].i+' '+q.a[v].t;
+        const pct=(v/3)*100;
+        slider.style.background=`linear-gradient(to right,var(--cyan) ${pct}%,var(--border2) ${pct}%)`;
+      }
+      updateSlider();
+      slider.addEventListener('input',updateSlider);
+      btn.addEventListener('click',()=>{
+        if(btn.disabled)return;
+        btn.disabled=true;
+        advanceAfterAnswer(parseInt(slider.value),300);
+      });
+    } else if(GAUGE_QS.includes(qi)){
+      const grid=document.getElementById('gauge-grid');
+      let locked=false,isDragging=false,lastHovered=null;
+      function gaugeActivate(item){
+        document.querySelectorAll('.gauge-item').forEach(el=>el.classList.remove('drag-hover'));
+        item.classList.add('drag-hover');
+        lastHovered=item;
+      }
+      function gaugeConfirm(item){
+        if(locked)return;
+        locked=true;
+        document.querySelectorAll('.gauge-item').forEach(el=>el.classList.remove('drag-hover','selected'));
+        item.classList.add('selected');
+        advanceAfterAnswer(parseInt(item.dataset.idx),480);
+      }
+      grid.addEventListener('pointerdown',e=>{
+        const item=e.target.closest('.gauge-item');
+        if(!item||locked)return;
+        isDragging=true;
+        grid.setPointerCapture(e.pointerId);
+        gaugeActivate(item);
+      });
+      grid.addEventListener('pointermove',e=>{
+        if(!isDragging||locked)return;
+        const el=document.elementFromPoint(e.clientX,e.clientY);
+        const item=el&&el.closest('.gauge-item');
+        if(item&&item!==lastHovered)gaugeActivate(item);
+      });
+      grid.addEventListener('pointerup',e=>{
+        if(!isDragging)return;
+        isDragging=false;
+        const el=document.elementFromPoint(e.clientX,e.clientY);
+        const item=(el&&el.closest('.gauge-item'))||lastHovered;
+        if(item)gaugeConfirm(item);
+      });
+      grid.addEventListener('click',e=>{
+        if(isDragging)return;
+        const item=e.target.closest('.gauge-item');
+        if(item)gaugeConfirm(item);
+      });
+    } else {
+      document.querySelectorAll('.answer-card').forEach(b=>b.addEventListener('click',()=>{
+        if(document.querySelector('.answer-card.selected'))return;
+        b.classList.add('selected');
+        advanceAfterAnswer(parseInt(b.dataset.idx),550);
+      }));
+    }
   }
   if(state.screen==='result'){
     document.getElementById('btn-tableau').addEventListener('click',()=>{state.screen='email';render();});
