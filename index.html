@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0A0A0A">
 <title>DAÖ — Tableaux totem en époxy phosphorescent</title>
+<meta name="description" content="DAÖ crée ton tableau totem unique en époxy phosphorescent — ton animal celtique, ton signe astrologique, ton chiffre de vie. Fait à la main en Haute-Savoie. 180€.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.mydao.fr/">
+<meta property="og:title" content="DAÖ — Ton tableau totem, fait à la main">
+<meta property="og:description" content="Un objet unique créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie. Époxy phosphorescent, fabriqué à la main.">
+<meta property="og:image" content="https://www.mydao.fr/images/dao-loup-7-gemeaux-noir.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DAÖ — Ton tableau totem, fait à la main">
+<meta name="twitter:description" content="Un objet unique créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie.">
+<meta name="twitter:image" content="https://www.mydao.fr/images/dao-loup-7-gemeaux-noir.png">
 <link rel="icon" href="images/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -476,7 +486,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="process-header fade-up">
       <div class="section-badge">Comment ça marche</div>
       <h2 class="section-title">Ton DAÖ en 3 étapes</h2>
-      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul.</p>
+      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul — <strong style="color:var(--text)">180€</strong>.</p>
     </div>
     <div class="process-grid">
       <div class="process-card fade-up d1">
@@ -630,6 +640,11 @@ section[id]{scroll-margin-top:var(--nav-h)}
         <div class="animal-card-line"></div>
       </div>
     </div>
+    <div style="text-align:center;margin-top:40px" class="fade-up">
+      <a href="#questionnaire" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:.5px solid var(--cyan-border);border-radius:var(--r);color:var(--cyan);font-size:13px;letter-spacing:.05em;transition:background .2s,border-color .2s">
+        Découvrir mon animal totem →
+      </a>
+    </div>
   </div>
 </section>
 
@@ -683,6 +698,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
         <li><a href="#process">Comment ça marche</a></li>
         <li><a href="#galerie">Galerie</a></li>
         <li><a href="#questionnaire">Mon DAÖ</a></li>
+        <li><a href="/legal.html">Mentions légales</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -836,7 +852,7 @@ function render(){
   attachEvents();
 }
 
-function dateScreen(){return`<div class="date-label">Étape 1 / 2</div><div class="date-title">Entre ta date de naissance</div><div class="date-sub">Elle servira à calculer ton signe astrologique et ton chiffre de vie automatiquement.</div><input type="date" class="date-input" id="dob" value="${state.dateVal}" max="${new Date().toISOString().split('T')[0]}"><button class="btn-start" id="btn-start" ${state.dateVal?'':'disabled'}>Commencer le questionnaire →</button>`;}
+function dateScreen(){return`<div class="date-label">3 minutes · Gratuit</div><div class="date-title">Entre ta date de naissance</div><div class="date-sub">Elle servira à calculer ton signe astrologique et ton chiffre de vie automatiquement.</div><input type="date" class="date-input" id="dob" value="${state.dateVal}" max="${new Date().toISOString().split('T')[0]}"><button class="btn-start" id="btn-start" ${state.dateVal?'':'disabled'}>Commencer le questionnaire →</button>`;}
 
 function axisProgressHTML(){
   const{answered}=computeAxes(state.answers);

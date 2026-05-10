@@ -6,6 +6,18 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+const RATE_LIMIT = 5;
+const RATE_WINDOW = 60 * 1000;
+const ipMap = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const times = (ipMap.get(ip) || []).filter(t => now - t < RATE_WINDOW);
+  if (times.length >= RATE_LIMIT) return true;
+  ipMap.set(ip, [...times, now]);
+  return false;
+}
+
 const SHEET_ID = '1-Y37eX_WI19AUWxF08Je9V0Y0q1DvKFkAdiUBu0G03c';
 const RANGE = 'A:S';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
@@ -70,6 +82,13 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, CORS_HEADERS);
     res.end();
+    return;
+  }
+
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  if (isRateLimited(ip)) {
+    res.writeHead(429, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Trop de requêtes. Attends une minute.' }));
     return;
   }
 
