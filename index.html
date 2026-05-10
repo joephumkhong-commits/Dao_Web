@@ -82,6 +82,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .hero video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.4;z-index:0}
 .hero-content{position:relative;z-index:1;max-width:740px;padding:0 24px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:28px;padding:6px 16px;border:.5px solid var(--cyan-border);border-radius:20px;background:var(--cyan-dim)}
+@media(max-width:480px){.hero-badge{font-size:9px;letter-spacing:.1em;padding:5px 12px}}
 .hero-title{font-family:'Libre Baskerville',serif;font-size:clamp(2.6rem,6vw,5rem);font-weight:400;line-height:1.08;color:var(--text);margin-bottom:22px;letter-spacing:-.01em}
 .hero-title em{font-style:italic;color:var(--cyan)}
 .hero-sub{font-size:clamp(14px,2vw,17px);color:var(--text2);line-height:1.75;margin-bottom:44px;max-width:520px;margin-left:auto;margin-right:auto}
@@ -512,7 +513,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
       </div>
     </div>
     <div class="process-ambient fade-up d2">
-      <video autoplay muted loop playsinline preload="none" style="width:100%; max-height:400px; object-fit:cover; object-position:center; border-radius:12px">
+      <video autoplay muted loop playsinline preload="none" poster="images/dao-loup-7-gemeaux-noir.png" style="width:100%; max-height:400px; object-fit:cover; object-position:center; border-radius:12px">
         <source src="images/production.mp4" type="video/mp4">
       </video>
     </div>
