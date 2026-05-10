@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="DAÖ — Ton tableau totem, fait à la main">
 <meta name="twitter:description" content="Un objet unique créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie.">
 <meta name="twitter:image" content="https://www.mydao.fr/images/dao-loup-7-gemeaux-noir.png">
-<link rel="icon" href="images/favicon.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0A' rx='4'/><path d='M16 3L19 13L29 16L19 19L16 29L13 19L3 16L13 13Z' fill='%23F0ECE4'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -93,14 +93,15 @@ section[id]{scroll-margin-top:var(--nav-h)}
 
 /* ── HISTOIRE ── */
 #histoire{border-top:.5px solid var(--border)}
-.histoire-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.histoire-text .section-title{margin-top:8px}
-.histoire-text p{font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:18px}
-.histoire-text p:last-child{margin-bottom:0}
-.histoire-text strong{color:var(--text);font-weight:500}
-.histoire-visual{aspect-ratio:4/5;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;position:relative}
-.histoire-visual img{width:100%;height:100%;object-fit:contain;display:block;padding:20px}
-.histoire-visual-bottom{position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,transparent,var(--cyan),transparent);opacity:.4}
+.histoire-inner{max-width:620px;margin:0 auto;text-align:center}
+.histoire-inner .section-title{margin:8px 0 32px}
+.histoire-divider{width:32px;height:.5px;background:var(--cyan);margin:0 auto 44px;opacity:.6}
+.histoire-body{text-align:left;margin-bottom:44px}
+.histoire-body p{font-size:15px;color:var(--text2);line-height:1.9;margin-bottom:18px}
+.histoire-body p:last-child{margin-bottom:0}
+.histoire-body strong{color:var(--text);font-weight:500}
+.histoire-quote{font-family:'Libre Baskerville',serif;font-size:clamp(1.05rem,2.5vw,1.35rem);font-style:italic;color:var(--text);line-height:1.6;padding:36px 0 0;position:relative;margin:0;border:none;background:none}
+.histoire-quote::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:28px;background:var(--cyan-border)}
 
 /* ── PROCESS ── */
 #process{background:var(--bg2);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
@@ -350,8 +351,6 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .container{padding:0 24px}
   .nav-inner{padding:0 24px}
   .section{padding:80px 0}
-  .histoire-grid{grid-template-columns:1fr;gap:40px}
-  .histoire-visual{aspect-ratio:16/9}
   .process-grid{grid-template-columns:1fr}
   .process-card{padding:32px 24px}
   .galerie-grid{grid-template-columns:repeat(2,1fr)}
@@ -364,7 +363,6 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .nav-links{display:none}
   .nav-burger{display:flex}
   .section{padding:60px 0}
-  .histoire-visual{aspect-ratio:4/3}
   .galerie-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .animaux-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .cards-row{grid-template-columns:1fr}
@@ -464,19 +462,16 @@ section[id]{scroll-margin-top:var(--nav-h)}
 <!-- NOTRE HISTOIRE -->
 <section class="section" id="histoire">
   <div class="container">
-    <div class="histoire-grid">
-      <div class="fade-up histoire-text">
-        <div class="section-badge">Notre Histoire</div>
-        <h2 class="section-title">Né d'un rêve, entre deux étoiles</h2>
+    <div class="histoire-inner fade-up">
+      <div class="section-badge">Notre Histoire</div>
+      <h2 class="section-title">Né d'un rêve, entre deux étoiles</h2>
+      <div class="histoire-divider"></div>
+      <div class="histoire-body">
         <p><strong>DAÖ est né fin 2025</strong>, entre deux rêves et un CDI à quitter. Joe est thaïlandais. Alyz est passionnée par les astres. <strong>DAÖ — étoile en thaïlandais</strong> — c'était une évidence.</p>
         <p>On a tout remis en question. La direction artistique. Le produit. Le prix. On s'est perdus, on s'est retrouvés. Mais on n'a jamais pensé à abandonner.</p>
         <p>Chaque tableau qu'on fabrique à la main est un pas de plus vers la liberté. Et chaque commande qu'on reçoit nous dit qu'on est sur le bon chemin.</p>
-        <p><strong>DAÖ, c'est notre histoire.</strong> Et bientôt — peut-être la tienne aussi.</p>
       </div>
-      <div class="histoire-visual fade-up d2">
-        <img src="images/dao-loup-7-gemeaux-noir.png" alt="Tableau DAÖ — Loup, chiffre 7, Gémeaux" loading="lazy">
-        <div class="histoire-visual-bottom"></div>
-      </div>
+      <blockquote class="histoire-quote">DAÖ, c'est notre histoire. Et bientôt — peut-être la tienne aussi.</blockquote>
     </div>
   </div>
 </section>
