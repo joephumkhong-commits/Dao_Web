@@ -389,6 +389,24 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .btn-whatsapp:hover{opacity:.88}
 @media(max-width:600px){.modal-box{padding:28px 20px}}
 </style>
+
+<!-- Google Analytics 4 — remplacer G-XXXXXXXXXX par ton Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X80NEMM5KZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X80NEMM5KZ');
+</script>
+
+<!-- Microsoft Clarity — remplacer XXXXXXXXXX par ton Project ID -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "woxu1a9ydl");
+</script>
 </head>
 <body>
 
@@ -424,8 +442,8 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="hero-badge fade-up">✦ TON IDENTITÉ · GRAVÉE DANS LA LUMIÈRE</div>
     <h1 class="hero-title fade-up d1">Ton DAÖ t'attend.</h1>
     <p class="hero-sub fade-up d2">Un tableau unique en époxy phosphorescent, créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie. Fait à la main, pour toi seul.</p>
-    <a href="#questionnaire" class="hero-cta fade-up d3">
-      Découvrir mon DAÖ →
+    <a href="#questionnaire" class="hero-cta fade-up d3" style="font-size:0.9em;opacity:1;border:1px solid rgba(255,255,255,0.85);background:transparent;color:white;padding:16px 36px;">
+      Quel est mon Daö ✦
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </div>
@@ -500,8 +518,8 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <h2 class="section-title">Quel est ton DAÖ ?</h2>
       <p class="section-sub">Ta numérologie. Ton signe. Ton animal totem. Trois piliers — un seul objet, fait pour toi.</p>
       <div style="margin-top:32px;margin-bottom:48px">
-        <a href="#app" class="quiz-cta-hero fade-up d2" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'});return false;">
-          Découvrir mon DAÖ →
+        <a href="/composer.html" class="quiz-cta-hero fade-up d2" style="font-size:0.8em;opacity:0.4;background:transparent;border:1px solid rgba(255,255,255,0.2);color:white;padding:10px 22px;box-shadow:none;">
+          Je compose mon tableau ✨
         </a>
       </div>
     </div>
@@ -680,7 +698,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Daö — Tous droits réservés</span>
+    <span>© 2026 Daö — Tous droits réservés</span>
     <span>Haute-Savoie, France ✦ Fait à la main</span>
   </div>
 </footer>
@@ -888,7 +906,7 @@ function resultScreen(){
 }
 
 function emailScreen(){return`<div class="date-label">Presque là</div><div class="date-title">Entre ton adresse email</div><div class="date-sub">Pour recevoir ton tableau et être informé des prochaines créations Daö.</div><input type="email" class="date-input" id="email-input" value="${state.email}" placeholder="ton@email.com"><button class="btn-start" id="btn-email-next" ${state.email?'':'disabled'}>Continuer →</button>`;}
-function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date… qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
+function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date… qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…" maxlength="13"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
 
 function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
@@ -911,7 +929,6 @@ function sendLead(){
     if(!q||!q.a||!q.a[idx])return 'Non répondu';
     return q.a[idx].t||'';
   });
-  console.log('sendLead data:',{answers:state.answers,answerTexts});
   fetch('/api/sheet',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -941,7 +958,7 @@ function advanceAfterAnswer(idx,delay){
         const el=document.getElementById('rd'+dot);
         if(el)el.classList.add('on');
         dot++;
-        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);sendLead();},800);}
+        if(dot>=3){clearInterval(iv);setTimeout(()=>{state.screen='result';render();setTimeout(animateAxes,60);},800);}
       },600);
     }else{state.qIndex++;render();}
   },delay);
@@ -1067,7 +1084,7 @@ function openCommanderModal(){
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';
   overlay.id='modal-commander';
-  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
+  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Message gravé</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 10-15 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
   document.body.appendChild(overlay);
   document.getElementById('modal-close').addEventListener('click',closeCommanderModal);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeCommanderModal();});

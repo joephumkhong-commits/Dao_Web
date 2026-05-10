@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
   const style = req.body.style || 'realiste';
   const isBlanc = fond === 'blanc';
   const isLowPoly = style === 'lowpoly';
-  const safeLieu = (lieu || '').slice(0, 80).replace(/["\\\n\r]/g, '');
+  const safeLieu = (lieu || '').slice(0, 13).replace(/["\\\n\r]/g, '');
 
   const prompt =
     `Premium luxury wall art in a thick black frame, portrait format 3:4.\n` +

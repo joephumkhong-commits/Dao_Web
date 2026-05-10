@@ -125,6 +125,6 @@ module.exports = async (req, res) => {
     res.end(JSON.stringify({ ok: true }));
   } catch (err) {
     res.writeHead(500, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: err.message }));
+    res.end(JSON.stringify({ error: 'Erreur serveur. Réessaie.' }));
   }
 };
