@@ -899,6 +899,7 @@ function render(){
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
   else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
+  document.getElementById('questionnaire')?.scrollIntoView({behavior:'smooth',block:'start'});
   attachEvents();
 }
 
