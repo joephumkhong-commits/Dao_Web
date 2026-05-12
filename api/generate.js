@@ -52,15 +52,15 @@ module.exports = async (req, res) => {
     `flat angular faces, smooth matte black sculpture, ` +
     `zero texture zero fur zero realism, ` +
     `pure geometric polygons only, sharp edges between flat faces, ` +
-    `modern minimalist trophy mount, luxury wall art, ` +
+    `modern minimalist trophy mount, 30x40cm portrait format wall art (3:4 ratio), ` +
     `centered on ${fond === 'noir' ? 'pure solid black' : 'pure solid white'} background, ` +
     `no gradient no shadow on background, ` +
-    `portrait orientation 3:4 ratio, ` +
     `thick ${fond === 'noir' ? 'black' : 'white'} frame border, ` +
     `dramatic side studio lighting to reveal polygon facets, ` +
-    `cyan neon glow ${signe || ''} symbol small on forehead, ` +
-    `cyan neon number ${chiffre || ''} bottom center large, ` +
-    `tiny white text '${safeLieu}' very bottom very small opacity 40%, ` +
+    `life number ${chiffre || ''} physically carved and engraved directly into the top of the skull, ` +
+    `astrological symbol ${signe || ''} sculpted and engraved into the material below the bust, ` +
+    `inscription '${safeLieu}' engraved in tiny letters at the very base of the sculpture, ` +
+    `no text overlay, no floating text, no neon glow, everything is physically carved into the matte black material, ` +
     `photorealistic render of a physical sculpture, ` +
     `no illustration style, no cartoon, no watercolor, ` +
     `EXACT same geometric style as a low-poly 3D printed trophy head`;

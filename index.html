@@ -1175,9 +1175,14 @@ function attachEvents(){
     const inp=document.getElementById('phone-input');
     inp.addEventListener('input',()=>{state.phone=inp.value.trim();});
     document.getElementById('btn-phone-gen').addEventListener('click',()=>{
+      const btn=document.getElementById('btn-phone-gen');
+      if(btn.dataset.clicked)return;
+      btn.dataset.clicked='1';
       state.phone=inp.value.trim();
+      btn.disabled=true;
+      btn.insertAdjacentHTML('afterend','<p id="gen-disc" style="font-size:12px;font-style:italic;text-align:center;opacity:.6;line-height:1.6;margin-top:14px;color:var(--text2)">L\'image est une simulation. Ton tableau sera fabriqué à la main et pourra légèrement différer du rendu IA.</p>');
       sendLead();
-      launchGeneration();
+      setTimeout(()=>launchGeneration(),3000);
     });
     document.getElementById('btn-no-wa').addEventListener('click',()=>openNoWaModal());
   }
@@ -1210,33 +1215,50 @@ function closeCommanderModal(){
 }
 
 function openNoWaModal(){
+  const r=state.quizResult;
+  const animal=MBTI_ANIMALS[r.winner].name;
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';overlay.id='modal-nowa';
   overlay.innerHTML=`<div class="modal-box">
     <button class="modal-close" id="nowa-close">✕</button>
     <div class="modal-title">Commander sans WhatsApp</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7">Laisse-nous ton email et on revient vers toi pour finaliser ta commande.</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:6px;line-height:1.6">Ta commande : <strong style="color:var(--text)">${animal} · ${r.sign.name} · ${r.life}</strong></p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6">Remplis le formulaire et on te contacte pour finaliser.</p>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-      <input class="composer-input" type="text" id="nowa-nom" placeholder="Ton prénom">
-      <input class="composer-input" type="email" id="nowa-email" placeholder="Ton email" value="${state.email||''}">
-      <textarea class="composer-input" id="nowa-msg" placeholder="Un message ? (facultatif)" rows="3" style="resize:none"></textarea>
+      <input class="composer-input" type="text" id="nowa-prenom" placeholder="Prénom *" required>
+      <input class="composer-input" type="text" id="nowa-nom" placeholder="Nom *" required>
+      <input class="composer-input" type="email" id="nowa-email" placeholder="Email *" value="${state.email||''}" required>
+      <input class="composer-input" type="tel" id="nowa-tel" placeholder="Téléphone (facultatif)">
+      <textarea class="composer-input" id="nowa-msg" placeholder="Message (facultatif)" rows="3" style="resize:none"></textarea>
     </div>
-    <button class="btn-commander" id="nowa-submit">Envoyer ma demande</button>
-    <div id="nowa-confirm" style="display:none;text-align:center;padding:16px;font-size:13px;color:var(--cyan)">✦ Demande envoyée ! On te contacte très vite.</div>
+    <button class="btn-commander" id="nowa-submit">Envoyer ma commande</button>
+    <div id="nowa-error" style="display:none;text-align:center;padding:10px;font-size:12px;color:#ff6b6b"></div>
+    <div id="nowa-confirm" style="display:none;text-align:center;padding:16px;font-size:13px;color:var(--cyan)">✦ Commande envoyée ! On te contacte très vite.</div>
   </div>`;
   document.body.appendChild(overlay);
   document.getElementById('nowa-close').addEventListener('click',()=>overlay.remove());
   overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
   document.getElementById('nowa-submit').addEventListener('click',async()=>{
+    const prenom=document.getElementById('nowa-prenom').value.trim();
     const nom=document.getElementById('nowa-nom').value.trim();
     const email=document.getElementById('nowa-email').value.trim();
+    const tel=document.getElementById('nowa-tel').value.trim();
     const msg=document.getElementById('nowa-msg').value.trim();
-    if(!email)return;
-    const r=state.quizResult;
-    await fetch('/api/sheet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:new Date().toLocaleDateString('fr-FR'),animal:r.winner,signe:r.sign.name,chiffre:r.life,message:state.lieu,email,fond:state.design||'noir',answers:Array.from({length:12},(_,i)=>i===0?`[Sans WA] Nom:${nom} Msg:${msg}`:'')})}).catch(()=>{});
-    document.getElementById('nowa-submit').style.display='none';
+    const errEl=document.getElementById('nowa-error');
+    if(!prenom||!nom||!email){errEl.textContent='Prénom, nom et email sont requis.';errEl.style.display='block';return;}
+    errEl.style.display='none';
+    const submitBtn=document.getElementById('nowa-submit');
+    submitBtn.disabled=true;submitBtn.textContent='Envoi…';
+    try{
+      await fetch('/api/sheet-nowap',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        date:new Date().toLocaleDateString('fr-FR'),
+        prenom,nom,email,tel,
+        animal:r.winner,signe:r.sign.name,chiffre:r.life,message:state.lieu
+      })});
+    }catch(e){}
+    submitBtn.style.display='none';
     document.getElementById('nowa-confirm').style.display='block';
-    setTimeout(()=>{overlay.remove();launchGeneration();},1500);
+    setTimeout(()=>{overlay.remove();launchGeneration();},2000);
   });
 }
 
