@@ -885,7 +885,7 @@ function getAnimal(answers){
   return best;
 }
 
-function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',phone:'',design:'noir',tableau:{loading:false,image:null,error:null}};}
+function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',phone:'',design:'noir',tableau:{loading:false,image:null,error:null},leadSent:false};}
 let state=freshState();
 
 function render(){
@@ -1027,7 +1027,8 @@ function animateAxes(){
 
 function sendLead(){
   const r=state.quizResult;
-  if(!r)return;
+  if(!r||state.leadSent)return;
+  state.leadSent=true;
   const answerTexts=Array.from({length:12},(_,i)=>{
     const idx=state.answers[i];
     if(idx===undefined||idx===null)return 'Non répondu';
