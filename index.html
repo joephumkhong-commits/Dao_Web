@@ -208,8 +208,13 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .quiz-header .section-title{font-size:clamp(2.2rem,4vw,3.4rem);margin-bottom:14px}
 .quiz-header .section-sub{margin:0 auto;font-size:16px;max-width:500px}
 .quiz-wrap{max-width:560px;margin:0 auto}
-.quiz-wrap .card{min-height:calc(100dvh - var(--nav-h) - 32px)}
-#app{scroll-margin-top:calc(var(--nav-h) + 16px)}
+#questionnaire{min-height:100dvh}
+body.quiz-active #galerie,
+body.quiz-active #animaux,
+body.quiz-active #temoignages,
+body.quiz-active #cta-final,
+body.quiz-active footer{display:none}
+body.quiz-active .quiz-wrap~div{display:none}
 .quiz-cta-hero{
   display:inline-flex;align-items:center;gap:12px;
   padding:18px 44px;
@@ -900,8 +905,13 @@ function render(){
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
   else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
-  if(state.screen!=='date'){
-    requestAnimationFrame(()=>app.scrollIntoView({behavior:'smooth',block:'start'}));
+  const quizStarted=state.screen!=='date';
+  document.body.classList.toggle('quiz-active',quizStarted);
+  if(quizStarted){
+    requestAnimationFrame(()=>{
+      const qs=document.getElementById('questionnaire');
+      if(qs)qs.scrollIntoView({behavior:'smooth',block:'start'});
+    });
   }
   attachEvents();
 }
