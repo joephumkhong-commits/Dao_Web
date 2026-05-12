@@ -12,7 +12,7 @@
 <meta property="og:description" content="Compose ton tableau DAÖ sur mesure : choisis ton animal totem, ton signe astrologique, ton chiffre de vie.">
 <meta property="og:image" content="https://www.mydao.fr/images/dao-aigle-333-lion-noir.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0A' rx='4'/><path d='M16 3L19 13L29 16L19 19L16 29L13 19L3 16L13 13Z' fill='%23F0ECE4'/></svg>">
+<link rel="icon" href="Favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -113,12 +113,11 @@ img{display:block;max-width:100%}
 
 /* LOADING */
 .loading-state{padding:48px 0;text-align:center}
-.loading-dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px}
-.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:dotPulse 1.4s ease-in-out infinite}
-.loading-dot:nth-child(2){animation-delay:.2s}
-.loading-dot:nth-child(3){animation-delay:.4s}
-@keyframes dotPulse{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-.loading-text{font-size:13px;color:var(--text2);font-style:italic}
+.loading-bar-wrap{padding:48px 0;text-align:center}
+.loading-bar-msg{font-size:14px;color:var(--text2);font-style:italic;margin-bottom:24px;min-height:22px;transition:opacity .3s}
+.loading-bar-track{background:var(--border2);border-radius:99px;height:6px;width:100%;margin:0 auto 10px;overflow:hidden}
+.loading-bar-fill{height:100%;background:linear-gradient(to right,var(--cyan),#00FFB2);border-radius:99px;transition:width .5s ease;width:0%}
+.loading-bar-pct{font-size:12px;color:var(--text3);letter-spacing:.1em}
 
 /* ERROR */
 .error-msg{background:rgba(255,80,80,.07);border:.5px solid rgba(255,80,80,.2);border-radius:var(--r);padding:14px 18px;color:#ff8080;font-size:13px;text-align:center;margin-top:12px}
@@ -166,7 +165,7 @@ img{display:block;max-width:100%}
     <div class="page-header">
       <div class="page-badge">✦ Composition libre</div>
       <h1 class="page-title">Je compose mon tableau</h1>
-      <p class="page-sub">Choisis chaque élément de ton œuvre. L'IA génère un aperçu unique — ton tableau sera fabriqué à la main.</p>
+      <p class="page-sub">Choisis chaque élément de ton œuvre. Notre IA génère un aperçu unique, ton tableau sera fabriqué à la main.</p>
     </div>
 
     <!-- ANIMAL -->
@@ -283,8 +282,13 @@ function updateBtn() {
 /* Generate */
 document.getElementById('btn-generate').addEventListener('click', async () => {
   const area = document.getElementById('result-area');
-  area.innerHTML = `<div class="loading-state"><div class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></div><div class="loading-text">Génération en cours… quelques secondes</div></div>`;
+  const MSGS=['Lecture de ton énergie...','Invocation de ton animal totem...','Gravure de ton symbole...','Finalisation de ton tableau...'];
+  const TIMES=[0,6000,14000,21000];
+  area.innerHTML=`<div class="loading-bar-wrap"><div class="loading-bar-msg" id="loading-msg">Lecture de ton énergie...</div><div class="loading-bar-track"><div class="loading-bar-fill" id="loading-bar"></div></div><div class="loading-bar-pct" id="loading-pct">0%</div></div>`;
   area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const t0=Date.now();
+  TIMES.forEach((t,i)=>setTimeout(()=>{const el=document.getElementById('loading-msg');if(el){el.style.opacity='0';setTimeout(()=>{const e2=document.getElementById('loading-msg');if(e2){e2.textContent=MSGS[i];e2.style.opacity='1';}},250);}},t));
+  const iv=setInterval(()=>{const pct=Math.min(94,((Date.now()-t0)/25000)*96);const f=document.getElementById('loading-bar');const p=document.getElementById('loading-pct');if(f)f.style.width=pct+'%';if(p)p.textContent=Math.round(pct)+'%';},300);
 
   try {
     const res = await fetch('/api/generate', {
@@ -300,29 +304,35 @@ document.getElementById('btn-generate').addEventListener('click', async () => {
     });
 
     const data = await res.json();
+    clearInterval(iv);
+    const f=document.getElementById('loading-bar'),p=document.getElementById('loading-pct'),m=document.getElementById('loading-msg');
+    if(f)f.style.width='100%';if(p)p.textContent='100%';
+    if(m){m.style.opacity='0';setTimeout(()=>{const e=document.getElementById('loading-msg');if(e){e.textContent='Ton tableau est prêt !';e.style.opacity='1';}},200);}
 
     if (!res.ok || !data.image) {
-      area.innerHTML = `<div class="error-msg">${data.error || 'La génération a échoué. Réessaie dans un instant.'}</div>`;
+      setTimeout(()=>{area.innerHTML = `<div class="error-msg">${data.error || 'La génération a échoué. Réessaie dans un instant.'}</div>`;},400);
       return;
     }
 
     const animalName = document.querySelector(`.animal-btn[data-animal="${state.animal}"] .animal-name`)?.textContent || state.animal;
-    area.innerHTML = `
-      <div class="result-block">
-        <div class="result-meta">${animalName} · ${state.signe} · ${state.chiffre}</div>
-        <div class="result-frame"><img src="${data.image}" alt="Ton tableau Daö"></div>
-        <p class="result-disclaimer">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
-        <button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button>
-        <button class="btn-restart" id="btn-restart">Générer une nouvelle version</button>
-      </div>`;
-
-    document.getElementById('btn-commander').addEventListener('click', openModal);
-    document.getElementById('btn-restart').addEventListener('click', () => {
-      area.innerHTML = '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    setTimeout(()=>{
+      area.innerHTML = `
+        <div class="result-block">
+          <div class="result-meta">${animalName} · ${state.signe} · ${state.chiffre}</div>
+          <div class="result-frame"><img src="${data.image}" alt="Ton tableau Daö"></div>
+          <p class="result-disclaimer">✦ Cette image est une projection générée par notre IA. Ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
+          <button class="btn-commander" id="btn-commander">Je veux ce tableau · 180€</button>
+          <button class="btn-restart" id="btn-restart">Générer une nouvelle version</button>
+        </div>`;
+      document.getElementById('btn-commander').addEventListener('click', openModal);
+      document.getElementById('btn-restart').addEventListener('click', () => {
+        area.innerHTML = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }, 900);
 
   } catch {
+    clearInterval(iv);
     area.innerHTML = `<div class="error-msg">Erreur réseau. Vérifie ta connexion et réessaie.</div>`;
   }
 });

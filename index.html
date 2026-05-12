@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="DAÖ — Ton tableau totem, fait à la main">
 <meta name="twitter:description" content="Un objet unique créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie.">
 <meta name="twitter:image" content="https://www.mydao.fr/images/dao-loup-7-gemeaux-noir.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0A' rx='4'/><path d='M16 3L19 13L29 16L19 19L16 29L13 19L3 16L13 13Z' fill='%23F0ECE4'/></svg>">
+<link rel="icon" href="Favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -299,6 +299,14 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .tableau-frame img{width:100%;display:block;animation:fadeIn .6s ease}
 .loading-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:64px 24px;color:var(--text2);font-size:12px;letter-spacing:.1em}
 .spinner{width:28px;height:28px;border:1.5px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin .9s linear infinite}
+.loading-bar-wrap{padding:52px 24px;text-align:center}
+.loading-bar-msg{font-size:14px;color:var(--text2);font-style:italic;margin-bottom:24px;min-height:22px;transition:opacity .3s}
+.loading-bar-track{background:var(--border2);border-radius:99px;height:6px;width:100%;max-width:340px;margin:0 auto 10px;overflow:hidden}
+.loading-bar-fill{height:100%;background:linear-gradient(to right,var(--cyan),#00FFB2);border-radius:99px;transition:width .5s ease;width:0%}
+.loading-bar-pct{font-size:12px;color:var(--text3);letter-spacing:.1em}
+.wa-preview{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:16px 0;text-align:left}
+.wa-preview-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.wa-preview-text{font-size:13px;color:var(--text2);line-height:1.7}
 .error-msg{font-size:13px;color:var(--text2);text-align:center;padding:32px 0 24px}
 @media(max-width:520px){.answers-grid{grid-template-columns:1fr}.axis-progress{grid-template-columns:1fr}}
 
@@ -338,8 +346,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .design-card{background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;overflow:hidden;transition:border-color .2s,box-shadow .2s;padding:0;display:flex;flex-direction:column;width:100%;font-family:inherit}
 .design-card:hover{border-color:var(--cyan-border);box-shadow:0 0 20px rgba(0,229,255,.1)}
 .design-card.selected{border-color:var(--cyan);box-shadow:0 0 26px rgba(0,229,255,.2)}
-.design-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:filter .2s}
-.design-card:hover img{filter:brightness(1.05)}
+.design-swatch-sq{width:100%;height:60px;border-radius:6px;margin-bottom:8px}
 .design-card-label{font-size:12px;color:var(--text2);padding:9px 0 10px;text-align:center;letter-spacing:.05em;transition:color .2s}
 .design-card.selected .design-card-label{color:var(--cyan)}
 .result-disclaimer{font-size:12px;font-style:italic;color:var(--text3);line-height:1.65;margin-bottom:16px;text-align:center;padding:0 4px}
@@ -473,7 +480,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   <div class="hero-content">
     <div class="hero-badge fade-up">✦ TON IDENTITÉ · GRAVÉE DANS LA LUMIÈRE</div>
     <h1 class="hero-title fade-up d1">Ton DAÖ t'attend.</h1>
-    <p class="hero-sub fade-up d2">Un tableau unique en époxy phosphorescent, créé à partir de qui tu es vraiment — ton animal totem, ton signe, ton chiffre de vie. Fait à la main, pour toi seul.</p>
+    <p class="hero-sub fade-up d2">Un tableau unique en époxy phosphorescent, créé à partir de qui tu es vraiment : ton animal totem, ton signe, ton chiffre de vie. Fait à la main, pour toi seul.</p>
     <a href="#questionnaire" class="hero-cta fade-up d3" style="font-size:0.9em;opacity:1;border:1px solid rgba(255,255,255,0.85);background:transparent;color:white;padding:16px 36px;">
       Quel est mon Daö ✦
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -490,11 +497,11 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <h2 class="section-title">Né d'un rêve, entre deux étoiles</h2>
       <div class="histoire-divider"></div>
       <div class="histoire-body">
-        <p><strong>DAÖ est né fin 2025</strong>, entre deux rêves et un CDI à quitter. Joe est thaïlandais. Alyz est passionnée par les astres. <strong>DAÖ — étoile en thaïlandais</strong> — c'était une évidence.</p>
+        <p><strong>DAÖ est né fin 2025</strong>, entre deux rêves et un CDI à quitter. Joe est thaïlandais. Alyz est passionnée par les astres. <strong>DAÖ, étoile en thaïlandais</strong>, c'était une évidence.</p>
         <p>On a tout remis en question. La direction artistique. Le produit. Le prix. On s'est perdus, on s'est retrouvés. Mais on n'a jamais pensé à abandonner.</p>
         <p>Chaque tableau qu'on fabrique à la main est un pas de plus vers la liberté. Et chaque commande qu'on reçoit nous dit qu'on est sur le bon chemin.</p>
       </div>
-      <blockquote class="histoire-quote">DAÖ, c'est notre histoire. Et bientôt — peut-être la tienne aussi.</blockquote>
+      <blockquote class="histoire-quote">DAÖ, c'est notre histoire. Et bientôt, peut-être la tienne aussi.</blockquote>
     </div>
   </div>
 </section>
@@ -505,14 +512,14 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="process-header fade-up">
       <div class="section-badge">Comment ça marche</div>
       <h2 class="section-title">Ton DAÖ en 3 étapes</h2>
-      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul — <strong style="color:var(--text)">180€</strong>.</p>
+      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul. <strong style="color:var(--text)">180€</strong>.</p>
     </div>
     <div class="process-grid">
       <div class="process-card fade-up d1">
         <div class="process-num">01</div>
         <svg class="process-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="13" stroke="currentColor" stroke-width="1"/><path d="M12 18c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><circle cx="18" cy="24" r="1.5" fill="currentColor"/></svg>
         <div class="process-card-title">Révèle ton identité</div>
-        <p class="process-card-desc">12 questions pour découvrir ton animal totem celtique, ton signe astrologique et ton chiffre de vie — les trois piliers de qui tu es vraiment.</p>
+        <p class="process-card-desc">12 questions pour découvrir ton animal totem celtique, ton signe astrologique et ton chiffre de vie : les trois piliers de qui tu es vraiment.</p>
         <div class="process-card-line"></div>
       </div>
       <div class="process-card fade-up d2">
@@ -545,15 +552,15 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <div class="quiz-social-proof fade-up">✦ <strong>2 800+ personnes</strong> ont découvert leur DAÖ</div>
       <div class="section-badge" style="margin-top:8px">TON IDENTITÉ EN 3 MINUTES</div>
       <h2 class="section-title">Quel est ton DAÖ ?</h2>
-      <p class="section-sub">Ta numérologie. Ton signe. Ton animal totem. Trois piliers — un seul objet, fait pour toi.</p>
-      <div style="margin-top:32px;margin-bottom:48px">
-        <a href="/composer.html" class="quiz-cta-hero fade-up d2" style="font-size:0.8em;opacity:0.6;background:transparent;border:1px solid rgba(255,255,255,0.2);color:white;padding:10px 22px;box-shadow:none;">
-          Je compose mon tableau ✨
-        </a>
-      </div>
+      <p class="section-sub">Ta numérologie. Ton signe. Ton animal totem. Trois piliers pour un seul objet, fait pour toi.</p>
     </div>
     <div class="quiz-wrap">
       <div class="card" id="app"></div>
+    </div>
+    <div style="text-align:center;margin-top:32px" class="fade-up">
+      <a href="/composer.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;opacity:0.6;background:transparent;border:.5px solid rgba(255,255,255,0.2);color:white;padding:10px 24px;border-radius:var(--r);transition:opacity .2s;text-decoration:none" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.6'">
+        🎁 Offrir un tableau Daö
+      </a>
     </div>
   </div>
 </section>
@@ -583,7 +590,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="animaux-header fade-up">
       <div class="section-badge">LES 12 ANIMAUX CELTIQUES</div>
       <h2 class="section-title">Quel est ton animal ?</h2>
-      <p class="section-sub" style="margin:0 auto">Douze gardiens. Douze forces. L'un d'eux est le tien — il t'attend depuis toujours.</p>
+      <p class="section-sub" style="margin:0 auto">Douze gardiens. Douze forces. L'un d'eux est le tien, il t'attend depuis toujours.</p>
     </div>
     <div class="animaux-grid">
       <div class="animal-card">
@@ -677,7 +684,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="temoignages-grid">
       <div class="temoignage-card fade-up d1">
         <div class="temoignage-stars">★★★★★</div>
-        <p class="temoignage-quote">"J'étais sceptique, mais quand j'ai reçu mon tableau Loup, j'ai eu les larmes aux yeux. Il me ressemble à un niveau que je ne saurais pas expliquer. Il brille la nuit dans ma chambre — c'est mystérieux et apaisant."</p>
+        <p class="temoignage-quote">"J'étais sceptique, mais quand j'ai reçu mon tableau Loup, j'ai eu les larmes aux yeux. Il me ressemble à un niveau que je ne saurais pas expliquer. Il brille la nuit dans ma chambre, mystérieux et apaisant."</p>
         <div class="temoignage-footer">
           <div class="temoignage-avatar">M</div>
           <div><div class="temoignage-name">Marie L.</div><div class="temoignage-loc">Bordeaux</div><div class="temoignage-animal">✦ Animal totem : Le Loup</div></div>
@@ -693,7 +700,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
       </div>
       <div class="temoignage-card fade-up d3">
         <div class="temoignage-stars">★★★★★</div>
-        <p class="temoignage-quote">"J'ai offert un tableau Renard à ma meilleure amie. Elle a pleuré. Pas parce que c'était beau — même si ça l'est — mais parce que c'était elle, exactement elle. Le plus beau cadeau que j'ai pu faire."</p>
+        <p class="temoignage-quote">"J'ai offert un tableau Renard à ma meilleure amie. Elle a pleuré. Pas parce que c'était beau, même si ça l'est, mais parce que c'était elle, exactement elle. Le plus beau cadeau que j'ai pu faire."</p>
         <div class="temoignage-footer">
           <div class="temoignage-avatar">C</div>
           <div><div class="temoignage-name">Camille V.</div><div class="temoignage-loc">Lyon</div><div class="temoignage-animal">✦ Animal totem : Le Renard</div></div>
@@ -709,9 +716,9 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="cta-final-inner fade-up">
       <div class="section-badge">COMMANDE TON DAÖ</div>
       <h2 class="cta-final-title">Ton tableau t'attend.</h2>
-      <p class="cta-final-sub">Un questionnaire. Une génération IA. Un tableau fait à la main,<br>livré chez toi en 10 à 15 jours.</p>
+      <p class="cta-final-sub">Un questionnaire. Ton tableau généré par notre IA.<br>Fabriqué à la main, livré chez toi en 10 à 15 jours.</p>
       <div class="cta-final-price">180<sup>€</sup></div>
-      <p class="cta-final-label">par tableau — œuvre unique</p>
+      <p class="cta-final-label">par tableau · œuvre unique</p>
       <div class="cta-final-reassurance">
         <span>✦ Fabriqué à la main</span>
         <span>✦ Époxy phosphorescent</span>
@@ -727,7 +734,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
   <div class="footer-grid">
     <div class="footer-col">
       <div class="footer-logo">DAÖ</div>
-      <div class="footer-tagline">DAÖ — étoile en thaïlandais. Brille dans l'obscurité.</div>
+      <div class="footer-tagline">DAÖ · étoile en thaïlandais. Brille dans l'obscurité.</div>
     </div>
     <div class="footer-col">
       <h4>Navigation</h4>
@@ -752,7 +759,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Daö — Tous droits réservés</span>
+    <span>© 2026 Daö · Tous droits réservés</span>
     <span>Haute-Savoie, France ✦ Fait à la main</span>
   </div>
 </footer>
@@ -808,18 +815,18 @@ mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classLis
 
 /* ── QUIZ ── */
 const MBTI_ANIMALS={
-  ours:    {name:"L'Ours",    emoji:"🐻",devise:"Pilier de force tranquille",         tags:["Ancré","Fiable","Protecteur"],          desc:"Tu avances lentement mais sûrement. Là où les autres s'agitent, tu tiens. Ta force est silencieuse, profonde et durable — les gens se sentent en sécurité à tes côtés.",key:[0,0,0,0]},
-  loup:    {name:"Le Loup",   emoji:"🐺",devise:"Esprit de la meute et de l'instinct",tags:["Libre","Loyal","Instinctif"],            desc:"Tu suis ta propre voie, mais jamais seul. Ta loyauté envers ton cercle est absolue. Tu fonctionnes à l'instinct — et tu te trompes rarement.",key:[0,0,1,1]},
+  ours:    {name:"L'Ours",    emoji:"🐻",devise:"Pilier de force tranquille",         tags:["Ancré","Fiable","Protecteur"],          desc:"Tu avances lentement mais sûrement. Là où les autres s'agitent, tu tiens. Ta force est silencieuse, profonde et durable. Les gens se sentent en sécurité à tes côtés.",key:[0,0,0,0]},
+  loup:    {name:"Le Loup",   emoji:"🐺",devise:"Esprit de la meute et de l'instinct",tags:["Libre","Loyal","Instinctif"],            desc:"Tu suis ta propre voie, mais jamais seul. Ta loyauté envers ton cercle est absolue. Tu fonctionnes à l'instinct, et tu te trompes rarement.",key:[0,0,1,1]},
   cerf:    {name:"Le Cerf",   emoji:"🦌",devise:"Gardien de la noblesse intérieure",  tags:["Sage","Doux","Visionnaire"],             desc:"Tu vois ce que les autres ne voient pas encore. Ta sensibilité est ta force, pas ta faiblesse. Tu inspires par ta présence, pas par tes mots.",key:[0,1,0,0]},
-  serpent: {name:"Le Serpent",emoji:"🐍",devise:"Maître de la transformation",        tags:["Intuitif","Profond","Stratège"],         desc:"Tu te réinventes sans cesse. Chaque obstacle devient une mutation. Ton adaptabilité est presque troublante — tu repars toujours différent, toujours plus fort.",key:[0,1,1,0]},
+  serpent: {name:"Le Serpent",emoji:"🐍",devise:"Maître de la transformation",        tags:["Intuitif","Profond","Stratège"],         desc:"Tu te réinventes sans cesse. Chaque obstacle devient une mutation. Ton adaptabilité est presque troublante : tu repars toujours différent, toujours plus fort.",key:[0,1,1,0]},
   sanglier:{name:"Le Sanglier",emoji:"🐗",devise:"Gardien du courage brut",           tags:["Direct","Puissant","Sans filtre"],       desc:"Tu fonces là où les autres hésitent. Pas de calcul, pas de demi-mesure. Tu protèges ce qui compte avec une fougue qui impose le respect.",key:[1,0,0,1]},
-  renard:  {name:"Le Renard", emoji:"🦊",devise:"Esprit de la vivacité et de l'élan", tags:["Vif","Créatif","Adaptable"],             desc:"Tu trouves toujours le chemin. Là où d'autres avancent frontalement, toi tu trouves l'angle le plus fluide — par pure intelligence de la situation.",key:[1,0,1,1]},
-  taureau: {name:"Le Taureau",emoji:"🐂",devise:"Combattant des temps celtiques",     tags:["Déterminé","Solide","Ambitieux"],        desc:"Tu construis ce qui dure. Quand tu décides, tu finis. La compétition est ton moteur — contre les autres ou contre tes propres limites d'hier.",key:[1,1,0,0]},
-  aigle:   {name:"L'Aigle",   emoji:"🦅",devise:"Visionnaire du panthéon celtique",   tags:["Stratège","Ambitieux","Libre"],          desc:"Tu vois loin et tu vises haut. Ta pensée est systémique, ton regard est long. Tu imagines ce qui devrait exister — et tu trouves le chemin pour y aller.",key:[1,1,1,1]},
+  renard:  {name:"Le Renard", emoji:"🦊",devise:"Esprit de la vivacité et de l'élan", tags:["Vif","Créatif","Adaptable"],             desc:"Tu trouves toujours le chemin. Là où d'autres avancent frontalement, toi tu trouves l'angle le plus fluide, par pure intelligence de la situation.",key:[1,0,1,1]},
+  taureau: {name:"Le Taureau",emoji:"🐂",devise:"Combattant des temps celtiques",     tags:["Déterminé","Solide","Ambitieux"],        desc:"Tu construis ce qui dure. Quand tu décides, tu finis. La compétition est ton moteur, contre les autres ou contre tes propres limites d'hier.",key:[1,1,0,0]},
+  aigle:   {name:"L'Aigle",   emoji:"🦅",devise:"Visionnaire du panthéon celtique",   tags:["Stratège","Ambitieux","Libre"],          desc:"Tu vois loin et tu vises haut. Ta pensée est systémique, ton regard est long. Tu imagines ce qui devrait exister et tu trouves le chemin pour y aller.",key:[1,1,1,1]},
   cygne:   {name:"Le Cygne",  emoji:"🦢",devise:"Gardien de la grâce et de l'idéal",  tags:["Sensible","Élégant","Profond"],          desc:"Tu transformes la beauté en force. Sous ton élégance se cache une exigence de fer. Tu n'es jamais satisfait de moins que le meilleur.",key:[0,0,1,0]},
   cheval:  {name:"Le Cheval", emoji:"🐴",devise:"Gardien de la liberté",              tags:["Énergique","Social","Généreux"],         desc:"Tu avances avec les autres. Là où les autres attendent, tu es déjà en mouvement. Ton énergie est contagieuse et tu entraînes sans même t'en rendre compte.",key:[1,0,0,0]},
   chat:    {name:"Le Chat sauvage",emoji:"🐈",devise:"Sentinelle à l'instinct acéré", tags:["Indépendant","Observateur","Précis"],    desc:"Tu vois tout sans rien montrer. Ton regard capte les failles et les opportunités avant qu'elles se révèlent. Tu travailles mieux seul et à ton rythme.",key:[0,1,0,1]},
-  corbeau: {name:"Le Corbeau",emoji:"🐦‍⬛",devise:"Animal de Lug, maître du jeu",      tags:["Intelligent","Stratège","Imprévisible"],desc:"Tu joues toujours un coup d'avance. Tu observes longuement avant d'agir — et quand tu agis, c'est rarement par hasard. Ton influence est réelle, rarement visible.",key:[1,1,1,0]}
+  corbeau: {name:"Le Corbeau",emoji:"🐦‍⬛",devise:"Animal de Lug, maître du jeu",      tags:["Intelligent","Stratège","Imprévisible"],desc:"Tu joues toujours un coup d'avance. Tu observes longuement avant d'agir, et quand tu agis, c'est rarement par hasard. Ton influence est réelle, rarement visible.",key:[1,1,1,0]}
 };
 
 const MBTI_Q=[
@@ -854,7 +861,7 @@ const AXIS_META={E:{label:"🔥 Énergie"},D:{label:"🧠 Décision"},R:{label:"
 
 const SIGNS=[{name:"Capricorne",symbol:"♑"},{name:"Verseau",symbol:"♒"},{name:"Poissons",symbol:"♓"},{name:"Bélier",symbol:"♈"},{name:"Taureau",symbol:"♉"},{name:"Gémeaux",symbol:"♊"},{name:"Cancer",symbol:"♋"},{name:"Lion",symbol:"♌"},{name:"Vierge",symbol:"♍"},{name:"Balance",symbol:"♎"},{name:"Scorpion",symbol:"♏"},{name:"Sagittaire",symbol:"♐"}];
 const SIGN_DESC={"Capricorne":"Patient, ambitieux, méthodique. Tu construis sur le long terme.","Verseau":"Visionnaire, original, indépendant. Tu penses en avance.","Poissons":"Intuitif, créatif, empathique. Tu ressens ce que les autres n'expriment pas.","Bélier":"Pionnier, direct, énergique. Tu fonces et tu ouvres le chemin.","Taureau":"Déterminé, loyal, ancré. Tu construis solide et tu dures.","Gémeaux":"Vif, adaptable, curieux. Tu t'adaptes à tout et rapidement.","Cancer":"Protecteur, intuitif, loyal. Tu portes les autres naturellement.","Lion":"Charismatique, ambitieux, généreux. Tu rayonnes sans effort.","Vierge":"Précis, analytique, exigeant. Tu vois ce que les autres ratent.","Balance":"Équitable, charmant, stratégique. Tu trouves l'équilibre juste.","Scorpion":"Intense, perçant, transformateur. Tu vas là où peu osent aller.","Sagittaire":"Libre, optimiste, visionnaire. Tu vises toujours plus loin."};
-const LIFE_DESC={1:"Indépendant, pionnier, leader naturel. Tu traces ta route.",2:"Diplomate, intuitif, médiateur. Tu sens les équilibres.",3:"Créatif, expressif, communicant. Tu inspires par tes mots.",4:"Solide, méthodique, fiable. Tu construis ce qui dure.",5:"Libre, aventurier, adaptable. Tu es fait pour le changement.",6:"Responsable, protecteur, harmonieux. Tu prends soin des autres.",7:"Analytique, intuitif, chercheur. Tu cherches la vérité.",8:"Ambitieux, déterminé, puissant. Tu es fait pour accomplir.",9:"Sage, généreux, universel. Tu as une mission plus grande.",11:"Intuitif, inspirant, visionnaire. Nombre maître — sensibilité extrême.",22:"Bâtisseur, pragmatique, visionnaire. Nombre maître — pouvoir de réalisation.",33:"Maître enseignant, compassion totale. Nombre maître — service universel."};
+const LIFE_DESC={1:"Indépendant, pionnier, leader naturel. Tu traces ta route.",2:"Diplomate, intuitif, médiateur. Tu sens les équilibres.",3:"Créatif, expressif, communicant. Tu inspires par tes mots.",4:"Solide, méthodique, fiable. Tu construis ce qui dure.",5:"Libre, aventurier, adaptable. Tu es fait pour le changement.",6:"Responsable, protecteur, harmonieux. Tu prends soin des autres.",7:"Analytique, intuitif, chercheur. Tu cherches la vérité.",8:"Ambitieux, déterminé, puissant. Tu es fait pour accomplir.",9:"Sage, généreux, universel. Tu as une mission plus grande.",11:"Intuitif, inspirant, visionnaire. Nombre maître : sensibilité extrême.",22:"Bâtisseur, pragmatique, visionnaire. Nombre maître : pouvoir de réalisation.",33:"Maître enseignant, compassion totale. Nombre maître : service universel."};
 
 function getSignForDate(d,m){const r=[{s:SIGNS[0],m1:1,d1:1,m2:1,d2:19},{s:SIGNS[1],m1:1,d1:20,m2:2,d2:18},{s:SIGNS[2],m1:2,d1:19,m2:3,d2:20},{s:SIGNS[3],m1:3,d1:21,m2:4,d2:19},{s:SIGNS[4],m1:4,d1:20,m2:5,d2:20},{s:SIGNS[5],m1:5,d1:21,m2:6,d2:20},{s:SIGNS[6],m1:6,d1:21,m2:7,d2:22},{s:SIGNS[7],m1:7,d1:23,m2:8,d2:22},{s:SIGNS[8],m1:8,d1:23,m2:9,d2:22},{s:SIGNS[9],m1:9,d1:23,m2:10,d2:22},{s:SIGNS[10],m1:10,d1:23,m2:11,d2:21},{s:SIGNS[11],m1:11,d1:22,m2:12,d2:21},{s:SIGNS[0],m1:12,d1:22,m2:12,d2:31}];for(const x of r){if((m===x.m1&&d>=x.d1)||(m===x.m2&&d<=x.d2))return x.s;}return SIGNS[0];}
 function lifeNumber(s){let n=s.replace(/-/g,'').split('').map(Number).reduce((a,b)=>a+b,0);while(n>9&&n!==11&&n!==22&&n!==33){n=String(n).split('').map(Number).reduce((a,b)=>a+b,0);}return n;}
@@ -878,7 +885,7 @@ function getAnimal(answers){
   return best;
 }
 
-function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',design:'noir',tableau:{loading:false,image:null,error:null}};}
+function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizResult:null,email:'',lieu:'',phone:'',design:'noir',tableau:{loading:false,image:null,error:null}};}
 let state=freshState();
 
 function render(){
@@ -889,6 +896,7 @@ function render(){
   else if(state.screen==='result')app.innerHTML=resultScreen();
   else if(state.screen==='email')app.innerHTML=emailScreen();
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
+  else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
   attachEvents();
 }
@@ -916,7 +924,7 @@ function sliderHTML(q){
       <div class="slider-extreme"><span class="slider-ext-icon">${q.a[0].i}</span><span class="slider-ext-text">${q.a[0].t}</span></div>
       <div class="slider-extreme slider-right"><span class="slider-ext-icon">${q.a[3].i}</span><span class="slider-ext-text">${q.a[3].t}</span></div>
     </div>
-    <input type="range" min="0" max="3" step="1" class="quiz-slider" id="quiz-slider" value="0">
+    <input type="range" min="0" max="3" step="1" class="quiz-slider" id="quiz-slider" value="1">
     <div class="slider-current" id="slider-current">${q.a[0].i} ${q.a[0].t}</div>
     <button class="btn-slider-confirm" id="btn-slider-confirm">Valider →</button>
   </div>`;
@@ -955,21 +963,50 @@ function resultScreen(){
 <div class="cards-row"><div class="info-card"><span class="info-icon">${r.sign.symbol}</span><div class="info-type">Signe astrologique</div><div class="info-name">${r.sign.name}</div><div class="info-desc">${SIGN_DESC[r.sign.name]||''}</div></div><div class="info-card"><span class="info-icon">✦</span><div class="info-type">Chiffre de vie</div><div class="info-name">${r.life}</div><div class="info-desc">${LIFE_DESC[r.life]||''}</div></div></div>
 <div class="design-picker-title">Choisis ton fond</div>
 <div class="design-picker">
-  <button class="design-card${state.design==='noir'?' selected':''}" data-design="noir"><img src="images/dao-loup-7-gemeaux-noir.png" alt="Fond noir" loading="lazy"><div class="design-card-label">Fond noir</div></button>
-  <button class="design-card${state.design==='blanc'?' selected':''}" data-design="blanc"><img src="images/dao-cerf-13-capricorne-blanc.png" alt="Fond blanc" loading="lazy"><div class="design-card-label">Fond blanc</div></button>
+  <button class="design-card${state.design==='noir'?' selected':''}" data-design="noir"><div class="design-swatch-sq" style="background:#0a0a0a;border:.5px solid #333"></div><div class="design-card-label">Fond noir</div></button>
+  <button class="design-card${state.design==='blanc'?' selected':''}" data-design="blanc"><div class="design-swatch-sq" style="background:#f5f5f0;border:.5px solid #ddd"></div><div class="design-card-label">Fond blanc</div></button>
 </div>
-<p style="font-size:11px;color:rgba(255,255,255,.4);font-style:italic;margin:12px 0 16px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection IA — ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
+<p style="font-size:11px;color:rgba(255,255,255,.4);font-style:italic;margin:12px 0 16px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection générée par notre IA. Ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
 <button class="btn-neon" id="btn-tableau">Générer mon tableau →</button><button class="btn-restart" id="btn-restart">Recommencer</button>`;
 }
 
 function emailScreen(){return`<div class="date-label">Presque là</div><div class="date-title">Entre ton adresse email</div><div class="date-sub">Pour recevoir ton tableau et être informé des prochaines créations Daö.</div><input type="email" class="date-input" id="email-input" value="${state.email}" placeholder="ton@email.com"><button class="btn-start" id="btn-email-next" ${state.email?'':'disabled'}>Continuer →</button>`;}
-function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date… qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…" maxlength="13"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Générer mon tableau Daö →</button>`;}
+function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…" maxlength="13"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Continuer →</button>`;}
+
+function phoneScreen(){
+  const r=state.quizResult,animal=MBTI_ANIMALS[r.winner].name;
+  const preview=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}\nPrix : 180€`;
+  return`<div class="date-label">Dernière étape</div><div class="date-title">Ton numéro WhatsApp</div><div class="date-sub">Facultatif. Si tu l'indiques, on t'envoie directement un message pour finaliser ta commande.</div><input type="tel" class="date-input" id="phone-input" value="${state.phone||''}" placeholder="+33 6 00 00 00 00"><div class="wa-preview"><div class="wa-preview-label">Message que nous enverrons</div><div class="wa-preview-text">${preview.replace(/\n/g,'<br>')}</div></div><button class="btn-neon" id="btn-phone-gen">Générer mon tableau →</button><button class="btn-restart" id="btn-no-wa">Je n'ai pas WhatsApp</button>`;
+}
+
+async function launchGeneration(){
+  state.screen='image';state.tableau={loading:true,image:null,error:null};render();
+  const MSGS=["Lecture de ton énergie...","Invocation de ton animal totem...","Gravure de ton symbole...","Finalisation de ton tableau..."];
+  const TIMES=[0,6000,14000,21000];
+  const t0=Date.now();
+  TIMES.forEach((t,i)=>setTimeout(()=>{const el=document.getElementById('loading-msg');if(el){el.style.opacity='0';setTimeout(()=>{const e2=document.getElementById('loading-msg');if(e2){e2.textContent=MSGS[i];e2.style.opacity='1';}},250);}},t));
+  const iv=setInterval(()=>{const pct=Math.min(94,((Date.now()-t0)/25000)*96);const f=document.getElementById('loading-bar');const p=document.getElementById('loading-pct');if(f)f.style.width=pct+'%';if(p)p.textContent=Math.round(pct)+'%';},300);
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'})});
+    const data=await res.json();
+    clearInterval(iv);
+    const f=document.getElementById('loading-bar'),p=document.getElementById('loading-pct'),m=document.getElementById('loading-msg');
+    if(f)f.style.width='100%';if(p)p.textContent='100%';
+    if(m){m.style.opacity='0';setTimeout(()=>{const e=document.getElementById('loading-msg');if(e){e.textContent='Ton tableau est prêt !';e.style.opacity='1';}},200);}
+    state.tableau.loading=false;
+    if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
+    setTimeout(()=>render(),data.image?900:200);
+  }catch(err){
+    clearInterval(iv);state.tableau.loading=false;state.tableau.error='Erreur de connexion. Réessaie dans un instant.';
+    setTimeout(()=>render(),200);
+  }
+}
 
 function imageScreen(){
-  if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
+  if(state.tableau.loading)return`<div class="loading-bar-wrap"><div class="loading-bar-msg" id="loading-msg">Lecture de ton énergie...</div><div class="loading-bar-track"><div class="loading-bar-fill" id="loading-bar"></div></div><div class="loading-bar-pct" id="loading-pct">0%</div></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner];
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau · 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function animateAxes(){
@@ -1112,17 +1149,23 @@ function attachEvents(){
     const inp=document.getElementById('lieu-input'),btn=document.getElementById('btn-gen');
     inp.addEventListener('input',()=>{state.lieu=inp.value.trim();btn.disabled=!state.lieu;});
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
-    btn.addEventListener('click',async()=>{
-      if(!state.lieu)return;
-      state.screen='image';state.tableau={loading:true,image:null,error:null};render();
-      try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'})});
-        const data=await res.json();
-        state.tableau.loading=false;
-        if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
-      }catch(err){state.tableau.loading=false;state.tableau.error='Erreur de connexion. Réessaie dans un instant.';}
-      render();
+    btn.addEventListener('click',()=>{if(!state.lieu)return;state.screen='phone';render();});
+  }
+  if(state.screen==='phone'){
+    const inp=document.getElementById('phone-input');
+    inp.addEventListener('input',()=>{state.phone=inp.value.trim();});
+    document.getElementById('btn-phone-gen').addEventListener('click',()=>{
+      state.phone=inp.value.trim();
+      if(state.phone){
+        const clean=state.phone.replace(/[\s\-\(\)]/g,'');
+        const r=state.quizResult,animal=MBTI_ANIMALS[r.winner].name;
+        const msg=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}\nPrix : 180€`;
+        window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`,'_blank');
+      }
+      sendLead();
+      launchGeneration();
     });
+    document.getElementById('btn-no-wa').addEventListener('click',()=>openNoWaModal());
   }
   if(state.screen==='image'){
     const btnRetry=document.getElementById('btn-retry'),btnRestart=document.getElementById('btn-restart'),btnCommander=document.getElementById('btn-commander');
@@ -1150,6 +1193,37 @@ function openCommanderModal(){
 function closeCommanderModal(){
   const m=document.getElementById('modal-commander');
   if(m)m.remove();
+}
+
+function openNoWaModal(){
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay';overlay.id='modal-nowa';
+  overlay.innerHTML=`<div class="modal-box">
+    <button class="modal-close" id="nowa-close">✕</button>
+    <div class="modal-title">Commander sans WhatsApp</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7">Laisse-nous ton email et on revient vers toi pour finaliser ta commande.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <input class="composer-input" type="text" id="nowa-nom" placeholder="Ton prénom">
+      <input class="composer-input" type="email" id="nowa-email" placeholder="Ton email" value="${state.email||''}">
+      <textarea class="composer-input" id="nowa-msg" placeholder="Un message ? (facultatif)" rows="3" style="resize:none"></textarea>
+    </div>
+    <button class="btn-commander" id="nowa-submit">Envoyer ma demande</button>
+    <div id="nowa-confirm" style="display:none;text-align:center;padding:16px;font-size:13px;color:var(--cyan)">✦ Demande envoyée ! On te contacte très vite.</div>
+  </div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('nowa-close').addEventListener('click',()=>overlay.remove());
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
+  document.getElementById('nowa-submit').addEventListener('click',async()=>{
+    const nom=document.getElementById('nowa-nom').value.trim();
+    const email=document.getElementById('nowa-email').value.trim();
+    const msg=document.getElementById('nowa-msg').value.trim();
+    if(!email)return;
+    const r=state.quizResult;
+    await fetch('/api/sheet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:new Date().toLocaleDateString('fr-FR'),animal:r.winner,signe:r.sign.name,chiffre:r.life,message:state.lieu,email,fond:state.design||'noir',answers:Array.from({length:12},(_,i)=>i===0?`[Sans WA] Nom:${nom} Msg:${msg}`:'')})}).catch(()=>{});
+    document.getElementById('nowa-submit').style.display='none';
+    document.getElementById('nowa-confirm').style.display='block';
+    setTimeout(()=>{overlay.remove();launchGeneration();},1500);
+  });
 }
 
 render();
