@@ -118,6 +118,20 @@ module.exports = async (req, res) => {
     }
 
     const token = await getAccessToken(creds.private_key, creds.client_email);
+    const authHeader = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+    // Ajoute les en-têtes si l'onglet est vide
+    const checkRes = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(TAB + '!A1')}`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    const checkData = await checkRes.json();
+    if (!checkData.values || checkData.values.length === 0) {
+      await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(TAB + '!A1:I1')}?valueInputOption=USER_ENTERED`,
+        { method: 'PUT', headers: authHeader, body: JSON.stringify({ values: [['Date','Prénom','Nom','Email','Tel','Animal','Signe','Chiffre','Message']] }) }
+      );
+    }
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}:append?valueInputOption=USER_ENTERED`;
 

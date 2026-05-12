@@ -110,6 +110,20 @@ module.exports = async (req, res) => {
     const { date, animal, signe, chiffre, message, email, fond, answers } = req.body || {};
 
     const token = await getAccessToken(creds.private_key, creds.client_email);
+    const authHeader = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+    // Ajoute les en-têtes si la feuille est vide
+    const checkRes = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/A1`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    const checkData = await checkRes.json();
+    if (!checkData.values || checkData.values.length === 0) {
+      await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/A1:S1?valueInputOption=USER_ENTERED`,
+        { method: 'PUT', headers: authHeader, body: JSON.stringify({ values: [['Date','Animal','Signe','Chiffre','Lieu','Email','Fond','Q1','Q2','Q3','Q4','Q5','Q6','Q7','Q8','Q9','Q10','Q11','Q12']] }) }
+      );
+    }
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}:append?valueInputOption=USER_ENTERED`;
 
