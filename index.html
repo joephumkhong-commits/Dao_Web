@@ -312,19 +312,22 @@ section[id]{scroll-margin-top:var(--nav-h)}
 @media(max-width:520px){.answers-grid{grid-template-columns:1fr}.axis-progress{grid-template-columns:1fr}}
 
 /* ── SLIDER ── */
-.slider-q-wrap{margin-bottom:8px}
-.slider-extremes{display:flex;justify-content:space-between;gap:8px;margin-bottom:20px}
-.slider-extreme{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px}
-.slider-extreme.slider-right{align-items:flex-end;text-align:right}
-.slider-ext-icon{font-size:30px;line-height:1}
-.slider-ext-text{font-size:11px;color:var(--text2);line-height:1.35}
-.quiz-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;margin:2px 0 14px;background:linear-gradient(to right,var(--cyan) 0%,var(--border2) 0%)}
-.quiz-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 16px rgba(0,229,255,.55);border:3px solid #0A0A0A;transition:transform .15s}
-.quiz-slider::-webkit-slider-thumb:active{transform:scale(1.28)}
-.quiz-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 16px rgba(0,229,255,.55);border:3px solid #0A0A0A}
-.slider-current{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--cyan);text-align:center;min-height:22px;margin-bottom:18px;opacity:.9;transition:opacity .12s}
-.btn-slider-confirm{width:100%;padding:13px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,box-shadow .2s;font-family:'Inter',sans-serif;box-shadow:0 0 24px rgba(0,229,255,.2)}
-.btn-slider-confirm:hover{opacity:.88;box-shadow:0 0 38px rgba(0,229,255,.38)}
+.bubble-scale{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.scale-label{font-size:11px;color:var(--text2);flex:0 0 72px;line-height:1.35}
+.scale-label.agree{text-align:right}
+.scale-label.disagree{text-align:left}
+.bubbles{display:flex;align-items:center;justify-content:center;gap:6px;flex:1}
+.bubble{border-radius:50%;border:2px solid var(--cyan);cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;flex-shrink:0}
+.bubble.large{width:44px;height:44px}
+.bubble.medium{width:36px;height:36px}
+.bubble.small{width:28px;height:28px}
+.bubble.tiny{width:22px;height:22px}
+.bubble:hover{background:rgba(0,229,255,.2);transform:scale(1.1)}
+.bubble.selected{background:var(--cyan);box-shadow:0 0 18px rgba(0,229,255,.55)}
+.bubble.selected:hover{background:var(--cyan)}
+.btn-bubble-confirm{width:100%;padding:13px;background:var(--cyan);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,box-shadow .2s;font-family:'Inter',sans-serif;box-shadow:0 0 24px rgba(0,229,255,.2)}
+.btn-bubble-confirm:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+.btn-bubble-confirm:not(:disabled):hover{opacity:.88;box-shadow:0 0 38px rgba(0,229,255,.38)}
 
 /* ── GAUGE ── */
 .gauge-q-wrap{margin-bottom:8px}
@@ -920,16 +923,21 @@ function cardsHTML(q){
   return`<div class="answers-grid">${q.a.map((a,i)=>`<button class="answer-card" data-idx="${i}"><span class="answer-card-icon">${a.i}</span><span class="answer-card-text">${a.t}</span></button>`).join('')}</div>`;
 }
 
-function sliderHTML(q){
-  return`<div class="slider-q-wrap">
-    <div class="slider-extremes">
-      <div class="slider-extreme"><span class="slider-ext-icon">${q.a[0].i}</span><span class="slider-ext-text">${q.a[0].t}</span></div>
-      <div class="slider-extreme slider-right"><span class="slider-ext-icon">${q.a[3].i}</span><span class="slider-ext-text">${q.a[3].t}</span></div>
+function bubbleHTML(q){
+  return`<div class="bubble-scale">
+    <span class="scale-label agree">${q.a[0].i} ${q.a[0].t}</span>
+    <div class="bubbles">
+      <div class="bubble large"  data-value="7"></div>
+      <div class="bubble medium" data-value="6"></div>
+      <div class="bubble small"  data-value="5"></div>
+      <div class="bubble tiny"   data-value="4"></div>
+      <div class="bubble small"  data-value="3"></div>
+      <div class="bubble medium" data-value="2"></div>
+      <div class="bubble large"  data-value="1"></div>
     </div>
-    <input type="range" min="0" max="3" step="1" class="quiz-slider" id="quiz-slider" value="1">
-    <div class="slider-current" id="slider-current">${q.a[0].i} ${q.a[0].t}</div>
-    <button class="btn-slider-confirm" id="btn-slider-confirm">Valider →</button>
-  </div>`;
+    <span class="scale-label disagree">${q.a[3].i} ${q.a[3].t}</span>
+  </div>
+  <button class="btn-bubble-confirm" id="btn-bubble-confirm" disabled>Valider →</button>`;
 }
 
 function gaugeHTML(q){
@@ -942,7 +950,7 @@ function gaugeHTML(q){
 function quizScreen(){
   const qi=state.qIndex,q=MBTI_Q[qi];
   let body;
-  if(SLIDER_QS.includes(qi))body=sliderHTML(q);
+  if(SLIDER_QS.includes(qi))body=bubbleHTML(q);
   else if(GAUGE_QS.includes(qi))body=gaugeHTML(q);
   else body=cardsHTML(q);
   return`${axisProgressHTML()}<div class="quiz-q-wrap"><div class="q-num">Question ${qi+1} / 12</div><div class="q-title">${q.q}</div>${body}</div>`;
@@ -1080,22 +1088,21 @@ function attachEvents(){
   if(state.screen==='quiz'){
     const qi=state.qIndex;
     if(SLIDER_QS.includes(qi)){
-      const slider=document.getElementById('quiz-slider');
-      const label=document.getElementById('slider-current');
-      const btn=document.getElementById('btn-slider-confirm');
-      const q=MBTI_Q[qi];
-      function updateSlider(){
-        const v=parseInt(slider.value);
-        label.textContent=q.a[v].i+' '+q.a[v].t;
-        const pct=(v/3)*100;
-        slider.style.background=`linear-gradient(to right,var(--cyan) ${pct}%,var(--border2) ${pct}%)`;
-      }
-      updateSlider();
-      slider.addEventListener('input',updateSlider);
+      let selectedValue=null;
+      const btn=document.getElementById('btn-bubble-confirm');
+      document.querySelectorAll('.bubble').forEach(b=>{
+        b.addEventListener('click',()=>{
+          document.querySelectorAll('.bubble').forEach(x=>x.classList.remove('selected'));
+          b.classList.add('selected');
+          selectedValue=parseInt(b.dataset.value);
+          btn.disabled=false;
+        });
+      });
       btn.addEventListener('click',()=>{
-        if(btn.disabled)return;
+        if(btn.disabled||selectedValue===null)return;
         btn.disabled=true;
-        advanceAfterAnswer(parseInt(slider.value),300);
+        const idx=selectedValue>=6?0:selectedValue>=4?1:selectedValue>=2?2:3;
+        advanceAfterAnswer(idx,300);
       });
     } else if(GAUGE_QS.includes(qi)){
       const grid=document.getElementById('gauge-grid');
