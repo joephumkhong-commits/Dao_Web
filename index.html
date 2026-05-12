@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0A0A0A">
 <title>DAÖ — Tableaux totem en époxy phosphorescent</title>
-<meta name="description" content="DAÖ crée ton tableau totem unique en époxy phosphorescent — ton animal celtique, ton signe astrologique, ton chiffre de vie. Fait à la main en Haute-Savoie. 180€.">
+<meta name="description" content="DAÖ crée ton tableau totem unique en époxy phosphorescent — ton animal celtique, ton signe astrologique, ton chiffre de vie. Fait à la main en Haute-Savoie.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.mydao.fr/">
 <meta property="og:title" content="DAÖ — Ton tableau totem, fait à la main">
@@ -208,6 +208,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .quiz-header .section-title{font-size:clamp(2.2rem,4vw,3.4rem);margin-bottom:14px}
 .quiz-header .section-sub{margin:0 auto;font-size:16px;max-width:500px}
 .quiz-wrap{max-width:560px;margin:0 auto}
+#questionnaire{min-height:100dvh}
 .quiz-cta-hero{
   display:inline-flex;align-items:center;gap:12px;
   padding:18px 44px;
@@ -512,7 +513,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
     <div class="process-header fade-up">
       <div class="section-badge">Comment ça marche</div>
       <h2 class="section-title">Ton DAÖ en 3 étapes</h2>
-      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul. <strong style="color:var(--text)">180€</strong>.</p>
+      <p class="section-sub">3 minutes. Un résultat unique. Fabriqué à la main, pour toi seul.</p>
     </div>
     <div class="process-grid">
       <div class="process-card fade-up d1">
@@ -717,8 +718,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
       <div class="section-badge">COMMANDE TON DAÖ</div>
       <h2 class="cta-final-title">Ton tableau t'attend.</h2>
       <p class="cta-final-sub">Un questionnaire. Ton tableau généré par notre IA.<br>Fabriqué à la main, livré chez toi en 10 à 15 jours.</p>
-      <div class="cta-final-price">180<sup>€</sup></div>
-      <p class="cta-final-label">par tableau · œuvre unique</p>
+      <p class="cta-final-label">œuvre unique · fabriquée à la main</p>
       <div class="cta-final-reassurance">
         <span>✦ Fabriqué à la main</span>
         <span>✦ Époxy phosphorescent</span>
@@ -899,7 +899,7 @@ function render(){
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
   else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
-  document.getElementById('questionnaire')?.scrollIntoView({behavior:'smooth',block:'start'});
+  requestAnimationFrame(()=>{const qs=document.getElementById('questionnaire');if(qs)window.scrollTo({top:qs.offsetTop,behavior:'instant'});});
   attachEvents();
 }
 
@@ -978,7 +978,7 @@ function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class
 function phoneScreen(){
   if(!state.quizResult)return`<div class="error-msg">Erreur inattendue. Recommence le questionnaire.</div><button class="btn-restart" id="btn-restart">Recommencer</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner].name;
-  const preview=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}\nPrix : 180€`;
+  const preview=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}`;
   return`<div class="date-label">Dernière étape</div><div class="date-title">Ton numéro WhatsApp</div><div class="date-sub">Facultatif. Si tu l'indiques, on t'envoie directement un message pour finaliser ta commande.</div><input type="tel" class="date-input" id="phone-input" value="${state.phone||''}" placeholder="+33 6 00 00 00 00"><div class="wa-preview"><div class="wa-preview-label">Message que nous enverrons</div><div class="wa-preview-text">${preview.replace(/\n/g,'<br>')}</div></div><button class="btn-neon" id="btn-phone-gen">Générer mon tableau →</button><button class="btn-restart" id="btn-no-wa">Je n'ai pas WhatsApp</button>`;
 }
 
@@ -1185,7 +1185,7 @@ function openCommanderModal(){
   const r=state.quizResult;
   const animal=MBTI_ANIMALS[r.winner].name,signe=r.sign.name,chiffre=String(r.life),lieu=state.lieu;
   const _n=atob('NDE3ODMwMDY3OTY=');
-  const msg=`Bonjour, je souhaite commander mon tableau Daö 🎨\nAnimal : ${animal} | Signe : ${signe} | Chiffre : ${chiffre} | Lieu : ${lieu}\nPrix : 180€`;
+  const msg=`Bonjour, je souhaite commander mon tableau Daö 🎨\nAnimal : ${animal} | Signe : ${signe} | Chiffre : ${chiffre} | Lieu : ${lieu}`;
   const waUrl=`https://wa.me/${_n}?text=${encodeURIComponent(msg)}`;
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';

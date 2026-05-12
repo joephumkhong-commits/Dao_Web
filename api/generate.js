@@ -45,27 +45,25 @@ module.exports = async (req, res) => {
   }
 
   const fond = req.body.fond || 'noir';
-  const style = req.body.style || 'realiste';
-  const isBlanc = fond === 'blanc';
-  const isLowPoly = style === 'lowpoly';
   const safeLieu = (lieu || '').slice(0, 13).replace(/["\\\n\r]/g, '');
 
   const prompt =
-    `Premium luxury wall art in a thick black frame, portrait format 3:4.\n` +
-    (isBlanc ? `Pure white matte background inside the frame.\n` : `Deep matte black background inside the frame.\n`) +
-    (isLowPoly ? `A geometric low-poly 3D sculpture of a ${animal} head, angular facets, minimal abstract style, matte black material.\n` : `A hyper-realistic 3D sculpture of a ${animal} head, `) +
-    `appearing to emerge from the black background in relief, ` +
-    `like a trophy mount or epoxy resin 3D art piece.\n` +
-    `The sculpture is black and dark grey, highly detailed, ` +
-    `with dramatic studio lighting creating strong depth and shadows.\n` +
-    `On the forehead of the ${animal}: the astrological symbol ${signe || ''} ` +
-    `glowing phosphorescent cyan #00E5FF, neon effect, sharp and luminous.\n` +
-    `Below the animal face, centered in the lower third: ` +
-    `the number ${chiffre || ''} large, glowing phosphorescent cyan #00E5FF, neon effect.\n` +
-    `At the very bottom: the text "${safeLieu}" in tiny monospace typography, ` +
-    `subtle cyan, very low opacity.\n` +
-    `The thick black frame has a subtle glossy reflection.\n` +
-    `Overall: mystical, luxury, 3D epoxy resin art, museum-quality.`;
+    `Low-poly geometric ${animal} head, wall mounted trophy style, ` +
+    `flat angular faces, smooth matte black sculpture, ` +
+    `zero texture zero fur zero realism, ` +
+    `pure geometric polygons only, sharp edges between flat faces, ` +
+    `modern minimalist trophy mount, luxury wall art, ` +
+    `centered on ${fond === 'noir' ? 'pure solid black' : 'pure solid white'} background, ` +
+    `no gradient no shadow on background, ` +
+    `portrait orientation 3:4 ratio, ` +
+    `thick ${fond === 'noir' ? 'black' : 'white'} frame border, ` +
+    `dramatic side studio lighting to reveal polygon facets, ` +
+    `cyan neon glow ${signe || ''} symbol small on forehead, ` +
+    `cyan neon number ${chiffre || ''} bottom center large, ` +
+    `tiny white text '${safeLieu}' very bottom very small opacity 40%, ` +
+    `photorealistic render of a physical sculpture, ` +
+    `no illustration style, no cartoon, no watercolor, ` +
+    `EXACT same geometric style as a low-poly 3D printed trophy head`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
