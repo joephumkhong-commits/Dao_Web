@@ -898,6 +898,9 @@ function render(){
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
   else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
+  if(state.screen!=='date'){
+    requestAnimationFrame(()=>app.scrollIntoView({behavior:'smooth',block:'start'}));
+  }
   attachEvents();
 }
 
@@ -974,6 +977,7 @@ function emailScreen(){return`<div class="date-label">Presque là</div><div clas
 function lieuScreen(){return`<div class="date-label">Ton tableau</div><div class="date-title">Ton message personnel</div><div class="date-sub">Choisis une phrase, un mot, une date qui te ressemble. Maximum 13 caractères.</div><input type="text" class="date-input" id="lieu-input" value="${state.lieu}" placeholder="Ex : LYON, 13.07.99…" maxlength="13"><button class="btn-neon" id="btn-gen" ${state.lieu?'':'disabled'}>Continuer →</button>`;}
 
 function phoneScreen(){
+  if(!state.quizResult)return`<div class="error-msg">Erreur inattendue. Recommence le questionnaire.</div><button class="btn-restart" id="btn-restart">Recommencer</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner].name;
   const preview=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}\nPrix : 180€`;
   return`<div class="date-label">Dernière étape</div><div class="date-title">Ton numéro WhatsApp</div><div class="date-sub">Facultatif. Si tu l'indiques, on t'envoie directement un message pour finaliser ta commande.</div><input type="tel" class="date-input" id="phone-input" value="${state.phone||''}" placeholder="+33 6 00 00 00 00"><div class="wa-preview"><div class="wa-preview-label">Message que nous enverrons</div><div class="wa-preview-text">${preview.replace(/\n/g,'<br>')}</div></div><button class="btn-neon" id="btn-phone-gen">Générer mon tableau →</button><button class="btn-restart" id="btn-no-wa">Je n'ai pas WhatsApp</button>`;
