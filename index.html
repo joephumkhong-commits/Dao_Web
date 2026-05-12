@@ -889,6 +889,7 @@ function freshState(){return{screen:'date',dateVal:'',qIndex:0,answers:{},quizRe
 let state=freshState();
 
 function render(){
+  console.log('[DAÖ] render() screen='+state.screen+' quizResult='+(state.quizResult?state.quizResult.winner:'null')+' lieu="'+state.lieu+'"');
   const app=document.getElementById('app');
   if(state.screen==='date')app.innerHTML=dateScreen();
   else if(state.screen==='quiz')app.innerHTML=quizScreen();
@@ -989,8 +990,12 @@ async function launchGeneration(){
   const iv=setInterval(()=>{const pct=Math.min(94,((Date.now()-t0)/25000)*96);const f=document.getElementById('loading-bar');const p=document.getElementById('loading-pct');if(f)f.style.width=pct+'%';if(p)p.textContent=Math.round(pct)+'%';},300);
   const payload={animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'};
   console.log('[DAÖ] launchGeneration payload:', JSON.stringify(payload));
+  const ctrl=new AbortController();
+  const timeoutId=setTimeout(()=>ctrl.abort(),45000);
+  const ERR_MSG='Oups, notre IA est surchargée. Réessaie dans quelques secondes.';
   try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:ctrl.signal});
+    clearTimeout(timeoutId);
     const data=await res.json();
     console.log('[DAÖ] /api/generate response status:', res.status, '— image?', !!data.image, data.error||'');
     clearInterval(iv);
@@ -998,11 +1003,12 @@ async function launchGeneration(){
     if(f)f.style.width='100%';if(p)p.textContent='100%';
     if(m){m.style.opacity='0';setTimeout(()=>{const e=document.getElementById('loading-msg');if(e){e.textContent='Ton tableau est prêt !';e.style.opacity='1';}},200);}
     state.tableau.loading=false;
-    if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
+    if(data.image){state.tableau.image=data.image;}else{state.tableau.error=ERR_MSG;}
     setTimeout(()=>render(),data.image?900:200);
   }catch(err){
+    clearTimeout(timeoutId);
     console.error('[DAÖ] /api/generate fetch error:', err.message||err);
-    clearInterval(iv);state.tableau.loading=false;state.tableau.error='Erreur de connexion. Réessaie dans un instant.';
+    clearInterval(iv);state.tableau.loading=false;state.tableau.error=ERR_MSG;
     setTimeout(()=>render(),200);
   }
 }
@@ -1168,7 +1174,7 @@ function attachEvents(){
   }
   if(state.screen==='image'){
     const btnRetry=document.getElementById('btn-retry'),btnRestart=document.getElementById('btn-restart'),btnCommander=document.getElementById('btn-commander');
-    if(btnRetry)btnRetry.addEventListener('click',()=>{state.screen='lieu';state.tableau={loading:false,image:null,error:null};render();});
+    if(btnRetry)btnRetry.addEventListener('click',()=>{state.tableau={loading:false,image:null,error:null};launchGeneration();});
     if(btnRestart)btnRestart.addEventListener('click',()=>{state=freshState();render();});
     if(btnCommander)btnCommander.addEventListener('click',()=>{sendLead();openCommanderModal();});
   }
