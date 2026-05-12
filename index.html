@@ -208,13 +208,6 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .quiz-header .section-title{font-size:clamp(2.2rem,4vw,3.4rem);margin-bottom:14px}
 .quiz-header .section-sub{margin:0 auto;font-size:16px;max-width:500px}
 .quiz-wrap{max-width:560px;margin:0 auto}
-#questionnaire{min-height:100dvh}
-body.quiz-active #galerie,
-body.quiz-active #animaux,
-body.quiz-active #temoignages,
-body.quiz-active #cta-final,
-body.quiz-active footer{display:none}
-body.quiz-active .quiz-wrap~div{display:none}
 .quiz-cta-hero{
   display:inline-flex;align-items:center;gap:12px;
   padding:18px 44px;
@@ -905,14 +898,6 @@ function render(){
   else if(state.screen==='lieu')app.innerHTML=lieuScreen();
   else if(state.screen==='phone')app.innerHTML=phoneScreen();
   else if(state.screen==='image')app.innerHTML=imageScreen();
-  const quizStarted=state.screen!=='date';
-  document.body.classList.toggle('quiz-active',quizStarted);
-  if(quizStarted){
-    requestAnimationFrame(()=>{
-      const qs=document.getElementById('questionnaire');
-      if(qs)qs.scrollIntoView({behavior:'smooth',block:'start'});
-    });
-  }
   attachEvents();
 }
 
@@ -1002,9 +987,12 @@ async function launchGeneration(){
   const t0=Date.now();
   TIMES.forEach((t,i)=>setTimeout(()=>{const el=document.getElementById('loading-msg');if(el){el.style.opacity='0';setTimeout(()=>{const e2=document.getElementById('loading-msg');if(e2){e2.textContent=MSGS[i];e2.style.opacity='1';}},250);}},t));
   const iv=setInterval(()=>{const pct=Math.min(94,((Date.now()-t0)/25000)*96);const f=document.getElementById('loading-bar');const p=document.getElementById('loading-pct');if(f)f.style.width=pct+'%';if(p)p.textContent=Math.round(pct)+'%';},300);
+  const payload={animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'};
+  console.log('[DAÖ] launchGeneration payload:', JSON.stringify(payload));
   try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80),fond:state.design||'noir'})});
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data=await res.json();
+    console.log('[DAÖ] /api/generate response status:', res.status, '— image?', !!data.image, data.error||'');
     clearInterval(iv);
     const f=document.getElementById('loading-bar'),p=document.getElementById('loading-pct'),m=document.getElementById('loading-msg');
     if(f)f.style.width='100%';if(p)p.textContent='100%';
@@ -1013,6 +1001,7 @@ async function launchGeneration(){
     if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
     setTimeout(()=>render(),data.image?900:200);
   }catch(err){
+    console.error('[DAÖ] /api/generate fetch error:', err.message||err);
     clearInterval(iv);state.tableau.loading=false;state.tableau.error='Erreur de connexion. Réessaie dans un instant.';
     setTimeout(()=>render(),200);
   }
@@ -1172,12 +1161,6 @@ function attachEvents(){
     inp.addEventListener('input',()=>{state.phone=inp.value.trim();});
     document.getElementById('btn-phone-gen').addEventListener('click',()=>{
       state.phone=inp.value.trim();
-      if(state.phone){
-        const clean=state.phone.replace(/[\s\-\(\)]/g,'');
-        const r=state.quizResult,animal=MBTI_ANIMALS[r.winner].name;
-        const msg=`Bonjour, je souhaite commander mon tableau Daö !\nAnimal : ${animal} | Signe : ${r.sign.name} | Chiffre : ${r.life} | Message : ${state.lieu}\nPrix : 180€`;
-        window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`,'_blank');
-      }
       sendLead();
       launchGeneration();
     });
