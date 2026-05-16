@@ -346,7 +346,7 @@ section[id]{scroll-margin-top:var(--nav-h)}
 
 /* ── DESIGN PICKER ── */
 .design-picker-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.design-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.design-picker{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
 .design-card{background:var(--bg3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;overflow:hidden;transition:border-color .2s,box-shadow .2s;padding:0;display:flex;flex-direction:column;width:100%;font-family:inherit}
 .design-card:hover{border-color:var(--cyan-border);box-shadow:0 0 20px rgba(0,229,255,.1)}
 .design-card.selected{border-color:var(--cyan);box-shadow:0 0 26px rgba(0,229,255,.2)}
@@ -409,6 +409,43 @@ section[id]{scroll-margin-top:var(--nav-h)}
   .result-name{font-size:22px}
   .temoignage-card{padding:24px 18px}
 }
+/* ── MOBILE QUIZ FIXES (480px) ── */
+@media(max-width:480px){
+  /* Carte questionnaire — padding réduit */
+  .card{padding:14px 12px}
+  .quiz-wrap{padding:0}
+
+  /* Texte des questions */
+  .q-title{font-size:15px;line-height:1.5;margin-bottom:16px}
+  .q-num{margin-bottom:8px}
+
+  /* Bulles — tailles réduites pour tenir dans l'écran */
+  .bubble.large{width:28px;height:28px}
+  .bubble.medium{width:22px;height:22px}
+  .bubble.small{width:18px;height:18px}
+  .bubble.tiny{width:14px;height:14px}
+  .bubbles{gap:3px}
+  .bubble-scale{gap:4px}
+  .scale-label{flex:0 0 38px;font-size:8px;line-height:1.3}
+
+  /* Header questionnaire */
+  .quiz-header{margin-bottom:32px}
+  .quiz-header .section-sub{font-size:14px;padding:0 8px}
+  .quiz-social-proof{font-size:11px;padding:5px 12px}
+
+  /* Boutons */
+  .btn-neon,.btn-start,.btn-bubble-confirm,.btn-commander{font-size:13px;padding:12px}
+  .btn-restart{font-size:12px;padding:11px}
+
+  /* Résultat — déjà géré à 600px mais renforcé ici */
+  .result-emoji{font-size:40px}
+  .result-name{font-size:20px}
+  .result-devise{font-size:12px}
+
+  /* Section padding */
+  .section{padding:52px 0}
+}
+
 @media(max-width:400px){
   .hero-title{font-size:2rem}
   .section-title{font-size:1.6rem}
@@ -974,7 +1011,6 @@ function resultScreen(){
 <div class="design-picker-title">Choisis ton fond</div>
 <div class="design-picker">
   <button class="design-card${state.design==='noir'?' selected':''}" data-design="noir"><div class="design-swatch-sq" style="background:#0a0a0a;border:.5px solid #333"></div><div class="design-card-label">Fond noir</div></button>
-  <button class="design-card${state.design==='blanc'?' selected':''}" data-design="blanc"><div class="design-swatch-sq" style="background:#f5f5f0;border:.5px solid #ddd"></div><div class="design-card-label">Fond blanc</div></button>
 </div>
 <p style="font-size:11px;color:rgba(255,255,255,.4);font-style:italic;margin:12px 0 16px;line-height:1.6;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:2px solid var(--cyan)">✦ Cette image est une projection générée par notre IA. Ton tableau s'en rapprochera au maximum, mais sera unique avec ses propres imperfections artisanales.</p>
 <button class="btn-neon" id="btn-tableau">Générer mon tableau →</button><button class="btn-restart" id="btn-restart">Recommencer</button>`;
