@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DAÖ — Hub Interne</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{--gold:#C9A84C;--bg:#0F0F0D;--bg2:#161613;--bg3:#1E1E1A;--bg4:#252520;--border:rgba(201,168,76,0.15);--border2:rgba(201,168,76,0.3);--text:#F0EDE6;--text2:#A09880;--text3:#5C574E;--green:#1D9E75;--green-bg:rgba(29,158,117,0.12);--red:#E24B4A;--red-bg:rgba(226,75,74,0.1);--blue:#378ADD;--blue-bg:rgba(55,138,221,0.1);--amber:#BA7517;--amber-bg:rgba(186,117,23,0.12);--r:8px;--rl:12px}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+.layout{display:flex;min-height:100vh}
+
+.sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:0.5px solid var(--border);padding:24px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+
+.logo-wrap{padding:0 20px 24px;border-bottom:0.5px solid var(--border);margin-bottom:20px}
+
+.logo{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);letter-spacing:.12em;line-height:1}
+
+.logo-sub{font-size:10px;color:var(--text3);letter-spacing:.2em;margin-top:4px;text-transform:uppercase}
+
+.nav-section{padding:0 12px;margin-bottom:6px}
+
+.nav-label{font-size:10px;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;padding:0 8px;margin-bottom:4px}
+
+.nav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r);border:none;background:transparent;color:var(--text2);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;transition:all .15s;margin-bottom:2px}
+
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+
+.nav-btn.active{background:rgba(201,168,76,.1);color:var(--gold);border:0.5px solid var(--border)}
+
+.sidebar-footer{margin-top:auto;padding:20px 20px 0;border-top:0.5px solid var(--border)}
+
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all .15s}
+
+.av-joe{background:rgba(29,158,117,.15);color:#1D9E75}
+
+.av-alyz{background:rgba(127,119,221,.15);color:#7F77DD}
+
+.avatar.active{border-color:var(--gold)}
+
+.main{flex:1;padding:32px 36px;overflow-y:auto;max-width:1000px}
+
+.section{display:none}.section.active{display:block}
+
+.page-header{margin-bottom:28px}
+
+.page-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--text);letter-spacing:.04em}
+
+.gold-line{width:28px;height:1.5px;background:var(--gold);margin-top:6px;border-radius:1px}
+
+.page-sub{font-size:12px;color:var(--text3);margin-top:6px}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px}
+
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+
+.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:12px}
+
+.card-title{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+
+.kpi{background:var(--bg3);border-radius:var(--r);padding:14px 16px;border:0.5px solid var(--border)}
+
+.kpi-lbl{font-size:11px;color:var(--text3);margin-bottom:5px}
+
+.kpi-val{font-size:22px;font-weight:500;color:var(--text);font-family:'Cormorant Garamond',serif}
+
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+.row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+
+.row:last-child{border-bottom:none}
+
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+
+.b-green{background:var(--green-bg);color:#1D9E75}
+
+.b-blue{background:var(--blue-bg);color:#378ADD}
+
+.b-amber{background:var(--amber-bg);color:#EF9F27}
+
+.b-red{background:var(--red-bg);color:#E24B4A}
+
+.b-gray{background:rgba(255,255,255,.05);color:var(--text3)}
+
+.b-gold{background:rgba(201,168,76,.12);color:var(--gold)}
+
+.b-prod{background:var(--green-bg);color:#1D9E75}
+
+.b-comm{background:var(--blue-bg);color:#378ADD}
+
+.b-admin{background:var(--amber-bg);color:#EF9F27}
+
+.b-perso{background:rgba(127,119,221,.12);color:#AFA9EC}
+
+.del{font-size:12px;color:var(--text3);cursor:pointer;padding:2px 6px;border:none;background:none;border-radius:4px;transition:all .1s;flex-shrink:0}
+
+.del:hover{color:var(--red);background:var(--red-bg)}
+
+input,select,textarea{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 10px;outline:none;transition:border-color .15s}
+
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+
+input[type=text],input[type=number]{height:36px}
+
+textarea{resize:vertical;line-height:1.5}
+
+select option{background:var(--bg3)}
+
+.add-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+
+.add-row input[type=text]{flex:1;min-width:100px}
+
+.btn{height:36px;padding:0 16px;border-radius:var(--r);border:0.5px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s}
+
+.btn:hover{background:var(--bg4);color:var(--text)}
+
+.btn-gold{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:500}
+
+.btn-gold:hover{opacity:.9}
+
+.btn-dark{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+
+.prog-wrap{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+
+.prog-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s}
+
+.week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-bottom:12px}
+
+.day-col{background:var(--bg3);border-radius:var(--r);padding:10px 8px;min-height:90px;border:0.5px solid var(--border)}
+
+.day-col.today{border-color:var(--gold)}
+
+.day-name{font-size:10px;font-weight:500;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+
+.day-col.today .day-name{color:var(--gold)}
+
+.day-item{font-size:11px;padding:3px 7px;border-radius:4px;margin-bottom:3px;cursor:pointer}
+
+.day-item:hover{opacity:.7}
+
+.day-item.prod{background:var(--green-bg);color:#1D9E75}
+
+.day-item.comm{background:var(--blue-bg);color:#378ADD}
+
+.day-item.admin{background:var(--amber-bg);color:#EF9F27}
+
+.day-item.perso{background:rgba(127,119,221,.12);color:#AFA9EC}
+
+.quote-block{border-left:2px solid var(--gold);padding-left:12px;margin:8px 0}
+
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--text);line-height:1.5}
+
+.note-item{background:var(--bg3);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;border:0.5px solid var(--border)}
+
+.note-text{font-size:13px;color:var(--text);line-height:1.6}
+
+.note-meta{font-size:11px;color:var(--text3);margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+
+.media-card{background:var(--bg3);border-radius:var(--r);padding:10px 14px;margin-bottom:8px;border:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+
+.fin-row:last-child{border-bottom:none}
+
+input[type=checkbox]{width:14px;height:14px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
+
+input[type=range]{accent-color:var(--gold)}
+
+@media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px}.grid4{grid-template-columns:repeat(2,1fr)}.week-grid{grid-template-columns:repeat(4,1fr)}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+  <div class="logo-wrap">
+
+    <div class="logo">DAÖ</div>
+
+    <div class="logo-sub">Brille dans l'obscurité</div>
+
+  </div>
+
+  <div class="nav-section">
+
+    <div class="nav-label">Vue d'ensemble</div>
+
+    <button class="nav-btn active" onclick="show('dashboard',this)">&#9632; Tableau de bord</button>
+
+  </div>
+
+  <div class="nav-section">
+
+    <div class="nav-label">Organisation</div>
+
+    <button class="nav-btn" onclick="show('planning',this)">&#9632; Planning</button>
+
+    <button class="nav-btn" onclick="show('strategie',this)">&#9632; Stratégie & objectifs</button>
+
+  </div>
+
+  <div class="nav-section">
+
+    <div class="nav-label">Marque</div>
+
+    <button class="nav-btn" onclick="show('marque',this)">&#9632; Dossier de marque</button>
+
+    <button class="nav-btn" onclick="show('contenu',this)">&#9632; Contenu & médias</button>
+
+  </div>
+
+  <div class="nav-section">
+
+    <div class="nav-label">Finance</div>
+
+    <button class="nav-btn" onclick="show('finances',this)">&#9632; Finances & compta</button>
+
+  </div>
+
+  <div class="nav-section">
+
+    <div class="nav-label">Création</div>
+
+    <button class="nav-btn" onclick="show('notes',this)">&#9632; Notes & idées</button>
+
+  </div>
+
+  <div class="sidebar-footer">
+
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px" id="user-label">Connecté : Joe</div>
+
+    <div style="display:flex;gap:8px">
+
+      <div class="avatar av-joe active" id="av-joe" onclick="switchUser('joe')" title="Joe">J</div>
+
+      <div class="avatar av-alyz" id="av-alyz" onclick="switchUser('alyz')" title="Alyz">A</div>
+
+    </div>
+
+  </div>
+
+</aside>
+
+<main class="main">
+
+
+
+<div id="dashboard" class="section active">
+
+  <div class="page-header"><div class="page-title">Tableau de bord</div><div class="gold-line"></div><div class="page-sub" id="dash-date"></div></div>
+
+  <div class="grid4">
+
+    <div class="kpi"><div class="kpi-lbl">Prix de vente</div><div class="kpi-val">320 €</div><div class="kpi-sub">livraison incluse</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">Marge brute</div><div class="kpi-val" style="color:var(--green)">82%</div><div class="kpi-sub">262,40 € / tableau</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">Seuil rentabilité</div><div class="kpi-val" style="color:var(--gold)">12 ventes</div><div class="kpi-sub">sur 3 000 € investis</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">Lancement</div><div class="kpi-val">Mai 2026</div><div class="kpi-sub">collection 1 · 1/10</div></div>
+
+  </div>
+
+  <div class="grid2">
+
+    <div class="card"><div class="card-title">Projets en cours</div><div id="dash-projects"></div></div>
+
+    <div class="card"><div class="card-title">Tâches prioritaires</div><div id="dash-tasks"></div></div>
+
+  </div>
+
+  <div class="card"><div class="card-title">Objectifs — avancement</div><div id="dash-objectives"></div></div>
+
+  <div class="card"><div class="card-title">Ventes</div><div id="dash-ventes"></div></div>
+
+</div>
+
+
+
+<div id="planning" class="section">
+
+  <div class="page-header"><div class="page-title">Planning</div><div class="gold-line"></div></div>
+
+  <div class="card">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+
+      <div style="font-size:14px;font-weight:500">Semaine du <span id="week-label" style="color:var(--gold)"></span></div>
+
+      <div style="display:flex;gap:6px">
+
+        <button class="btn" onclick="changeWeek(-1)">&#8592;</button>
+
+        <button class="btn btn-dark" onclick="changeWeek(0)" style="font-size:12px">Aujourd'hui</button>
+
+        <button class="btn" onclick="changeWeek(1)">&#8594;</button>
+
+      </div>
+
+    </div>
+
+    <div class="week-grid" id="week-grid"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="plan-text" placeholder="Ajouter une tâche..." style="flex:2;min-width:120px">
+
+      <select id="plan-day"><option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option><option value="5">Samedi</option><option value="6">Dimanche</option></select>
+
+      <select id="plan-cat"><option value="prod">Production</option><option value="comm">Communication</option><option value="admin">Admin</option><option value="perso">Perso</option></select>
+
+      <button class="btn btn-gold" onclick="addPlan()">+ Ajouter</button>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-title">Toutes les tâches</div>
+
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+
+      <button onclick="filterTasks('all')" class="btn btn-dark" style="font-size:11px;height:28px;padding:0 10px">Toutes</button>
+
+      <button onclick="filterTasks('prod')" class="btn" style="font-size:11px;height:28px;padding:0 10px;background:var(--green-bg);color:#1D9E75;border-color:rgba(29,158,117,.3)">Production</button>
+
+      <button onclick="filterTasks('comm')" class="btn" style="font-size:11px;height:28px;padding:0 10px;background:var(--blue-bg);color:#378ADD;border-color:rgba(55,138,221,.3)">Communication</button>
+
+      <button onclick="filterTasks('admin')" class="btn" style="font-size:11px;height:28px;padding:0 10px;background:var(--amber-bg);color:#EF9F27;border-color:rgba(186,117,23,.3)">Admin</button>
+
+      <button onclick="filterTasks('perso')" class="btn" style="font-size:11px;height:28px;padding:0 10px;background:rgba(127,119,221,.12);color:#AFA9EC;border-color:rgba(127,119,221,.3)">Perso</button>
+
+    </div>
+
+    <div id="task-list"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="task-input" placeholder="Nouvelle tâche..." style="flex:2;min-width:120px">
+
+      <select id="task-cat"><option value="prod">Production</option><option value="comm">Communication</option><option value="admin">Admin</option><option value="perso">Perso</option></select>
+
+      <select id="task-prio"><option value="haute">Haute</option><option value="normale">Normale</option><option value="basse">Basse</option></select>
+
+      <button class="btn btn-gold" onclick="addTask()">+ Tâche</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div id="marque" class="section">
+
+  <div class="page-header"><div class="page-title">Dossier de marque</div><div class="gold-line"></div></div>
+
+  <div class="grid2">
+
+    <div class="card">
+
+      <div class="card-title">Identité DAÖ</div>
+
+      <div style="margin-bottom:12px"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Nom</div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">DAÖ — étoile en thaïlandais</div></div>
+
+      <div style="margin-bottom:12px"><div style="font-size:10px;color:var(--text3);margin-bottom:6px">Slogan</div><div class="quote-block"><div class="quote-text">Brille dans l'obscurité. Comme toi.</div></div></div>
+
+      <div style="margin-bottom:12px"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Fondateurs</div><div style="font-size:13px">Joe & Alyz Phumkhong · Auto-entrepreneur</div></div>
+
+      <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">Palette</div><div style="display:flex;gap:6px;align-items:center"><div style="width:22px;height:22px;border-radius:4px;background:#1A1A1A;border:0.5px solid rgba(255,255,255,.1)"></div><div style="width:22px;height:22px;border-radius:4px;background:#C9A84C"></div><div style="width:22px;height:22px;border-radius:4px;background:#E8E4DC;border:0.5px solid rgba(0,0,0,.1)"></div><span style="font-size:11px;color:var(--text3)">Noir · Or · Béton</span></div></div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="card-title">Valeurs</div>
+
+      <div class="row"><span style="font-size:13px;font-weight:500;flex:1">Excellence</span><span style="font-size:12px;color:var(--text3)">fabriqué avec exigence</span></div>
+
+      <div class="row"><span style="font-size:13px;font-weight:500;flex:1">Authenticité</span><span style="font-size:12px;color:var(--text3)">deux créateurs, une vision</span></div>
+
+      <div class="row"><span style="font-size:13px;font-weight:500;flex:1">Rareté</span><span style="font-size:12px;color:var(--text3)">éditions 1/10, jamais de masse</span></div>
+
+      <div class="row"><span style="font-size:13px;font-weight:500;flex:1">Élévation</span><span style="font-size:12px;color:var(--text3)">messages qui dépassent</span></div>
+
+      <div style="margin-top:14px"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Cible</div><div style="font-size:13px;color:var(--text2)">Hustle culture — entrepreneurs, sportifs, créateurs. Ceux qui construisent.</div></div>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-title">Copywriting</div>
+
+    <div style="margin-bottom:14px"><div style="font-size:10px;color:var(--text3);margin-bottom:6px">Bio Instagram / TikTok</div><div style="font-size:13px;background:var(--bg3);padding:12px 14px;border-radius:var(--r);border:0.5px solid var(--border);line-height:1.7">Art époxy artisanal · Citations des plus grands<br>Pièces numérotées pour ceux qui refusent de s'arrêter<br><span style="color:var(--gold)">✦ DAÖ — étoile en thaïlandais</span></div></div>
+
+    <div style="margin-bottom:14px"><div style="font-size:10px;color:var(--text3);margin-bottom:6px">Description produit</div><div style="font-size:13px;background:var(--bg3);padding:12px 14px;border-radius:var(--r);border:0.5px solid var(--border);line-height:1.7">Chaque matin, tu te lèves pour construire quelque chose. DAÖ est là pour te rappeler pourquoi.<br><br>Un tableau en résine époxy fabriqué à la main, avec un message gravé en 3D et coulé en résine phosphorescente. Le jour, sobre et puissant. La nuit, il brille — comme toi quand personne ne regarde.<br><br><strong style="color:var(--gold)">Pièce numérotée 1/10. Packaging luxe. Livraison incluse. — 320 €</strong></div></div>
+
+    <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">Hashtags</div><div style="font-size:12px;color:var(--text3)">#hustleculture #mindset #motivation #artepoxy #resineart #entrepreneurfrancais #successmindset #daö #limitededition #madeinfrance</div></div>
+
+  </div>
+
+  <div class="card"><div class="card-title">Collection 1 — 11 citations</div><div id="citations-list"></div></div>
+
+</div>
+
+
+
+<div id="contenu" class="section">
+
+  <div class="page-header"><div class="page-title">Contenu & médias</div><div class="gold-line"></div></div>
+
+  <div class="card"><div class="card-title">Plan de lancement — 8 vidéos</div><div id="content-plan"></div></div>
+
+  <div class="card">
+
+    <div class="card-title">Bibliothèque</div>
+
+    <div id="media-list"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="media-title-input" placeholder="Titre..." style="flex:2">
+
+      <select id="media-type"><option value="video">Vidéo</option><option value="reel">Reel</option><option value="photo">Photo</option><option value="story">Story</option><option value="idee">Idée</option></select>
+
+      <select id="media-status"><option value="idee">Idée</option><option value="tournage">À tourner</option><option value="montage">Montage</option><option value="publie">Publié</option></select>
+
+      <button class="btn btn-gold" onclick="addMedia()">+ Ajouter</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div id="finances" class="section">
+
+  <div class="page-header"><div class="page-title">Finances & comptabilité</div><div class="gold-line"></div></div>
+
+  <div class="grid4">
+
+    <div class="kpi"><div class="kpi-lbl">Investissement</div><div class="kpi-val">3 000 €</div><div class="kpi-sub">matériel total</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">Coût de revient</div><div class="kpi-val">57,60 €</div><div class="kpi-sub">par tableau</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">CA collection 1</div><div class="kpi-val" style="color:var(--green)">3 200 €</div><div class="kpi-sub">10 × 320 €</div></div>
+
+    <div class="kpi"><div class="kpi-lbl">Marge totale</div><div class="kpi-val" style="color:var(--green)">2 624 €</div><div class="kpi-sub">82% de taux</div></div>
+
+  </div>
+
+  <div class="grid2">
+
+    <div class="card">
+
+      <div class="card-title">Coût de revient — détail</div>
+
+      <div class="fin-row"><span>Résine époxy + phosphorescente</span><span style="font-weight:500">20,00 €</span></div>
+
+      <div class="fin-row"><span>Cadre IKEA 30x40</span><span style="font-weight:500">6,99 €</span></div>
+
+      <div class="fin-row"><span>Filament 3D</span><span style="font-weight:500">2,61 €</span></div>
+
+      <div class="fin-row"><span>Amortissement matériel</span><span style="font-weight:500">3,00 €</span></div>
+
+      <div class="fin-row"><span>Packaging luxe</span><span style="font-weight:500">10,00 €</span></div>
+
+      <div class="fin-row"><span>Expédition Chronopost</span><span style="font-weight:500">15,00 €</span></div>
+
+      <div class="fin-row" style="border-top:0.5px solid var(--border2);margin-top:4px;padding-top:10px"><span style="font-weight:500">Total</span><span style="font-weight:500;color:var(--green)">57,60 €</span></div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="card-title">Grand Slam Offer</div>
+
+      <div class="row"><span style="color:var(--green)">✓</span><span style="font-size:13px;flex:1">Tableau résine époxy artisanal 30×40</span></div>
+
+      <div class="row"><span style="color:var(--green)">✓</span><span style="font-size:13px;flex:1">Certificat d'authenticité numéroté 1/10</span></div>
+
+      <div class="row"><span style="color:var(--green)">✓</span><span style="font-size:13px;flex:1">Carte manuscrite personnalisée</span></div>
+
+      <div class="row"><span style="color:var(--green)">✓</span><span style="font-size:13px;flex:1">Packaging luxe (boîte, ruban doré)</span></div>
+
+      <div class="row"><span style="color:var(--green)">✓</span><span style="font-size:13px;flex:1">Livraison Chronopost incluse</span></div>
+
+      <div style="margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text2)">Prix total</span><span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">320 €</span></div>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-title">Suivi des ventes</div>
+
+    <div id="ventes-list"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="vente-client" placeholder="Client / référence..." style="flex:1;min-width:100px">
+
+      <input type="text" id="vente-tableau" placeholder="Citation / tableau..." style="flex:1;min-width:80px">
+
+      <input type="number" id="vente-montant" value="320" style="width:80px">
+
+      <button class="btn btn-gold" onclick="addVente()">+ Vente</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div id="strategie" class="section">
+
+  <div class="page-header"><div class="page-title">Stratégie & objectifs</div><div class="gold-line"></div></div>
+
+  <div class="card">
+
+    <div class="card-title">Objectifs</div>
+
+    <div id="obj-list"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="obj-name" placeholder="Nouvel objectif..." style="flex:2;min-width:120px">
+
+      <select id="obj-horizon"><option value="semaine">Semaine</option><option value="mois">Mois</option><option value="trimestre">Trimestre</option><option value="annee">Année</option></select>
+
+      <button class="btn btn-gold" onclick="addObj()">+ Objectif</button>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-title">Projets</div>
+
+    <div id="proj-list"></div>
+
+    <div class="add-row">
+
+      <input type="text" id="proj-name" placeholder="Nouveau projet..." style="flex:2;min-width:120px">
+
+      <select id="proj-status"><option value="a-faire">À faire</option><option value="en-cours">En cours</option><option value="pause">En pause</option><option value="termine">Terminé</option></select>
+
+      <button class="btn btn-gold" onclick="addProj()">+ Projet</button>
+
+    </div>
+
+    <textarea id="proj-desc" placeholder="Description..." style="margin-top:8px;width:100%;height:52px"></textarea>
+
+  </div>
+
+</div>
+
+
+
+<div id="notes" class="section">
+
+  <div class="page-header"><div class="page-title">Notes & idées</div><div class="gold-line"></div></div>
+
+  <div class="card">
+
+    <textarea id="note-input" placeholder="Capture ton idée, réflexion, observation..." style="width:100%;height:90px"></textarea>
+
+    <div class="add-row" style="justify-content:space-between">
+
+      <select id="note-cat"><option value="idee">Idée</option><option value="prod">Production</option><option value="comm">Communication</option><option value="strategie">Stratégie</option><option value="autre">Autre</option></select>
+
+      <button class="btn btn-gold" onclick="addNote()">Sauvegarder</button>
+
+    </div>
+
+  </div>
+
+  <div id="notes-list"></div>
+
+</div>
+
+
+
+</main>
+
+</div>
+
+
+
+<script>
+
+const DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+
+const CAT={prod:'Production',comm:'Communication',admin:'Admin',perso:'Perso'};
+
+const PC={haute:'#E24B4A',normale:'#378ADD',basse:'#888780'};
+
+const HZ={semaine:'cette semaine',mois:'ce mois',trimestre:'trimestre',annee:'année'};
+
+const MT={video:'Vidéo',reel:'Reel',photo:'Photo',story:'Story',idee:'Idée'};
+
+const MS={idee:'Idée',tournage:'À tourner',montage:'Montage',publie:'Publié'};
+
+let wo=0,tf='all',cu='joe';
+
+
+
+const CIT=[
+
+  {t:'Vise l\'excellence',a:'Aristote',s:'Libre'},{t:'No excuses',a:'A. Schwarzenegger',s:'Libre'},
+
+  {t:'Stay hard',a:'D. Goggins',s:'Coulée'},{t:'Stay focused',a:'Eric Thomas',s:'Coulée'},
+
+  {t:'La discipline crée la liberté',a:'Jocko Willink',s:'Coulée'},{t:'Dream big',a:'N.V. Peale',s:'Libre'},
+
+  {t:'Never give up',a:'W. Churchill',s:'Libre'},{t:'Believe in yourself',a:'N.V. Peale',s:'Libre'},
+
+  {t:'Keep going',a:'W. Churchill',s:'Libre'},{t:'Work hard',a:'Kevin Hart',s:'Libre'},
+
+  {t:'Trust the process',a:'Anonyme',s:'Libre'}
+
+];
+
+const CP=[
+
+  {ph:'Teasing',n:1,ti:'La révélation dans le noir',h:'On m\'a dit que c\'était trop cher. Puis j\'ai éteint la lumière.'},
+
+  {ph:'Teasing',n:2,ti:'Story des fondateurs',h:'On a créé un objet qu\'on voulait dans notre bureau.'},
+
+  {ph:'Éducation',n:3,ti:'Fabrication time-lapse',h:'Voilà pourquoi un tableau DAÖ coûte 320€.'},
+
+  {ph:'Éducation',n:4,ti:'Citations + musique',h:'10 tableaux. 10 messages. 10 personnes.'},
+
+  {ph:'Éducation',n:5,ti:'Le sens du nom DAÖ',h:'Notre marque s\'appelle DAÖ. Voilà ce que ça signifie.'},
+
+  {ph:'Lancement',n:6,ti:'Unboxing packaging luxe',h:'Voilà ce que tu reçois quand tu commandes un DAÖ.'},
+
+  {ph:'Lancement',n:7,ti:'L\'annonce officielle',h:'La collection DAÖ est en ligne. 10 pièces. Tu en fais partie ?'},
+
+  {ph:'Lancement',n:8,ti:'Compte à rebours',h:'Pièce n°3 vient de partir. Il en reste 7.'}
+
+];
+
+
+
+function ld(k){try{const v=localStorage.getItem('dao:'+k);return v?JSON.parse(v):null}catch{return null}}
+
+function sv(k,v){try{localStorage.setItem('dao:'+k,JSON.stringify(v))}catch{}}
+
+function gd(){return{tasks:ld('t')||[],projects:ld('p')||[{id:1,name:'Collection 1 — 10 tableaux',status:'en-cours',desc:'Résine époxy phosphorescente, lancement mai 2026'},{id:2,name:'Site e-commerce',status:'a-faire',desc:'Shopify + photos + fiches produit'},{id:3,name:'Stratégie réseaux sociaux',status:'a-faire',desc:'8 vidéos planifiées pour le lancement'}],objectives:ld('o')||[{id:1,name:'Terminer collection 1',progress:20,horizon:'mois'},{id:2,name:'Lancer le site e-commerce',progress:0,horizon:'trimestre'},{id:3,name:'1000 abonnés Instagram',progress:0,horizon:'annee'},{id:4,name:'Rembourser 3000€ (12 ventes)',progress:0,horizon:'annee'}],notes:ld('n')||[],plan:ld('pl')||{},media:ld('m')||[],ventes:ld('v')||[]}}
+
+function sa(d){sv('t',d.tasks);sv('p',d.projects);sv('o',d.objectives);sv('n',d.notes);sv('pl',d.plan);sv('m',d.media);sv('v',d.ventes)}
+
+
+
+function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active');render()}
+
+function switchUser(u){cu=u;document.getElementById('user-label').textContent='Connecté : '+(u==='joe'?'Joe':'Alyz');document.getElementById('av-joe').classList.toggle('active',u==='joe');document.getElementById('av-alyz').classList.toggle('active',u==='alyz')}
+
+
+
+function gwd(off){const n=new Date(),day=n.getDay(),diff=(day===0?-6:1-day),mon=new Date(n);mon.setDate(n.getDate()+diff+off*7);return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d})}
+
+function wk(off){return gwd(off)[0].toISOString().slice(0,10)}
+
+
+
+function render(){
+
+  const d=gd(),td=new Date();
+
+  const dd=document.getElementById('dash-date');if(dd)dd.textContent=td.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const pend=d.tasks.filter(t=>!t.done);
+
+  const dp=document.getElementById('dash-projects');if(dp)dp.innerHTML=d.projects.map(p=>`<div class="row"><span style="font-size:13px;flex:1">${p.name}</span><span class="badge ${p.status==='en-cours'?'b-green':p.status==='termine'?'b-green':p.status==='pause'?'b-amber':'b-gray'}">${p.status==='a-faire'?'À faire':p.status==='en-cours'?'En cours':p.status==='pause'?'En pause':'Terminé'}</span></div>`).join('')||nodata();
+
+  const dt=document.getElementById('dash-tasks');if(dt){const top=pend.filter(t=>t.prio==='haute').slice(0,4).concat(pend.filter(t=>t.prio!=='haute').slice(0,3));dt.innerHTML=top.length?top.map(t=>`<div class="row"><span style="width:5px;height:5px;border-radius:50%;background:${PC[t.prio]};flex-shrink:0;display:inline-block"></span><span style="font-size:13px;flex:1">${t.text}</span><span class="badge b-${t.cat}">${CAT[t.cat]}</span></div>`).join(''):nodata()}
+
+  const dob=document.getElementById('dash-objectives');if(dob)dob.innerHTML=d.objectives.slice(0,4).map(o=>`<div class="row"><span style="font-size:13px;flex:1">${o.name}</span><div class="prog-wrap"><div class="prog-fill" style="width:${o.progress}%"></div></div><span style="font-size:12px;min-width:32px;text-align:right;color:var(--text3)">${o.progress}%</span></div>`).join('');
+
+  const dv=document.getElementById('dash-ventes');if(dv){const tot=d.ventes.reduce((s,v)=>s+(parseFloat(v.montant)||0),0);dv.innerHTML=(d.ventes.length?d.ventes.slice(-3).reverse().map(v=>`<div class="row"><span style="font-size:13px;flex:1">${v.client}</span><span style="font-size:12px;color:var(--text2)">${v.tableau}</span><span style="font-size:13px;font-weight:500;color:var(--green)">${parseFloat(v.montant).toFixed(2)} €</span></div>`).join(''):nodata())+`<div style="padding-top:8px;margin-top:4px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between"><span style="font-weight:500">CA total</span><span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold)">${tot.toFixed(2)} €</span></div>`}
+
+  const dates=gwd(wo),wkey=wk(wo);
+
+  const wl=document.getElementById('week-label');if(wl)wl.textContent=`${dates[0].getDate()}/${dates[0].getMonth()+1} → ${dates[6].getDate()}/${dates[6].getMonth()+1}`;
+
+  const wg=document.getElementById('week-grid');if(wg){const pl=d.plan[wkey]||{};wg.innerHTML=dates.map((dt2,i)=>{const isT=dt2.toDateString()===td.toDateString();const its=pl[i]||[];return`<div class="day-col${isT?' today':''}"><div class="day-name">${DAYS[i].slice(0,3)} ${dt2.getDate()}</div>${its.map((it,ti)=>`<div class="day-item ${it.cat}" onclick="delPl('${wkey}',${i},${ti})" title="Cliquer pour supprimer">${it.text}</div>`).join('')}${!its.length?`<div style="font-size:10px;color:var(--text3)">—</div>`:''}</div>`}).join('')}
+
+  const tl=document.getElementById('task-list');if(tl){let ts=tf==='all'?d.tasks:d.tasks.filter(t=>t.cat===tf);tl.innerHTML=ts.length?ts.map((t,i)=>{const ri=d.tasks.indexOf(t);return`<div class="row"><input type="checkbox" ${t.done?'checked':''} onchange="togTask(${ri})"><span style="font-size:13px;flex:1;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.text}</span><span class="badge b-${t.cat}">${CAT[t.cat]}</span><span style="font-size:10px;color:${PC[t.prio]}">${t.prio}</span><button class="del" onclick="delTask(${ri})">×</button></div>`}).join(''):nodata()}
+
+  const cl=document.getElementById('citations-list');if(cl)cl.innerHTML=CIT.map(c=>`<div class="row"><span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;flex:1">"${c.t}"</span><span style="font-size:11px;color:var(--text3);min-width:80px">${c.a}</span><span class="badge ${c.s==='Libre'?'b-green':'b-amber'}">${c.s}</span></div>`).join('');
+
+  const cpel=document.getElementById('content-plan');if(cpel){const pc={Teasing:'b-green',Éducation:'b-blue',Lancement:'b-gold'};cpel.innerHTML=CP.map(v=>`<div class="row"><span style="font-size:10px;min-width:16px;color:var(--text3);text-align:center">${v.n}</span><div style="flex:1"><div style="font-size:13px;font-weight:500">${v.ti}</div><div style="font-size:11px;color:var(--text3);margin-top:2px;font-style:italic">"${v.h}"</div></div><span class="badge ${pc[v.ph]}">${v.ph}</span></div>`).join('')}
+
+  const ml=document.getElementById('media-list');if(ml)ml.innerHTML=d.media.length?d.media.map((m,i)=>`<div class="media-card"><div><div style="font-size:13px;font-weight:500">${m.title}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${MT[m.type]} · ${m.by} · ${m.date}</div></div><div style="display:flex;gap:6px;align-items:center"><span class="badge ${m.status==='publie'?'b-green':m.status==='montage'?'b-blue':m.status==='tournage'?'b-amber':'b-gray'}">${MS[m.status]}</span><button class="del" onclick="delMedia(${i})">×</button></div></div>`).join(''):nodata();
+
+  const vl=document.getElementById('ventes-list');if(vl){const tot=d.ventes.reduce((s,v)=>s+(parseFloat(v.montant)||0),0);vl.innerHTML=(d.ventes.length?d.ventes.map((v,i)=>`<div class="row"><span style="font-size:13px;flex:1">${v.client}</span><span style="font-size:12px;color:var(--text2)">${v.tableau}</span><span style="font-size:13px;font-weight:500;color:var(--green)">${parseFloat(v.montant).toFixed(2)} €</span><span style="font-size:11px;color:var(--text3)">${v.date}</span><button class="del" onclick="delVente(${i})">×</button></div>`).join(''):nodata())+`<div style="padding-top:8px;margin-top:6px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span style="font-weight:500">CA total</span><span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)">${tot.toFixed(2)} €</span></div>`}
+
+  const ol=document.getElementById('obj-list');if(ol)ol.innerHTML=gd().objectives.map((o,i)=>`<div class="card" style="margin-bottom:8px;padding:12px 14px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;font-weight:500">${o.name}</span><div style="display:flex;gap:6px;align-items:center"><span class="badge b-gray" style="font-size:10px">${HZ[o.horizon]}</span><button class="del" onclick="delObj(${i})">×</button></div></div><div style="display:flex;align-items:center;gap:10px"><div class="prog-wrap"><div class="prog-fill" style="width:${o.progress}%"></div></div><span style="font-size:12px;min-width:32px;color:var(--text3)">${o.progress}%</span><input type="range" min="0" max="100" value="${o.progress}" step="1" style="width:80px" oninput="updObj(${i},this.value)"></div></div>`).join('');
+
+  const pl2=document.getElementById('proj-list');if(pl2)pl2.innerHTML=gd().projects.map((p,i)=>`<div class="row"><div style="flex:1"><span style="font-size:13px;font-weight:500">${p.name}</span>${p.desc?`<div style="font-size:11px;color:var(--text3);margin-top:1px">${p.desc}</div>`:''}</div><select onchange="updProj(${i},this.value)" style="height:28px;font-size:12px;padding:0 6px">${['a-faire','en-cours','pause','termine'].map(s=>`<option value="${s}" ${p.status===s?'selected':''}>${s==='a-faire'?'À faire':s==='en-cours'?'En cours':s==='pause'?'En pause':'Terminé'}</option>`).join('')}</select><button class="del" onclick="delProj(${i})">×</button></div>`).join('');
+
+  const nl=document.getElementById('notes-list');if(nl)nl.innerHTML=gd().notes.slice().reverse().map((n,idx)=>{const ri=gd().notes.length-1-idx;return`<div class="note-item"><div class="note-text">${n.text}</div><div class="note-meta"><span>${n.date} · <strong style="color:${n.by==='Joe'?'var(--green)':'#7F77DD'}">${n.by}</strong></span><button class="del" onclick="delNote(${ri})">×</button></div></div>`}).join('')
+
+}
+
+
+
+function nodata(){return'<div style="font-size:12px;color:var(--text3);padding:6px 0">Aucun élément</div>'}
+
+function addTask(){const i=document.getElementById('task-input'),cat=document.getElementById('task-cat').value,prio=document.getElementById('task-prio').value;if(!i.value.trim())return;const d=gd();d.tasks.push({id:Date.now(),text:i.value.trim(),cat,prio,done:false,by:cu});sa(d);i.value='';render()}
+
+function togTask(i){const d=gd();d.tasks[i].done=!d.tasks[i].done;sa(d);render()}
+
+function delTask(i){const d=gd();d.tasks.splice(i,1);sa(d);render()}
+
+function filterTasks(cat){tf=cat;render()}
+
+function addPlan(){const t=document.getElementById('plan-text').value.trim(),day=parseInt(document.getElementById('plan-day').value),cat=document.getElementById('plan-cat').value;if(!t)return;const wkey=wk(wo),d=gd();if(!d.plan[wkey])d.plan[wkey]={};if(!d.plan[wkey][day])d.plan[wkey][day]=[];d.plan[wkey][day].push({text:t,cat});sa(d);document.getElementById('plan-text').value='';render()}
+
+function delPl(wkey,day,ti){const d=gd();if(d.plan[wkey]&&d.plan[wkey][day]){d.plan[wkey][day].splice(ti,1);sa(d);render()}}
+
+function changeWeek(dir){if(dir===0)wo=0;else wo+=dir;render()}
+
+function addProj(){const name=document.getElementById('proj-name').value.trim(),status=document.getElementById('proj-status').value,desc=document.getElementById('proj-desc').value.trim();if(!name)return;const d=gd();d.projects.push({id:Date.now(),name,status,desc});sa(d);document.getElementById('proj-name').value='';document.getElementById('proj-desc').value='';render()}
+
+function delProj(i){const d=gd();d.projects.splice(i,1);sa(d);render()}
+
+function updProj(i,s){const d=gd();d.projects[i].status=s;sa(d);render()}
+
+function addObj(){const name=document.getElementById('obj-name').value.trim(),horizon=document.getElementById('obj-horizon').value;if(!name)return;const d=gd();d.objectives.push({id:Date.now(),name,progress:0,horizon});sa(d);document.getElementById('obj-name').value='';render()}
+
+function updObj(i,v){const d=gd();d.objectives[i].progress=parseInt(v);sa(d);render()}
+
+function delObj(i){const d=gd();d.objectives.splice(i,1);sa(d);render()}
+
+function addMedia(){const title=document.getElementById('media-title-input').value.trim(),type=document.getElementById('media-type').value,status=document.getElementById('media-status').value;if(!title)return;const d=gd();d.media.push({id:Date.now(),title,type,status,by:cu==='joe'?'Joe':'Alyz',date:new Date().toLocaleDateString('fr-FR')});sa(d);document.getElementById('media-title-input').value='';render()}
+
+function delMedia(i){const d=gd();d.media.splice(i,1);sa(d);render()}
+
+function addVente(){const client=document.getElementById('vente-client').value.trim(),tableau=document.getElementById('vente-tableau').value.trim(),montant=document.getElementById('vente-montant').value;if(!client)return;const d=gd();d.ventes.push({id:Date.now(),client,tableau,montant:parseFloat(montant)||320,date:new Date().toLocaleDateString('fr-FR'),by:cu==='joe'?'Joe':'Alyz'});sa(d);fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'vente',client:client,tableau:tableau,montant:parseFloat(montant)||320,date_vente:new Date().toLocaleDateString('fr-FR'),ajoute_par:cu==='joe'?'Joe':'Alyz'})}).catch(e=>console.error('[DAÖ] Sheets sync error:',e));document.getElementById('vente-client').value='';document.getElementById('vente-tableau').value='';render()}
+
+function delVente(i){const d=gd();d.ventes.splice(i,1);sa(d);render()}
+
+function addNote(){const text=document.getElementById('note-input').value.trim(),cat=document.getElementById('note-cat').value;if(!text)return;const d=gd();d.notes.push({id:Date.now(),text,cat,by:cu==='joe'?'Joe':'Alyz',date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long'})});sa(d);document.getElementById('note-input').value='';render()}
+
+function delNote(i){const d=gd();d.notes.splice(i,1);sa(d);render()}
+
+render();
+
+</script>
+
+</body>
