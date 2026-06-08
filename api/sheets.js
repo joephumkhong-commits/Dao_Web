@@ -21,6 +21,11 @@ function isRateLimited(ip) {
 const SHEET_ID = '1-Y37eX_WI19AUWxF08Je9V0Y0q1DvKFkAdiUBu0G03c';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
+const TAB_HEADERS = {
+  Leads:  ['Timestamp', 'Prénom', 'Email', 'Totem', 'Signe astro', 'Chiffre de vie', 'MBTI lié', 'Source'],
+  Ventes: ['Timestamp', 'Client', 'Tableau', 'Montant (€)', 'Date vente', 'Ajouté par'],
+};
+
 function b64url(data) {
   return Buffer.from(data)
     .toString('base64')
@@ -75,6 +80,39 @@ async function getAccessToken(privateKeyPem, clientEmail) {
   const data = await res.json();
   if (!data.access_token) throw new Error('Token error: ' + JSON.stringify(data));
   return data.access_token;
+}
+
+async function ensureTab(token, tab) {
+  const authHeader = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+  const checkRes = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab + '!A1')}`,
+    { headers: { 'Authorization': `Bearer ${token}` } }
+  );
+  const checkData = await checkRes.json();
+  if (!checkData.error) return;
+
+  const createRes = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`,
+    {
+      method: 'POST',
+      headers: authHeader,
+      body: JSON.stringify({ requests: [{ addSheet: { properties: { title: tab } } }] }),
+    }
+  );
+  const createData = await createRes.json();
+  if (createData.error && !createData.error.message.includes('already exists')) {
+    throw new Error('Tab creation error: ' + JSON.stringify(createData.error));
+  }
+
+  await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab + '!A1')}?valueInputOption=USER_ENTERED`,
+    {
+      method: 'PUT',
+      headers: authHeader,
+      body: JSON.stringify({ values: [TAB_HEADERS[tab]] }),
+    }
+  );
 }
 
 async function appendToSheet(token, tab, values) {
@@ -145,6 +183,7 @@ module.exports = async (req, res) => {
         return;
       }
 
+      await ensureTab(token, 'Leads');
       await appendToSheet(token, 'Leads', [
         timestamp,
         prenom || '',
@@ -164,6 +203,7 @@ module.exports = async (req, res) => {
         return;
       }
 
+      await ensureTab(token, 'Ventes');
       await appendToSheet(token, 'Ventes', [
         timestamp,
         client || '',
