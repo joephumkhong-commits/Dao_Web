@@ -22,8 +22,8 @@ const SHEET_ID = '1-Y37eX_WI19AUWxF08Je9V0Y0q1DvKFkAdiUBu0G03c';
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 const TAB_HEADERS = {
-  Leads:  ['Timestamp', 'Prénom', 'Email', 'Totem', 'Signe astro', 'Chiffre de vie', 'MBTI lié', 'Source'],
-  Ventes: ['Timestamp', 'Client', 'Tableau', 'Montant (€)', 'Date vente', 'Ajouté par'],
+  leads:  ['Timestamp', 'Prénom', 'Email', 'Totem', 'Signe astro', 'Chiffre de vie', 'MBTI lié', 'Source'],
+  ventes: ['Timestamp', 'Client', 'Tableau', 'Montant (€)', 'Date vente', 'Ajouté par'],
 };
 
 function b64url(data) {
@@ -183,8 +183,8 @@ module.exports = async (req, res) => {
         return;
       }
 
-      await ensureTab(token, 'Leads');
-      await appendToSheet(token, 'Leads', [
+      await ensureTab(token, 'leads');
+      await appendToSheet(token, 'leads', [
         timestamp,
         prenom || '',
         email || '',
@@ -203,8 +203,8 @@ module.exports = async (req, res) => {
         return;
       }
 
-      await ensureTab(token, 'Ventes');
-      await appendToSheet(token, 'Ventes', [
+      await ensureTab(token, 'ventes');
+      await appendToSheet(token, 'ventes', [
         timestamp,
         client || '',
         tableau || '',

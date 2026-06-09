@@ -90,18 +90,18 @@ async function runDiag(token) {
     return diag;
   }
 
-  // 2. Vérifier si l'onglet Ventes existe déjà
-  const existing = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
+  // 2. Vérifier si l'onglet ventes existe déjà
+  const existing = (meta.sheets || []).find(s => s.properties.title === 'ventes');
   if (existing) {
     diag.ventesTabExists = true;
     diag.ventesSheetId = existing.properties.sheetId;
-    diag.conclusion = 'Onglet Ventes déjà présent — pas besoin de création.';
-    console.log('[sheets-test] Onglet Ventes trouvé, sheetId =', existing.properties.sheetId);
+    diag.conclusion = 'Onglet ventes déjà présent — pas besoin de création.';
+    console.log('[sheets-test] Onglet ventes trouvé, sheetId =', existing.properties.sheetId);
     return diag;
   }
 
   diag.ventesTabExists = false;
-  console.log('[sheets-test] Onglet Ventes absent, tentative de création...');
+  console.log('[sheets-test] Onglet ventes absent, tentative de création...');
 
   // 3. batchUpdate/addSheet — tenter la création
   const createRes = await fetch(
@@ -109,7 +109,7 @@ async function runDiag(token) {
     {
       method: 'POST',
       headers: authHeader,
-      body: JSON.stringify({ requests: [{ addSheet: { properties: { title: 'Ventes' } } }] }),
+      body: JSON.stringify({ requests: [{ addSheet: { properties: { title: 'ventes' } } }] }),
     }
   );
   const createData = await createRes.json();
@@ -131,7 +131,7 @@ async function runDiag(token) {
 
   // 4. Écrire les en-têtes
   const headersRes = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('Ventes!A1')}?valueInputOption=USER_ENTERED`,
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('ventes!A1')}?valueInputOption=USER_ENTERED`,
     {
       method: 'PUT',
       headers: authHeader,
@@ -148,14 +148,14 @@ async function runDiag(token) {
 
   diag.conclusion = headersData.error
     ? `Onglet créé (sheetId=${newSheetId}) mais écriture en-têtes échouée : ${headersData.error.message}`
-    : `Onglet Ventes créé avec succès (sheetId=${newSheetId})`;
+    : `Onglet ventes créé avec succès (sheetId=${newSheetId})`;
 
   return diag;
 }
 
 async function appendTestRow(token) {
   const timestamp = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('Ventes!A:F')}:append?valueInputOption=USER_ENTERED`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('ventes!A:F')}:append?valueInputOption=USER_ENTERED`;
 
   const res = await fetch(url, {
     method: 'POST',
