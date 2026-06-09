@@ -61,7 +61,7 @@ async function getAccessToken(privateKeyPem, clientEmail) {
   return data.access_token;
 }
 
-async function ensureVentesTab(token) {
+async function ensureVentesTabAndGetId(token) {
   const authHeader = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
   const checkRes = await fetch(
@@ -69,7 +69,18 @@ async function ensureVentesTab(token) {
     { headers: { 'Authorization': `Bearer ${token}` } }
   );
   const checkData = await checkRes.json();
-  if (!checkData.error) return;
+
+  if (!checkData.error) {
+    // Tab already exists — fetch its sheetId by title
+    const metaRes = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    const meta = await metaRes.json();
+    const sheet = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
+    if (!sheet) throw new Error('Onglet "Ventes" introuvable');
+    return sheet.properties.sheetId;
+  }
 
   const createRes = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`,
@@ -80,9 +91,24 @@ async function ensureVentesTab(token) {
     }
   );
   const createData = await createRes.json();
-  if (createData.error && !createData.error.message.includes('already exists')) {
+
+  if (createData.error) {
+    if (createData.error.message.includes('already exists')) {
+      // Race condition : l'onglet existe déjà, on récupère son id via l'API
+      const metaRes = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`,
+        { headers: { 'Authorization': `Bearer ${token}` } }
+      );
+      const meta = await metaRes.json();
+      const sheet = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
+      if (!sheet) throw new Error('Onglet "Ventes" introuvable');
+      return sheet.properties.sheetId;
+    }
     throw new Error('Tab creation error: ' + JSON.stringify(createData.error));
   }
+
+  // Utilise directement le sheetId retourné par addSheet — pas de délai de propagation
+  const sheetId = createData.replies[0].addSheet.properties.sheetId;
 
   await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('Ventes!A1')}?valueInputOption=USER_ENTERED`,
@@ -92,17 +118,8 @@ async function ensureVentesTab(token) {
       body: JSON.stringify({ values: [VENTES_HEADERS] }),
     }
   );
-}
 
-async function getSheetId(token, tabName) {
-  const res = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`,
-    { headers: { 'Authorization': `Bearer ${token}` } }
-  );
-  const data = await res.json();
-  const sheet = (data.sheets || []).find(s => s.properties.title === tabName);
-  if (!sheet) throw new Error(`Onglet "${tabName}" introuvable après création`);
-  return sheet.properties.sheetId;
+  return sheetId;
 }
 
 async function appendTestRow(token) {
@@ -173,8 +190,7 @@ module.exports = async (req, res) => {
     const creds = JSON.parse(credsRaw);
     const token = await getAccessToken(creds.private_key, creds.client_email);
 
-    await ensureVentesTab(token);
-    const sheetId = await getSheetId(token, 'Ventes');
+    const sheetId = await ensureVentesTabAndGetId(token);
     const rowIndex = await appendTestRow(token);
     await deleteRow(token, sheetId, rowIndex);
 
