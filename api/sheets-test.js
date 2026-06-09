@@ -61,27 +61,49 @@ async function getAccessToken(privateKeyPem, clientEmail) {
   return data.access_token;
 }
 
-async function ensureVentesTabAndGetId(token) {
+async function runDiag(token) {
+  const diag = {};
   const authHeader = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-  const checkRes = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('Ventes!A1')}`,
+  // 1. spreadsheets.get — vérifie l'accès et liste les onglets existants
+  console.log('[sheets-test] GET spreadsheets metadata...');
+  const metaRes = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=spreadsheetId,properties.title,sheets.properties`,
     { headers: { 'Authorization': `Bearer ${token}` } }
   );
-  const checkData = await checkRes.json();
+  const meta = await metaRes.json();
+  diag.spreadsheetGet = {
+    status: metaRes.status,
+    spreadsheetId: meta.spreadsheetId,
+    title: meta.properties?.title,
+    sheets: (meta.sheets || []).map(s => ({
+      sheetId: s.properties.sheetId,
+      title: s.properties.title,
+      index: s.properties.index,
+    })),
+    error: meta.error || null,
+  };
+  console.log('[sheets-test] spreadsheets.get =>', JSON.stringify(diag.spreadsheetGet));
 
-  if (!checkData.error) {
-    // Tab already exists — fetch its sheetId by title
-    const metaRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`,
-      { headers: { 'Authorization': `Bearer ${token}` } }
-    );
-    const meta = await metaRes.json();
-    const sheet = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
-    if (!sheet) throw new Error('Onglet "Ventes" introuvable');
-    return sheet.properties.sheetId;
+  if (meta.error) {
+    diag.conclusion = 'ERREUR ACCÈS : le service account ne peut pas lire ce spreadsheet. Vérifier les droits.';
+    return diag;
   }
 
+  // 2. Vérifier si l'onglet Ventes existe déjà
+  const existing = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
+  if (existing) {
+    diag.ventesTabExists = true;
+    diag.ventesSheetId = existing.properties.sheetId;
+    diag.conclusion = 'Onglet Ventes déjà présent — pas besoin de création.';
+    console.log('[sheets-test] Onglet Ventes trouvé, sheetId =', existing.properties.sheetId);
+    return diag;
+  }
+
+  diag.ventesTabExists = false;
+  console.log('[sheets-test] Onglet Ventes absent, tentative de création...');
+
+  // 3. batchUpdate/addSheet — tenter la création
   const createRes = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`,
     {
@@ -91,26 +113,24 @@ async function ensureVentesTabAndGetId(token) {
     }
   );
   const createData = await createRes.json();
+  diag.batchUpdateAddSheet = {
+    status: createRes.status,
+    replies: createData.replies || null,
+    error: createData.error || null,
+    raw: createData,
+  };
+  console.log('[sheets-test] batchUpdate/addSheet =>', JSON.stringify(diag.batchUpdateAddSheet));
 
   if (createData.error) {
-    if (createData.error.message.includes('already exists')) {
-      // Race condition : l'onglet existe déjà, on récupère son id via l'API
-      const metaRes = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`,
-        { headers: { 'Authorization': `Bearer ${token}` } }
-      );
-      const meta = await metaRes.json();
-      const sheet = (meta.sheets || []).find(s => s.properties.title === 'Ventes');
-      if (!sheet) throw new Error('Onglet "Ventes" introuvable');
-      return sheet.properties.sheetId;
-    }
-    throw new Error('Tab creation error: ' + JSON.stringify(createData.error));
+    diag.conclusion = `ERREUR CRÉATION : ${createData.error.message} (code ${createData.error.code})`;
+    return diag;
   }
 
-  // Utilise directement le sheetId retourné par addSheet — pas de délai de propagation
-  const sheetId = createData.replies[0].addSheet.properties.sheetId;
+  const newSheetId = createData.replies?.[0]?.addSheet?.properties?.sheetId;
+  diag.ventesSheetId = newSheetId;
 
-  await fetch(
+  // 4. Écrire les en-têtes
+  const headersRes = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent('Ventes!A1')}?valueInputOption=USER_ENTERED`,
     {
       method: 'PUT',
@@ -118,8 +138,19 @@ async function ensureVentesTabAndGetId(token) {
       body: JSON.stringify({ values: [VENTES_HEADERS] }),
     }
   );
+  const headersData = await headersRes.json();
+  diag.headersWrite = {
+    status: headersRes.status,
+    error: headersData.error || null,
+    updatedRange: headersData.updatedRange || null,
+  };
+  console.log('[sheets-test] headersWrite =>', JSON.stringify(diag.headersWrite));
 
-  return sheetId;
+  diag.conclusion = headersData.error
+    ? `Onglet créé (sheetId=${newSheetId}) mais écriture en-têtes échouée : ${headersData.error.message}`
+    : `Onglet Ventes créé avec succès (sheetId=${newSheetId})`;
+
+  return diag;
 }
 
 async function appendTestRow(token) {
@@ -190,12 +221,21 @@ module.exports = async (req, res) => {
     const creds = JSON.parse(credsRaw);
     const token = await getAccessToken(creds.private_key, creds.client_email);
 
-    const sheetId = await ensureVentesTabAndGetId(token);
+    const diag = await runDiag(token);
+
+    // Si l'accès au spreadsheet échoue ou la création échoue, retourner le diag immédiatement
+    if (diag.spreadsheetGet.error || (diag.batchUpdateAddSheet?.error)) {
+      res.writeHead(500, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: diag.conclusion, diag }));
+      return;
+    }
+
+    const sheetId = diag.ventesSheetId;
     const rowIndex = await appendTestRow(token);
     await deleteRow(token, sheetId, rowIndex);
 
     res.writeHead(200, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: true, message: 'Connexion OK' }));
+    res.end(JSON.stringify({ success: true, message: 'Connexion OK', diag }));
   } catch (err) {
     console.error('[sheets-test]', err.message);
     res.writeHead(500, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
