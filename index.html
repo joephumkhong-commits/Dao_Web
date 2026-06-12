@@ -812,7 +812,7 @@ function attachEvents(){
     const inp=document.getElementById('email-input'),btn=document.getElementById('btn-email-next');
     inp.addEventListener('input',()=>{state.email=inp.value.trim();btn.disabled=!state.email;});
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
-    btn.addEventListener('click',()=>{if(!state.email)return;state.screen='lieu';render();});
+    btn.addEventListener('click',()=>{if(!state.email)return;fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'lead',prenom:'',email:state.email,totem:state.quizResult?state.quizResult.winner:'',signe_astro:state.quizResult?state.quizResult.sign.name:'',life_number:state.quizResult?state.quizResult.life:'',source:'quiz'})}).catch(e=>console.error('[DAÖ] Sheets lead error:',e));state.screen='lieu';render();});
   }
   if(state.screen==='lieu'){
     const inp=document.getElementById('lieu-input'),btn=document.getElementById('btn-gen');
