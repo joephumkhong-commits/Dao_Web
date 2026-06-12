@@ -768,7 +768,7 @@ function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner];
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><div style="text-align:center;padding:10px 0 4px;font-size:13px;color:#c9a96e;letter-spacing:.08em">✦ Ton tableau est en cours de création</div><div style="text-align:center;font-size:11px;color:#888;letter-spacing:.05em;margin-bottom:16px">Tu recevras ton aperçu personnalisé par email</div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 180€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function animateAxes(){
@@ -818,16 +818,9 @@ function attachEvents(){
     const inp=document.getElementById('lieu-input'),btn=document.getElementById('btn-gen');
     inp.addEventListener('input',()=>{state.lieu=inp.value.trim();btn.disabled=!state.lieu;});
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
-    btn.addEventListener('click',async()=>{
+    btn.addEventListener('click',()=>{
       if(!state.lieu)return;
-      state.screen='image';state.tableau={loading:true,image:null,error:null};render();
-      try{
-        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:state.quizResult.winner,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
-        const data=await res.json();
-        state.tableau.loading=false;
-        if(data.image){state.tableau.image=data.image;}else{state.tableau.error=data.error||'Erreur inconnue';}
-      }catch(err){state.tableau.loading=false;state.tableau.error='Erreur de connexion. Réessaie dans un instant.';}
-      render();
+      state.screen='image';state.tableau={loading:false,image:'/images/dao-reference.png',error:null};render();
     });
   }
   if(state.screen==='image'){
