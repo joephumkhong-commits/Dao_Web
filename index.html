@@ -818,9 +818,16 @@ function attachEvents(){
     const inp=document.getElementById('lieu-input'),btn=document.getElementById('btn-gen');
     inp.addEventListener('input',()=>{state.lieu=inp.value.trim();btn.disabled=!state.lieu;});
     inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!btn.disabled)btn.click();});
-    btn.addEventListener('click',()=>{
+    btn.addEventListener('click',async()=>{
       if(!state.lieu)return;
-      state.screen='image';state.tableau={loading:false,image:'/images/dao-reference.png',error:null};render();
+      state.screen='image';state.tableau={loading:true,image:null,error:null};render();
+      try{
+        const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({animal:MBTI_ANIMALS[state.quizResult.winner].name,chiffre:state.quizResult.life,signe:state.quizResult.sign.name,lieu:state.lieu.slice(0,80)})});
+        const data=await res.json();
+        state.tableau.loading=false;
+        if(data.image){state.tableau.image=data.image;}else{state.tableau.image='/images/dao-reference.png';}
+      }catch(err){state.tableau.loading=false;state.tableau.image='/images/dao-reference.png';}
+      render();
     });
   }
   if(state.screen==='image'){
