@@ -23,7 +23,7 @@ const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 const TAB_HEADERS = {
   leads:  ['Timestamp', 'Prénom', 'Email', 'Totem', 'Signe astro', 'Chiffre de vie', 'MBTI lié', 'Source'],
-  ventes: ['Timestamp', 'Client', 'Tableau', 'Montant (€)', 'Date vente', 'Ajouté par'],
+  ventes: ['Timestamp', 'Client', 'Email', 'Tableau', 'Montant (€)', 'Date vente', 'Ajouté par'],
 };
 
 function b64url(data) {
@@ -195,7 +195,7 @@ module.exports = async (req, res) => {
         source || '',
       ]);
     } else {
-      const { client, tableau, montant, date_vente, ajoute_par } = req.body;
+      const { client, email, tableau, montant, date_vente, ajoute_par } = req.body;
 
       if (!client || !montant) {
         res.writeHead(400, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
@@ -207,6 +207,7 @@ module.exports = async (req, res) => {
       await appendToSheet(token, 'ventes', [
         timestamp,
         client || '',
+        email || '',
         tableau || '',
         String(montant ?? ''),
         date_vente || '',
