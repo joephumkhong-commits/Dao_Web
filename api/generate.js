@@ -1,3 +1,7 @@
+const path = require('path');
+const fs = require('fs');
+const sharp = require('sharp');
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -31,7 +35,11 @@ module.exports = async (req, res) => {
     `cyan #00FFB2 engraved on forehead. ${signe || ''} constellation in ` +
     `cyan glowing dots below. GPS coordinates '${lieu || ''}' in small ` +
     `monospace font at bottom. 4-pointed white star bottom right.\n` +
-    `Dark studio lighting, museum quality, sharp focus.`;
+    `Dark studio lighting, museum quality, sharp focus.\n` +
+    `Use this image as the exact style reference. ` +
+    `Match the frame, lighting, darkness level, and overall aesthetic precisely. ` +
+    `Only change the animal head, the number on the forehead, ` +
+    `and the constellation symbol.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -39,6 +47,13 @@ module.exports = async (req, res) => {
     res.end(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }));
     return;
   }
+
+  const refImagePath = path.join(__dirname, '..', 'images', 'dao-reference.png');
+  const refBuffer = await sharp(fs.readFileSync(refImagePath))
+    .resize({ width: 800, height: 800, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 70 })
+    .toBuffer();
+  const refBase64 = refBuffer.toString('base64');
 
   const geminiUrl =
     `https://generativelanguage.googleapis.com/v1beta/models/` +
@@ -50,7 +65,16 @@ module.exports = async (req, res) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{
-          parts: [{ text: prompt }],
+          role: 'user',
+          parts: [
+            {
+              inlineData: {
+                mimeType: 'image/jpeg',
+                data: refBase64,
+              },
+            },
+            { text: prompt },
+          ],
         }],
         generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
       }),
