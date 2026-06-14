@@ -304,6 +304,17 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 24px;background:#25D366;color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;border:none;border-radius:var(--r);cursor:pointer;transition:opacity .2s;text-decoration:none}
 .btn-whatsapp:hover{opacity:.88}
 @media(max-width:600px){.modal-box{padding:28px 20px}}
+.btn-formulaire{display:block;width:100%;padding:14px 24px;background:transparent;color:var(--gold);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;border:.5px solid var(--gold);border-radius:var(--r);cursor:pointer;transition:background .2s;margin-top:10px;letter-spacing:.04em}
+.btn-formulaire:hover{background:var(--gold-dim)}
+.order-form-field{width:100%;background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s;margin-bottom:12px;font-family:'Inter',sans-serif;resize:none;display:block}
+.order-form-field:focus{border-color:var(--gold)}
+.order-form-field::placeholder{color:var(--text3)}
+.order-recap{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:2}
+.order-recap strong{color:var(--gold)}
+.btn-submit-gold{width:100%;padding:14px;background:var(--gold);border:none;border-radius:var(--r);color:#0a0a0a;font-size:14px;font-weight:700;letter-spacing:.05em;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s;margin-top:4px}
+.btn-submit-gold:hover{opacity:.88}
+.btn-submit-gold:disabled{opacity:.35;cursor:not-allowed}
+.order-success{text-align:center;padding:28px 8px 8px;font-size:15px;color:var(--gold);line-height:1.8;letter-spacing:.03em}
 </style>
 </head>
 <body>
@@ -847,10 +858,30 @@ function openCommanderModal(){
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';
   overlay.id='modal-commander';
-  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a></div>`;
+  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">180€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a><button class="btn-formulaire" id="btn-show-form">Commander par formulaire</button></div>`;
   document.body.appendChild(overlay);
   document.getElementById('modal-close').addEventListener('click',closeCommanderModal);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeCommanderModal();});
+  document.getElementById('btn-show-form').addEventListener('click',()=>showOrderForm(overlay,animal,signe,chiffre));
+}
+
+function showOrderForm(overlay,animal,signe,chiffre){
+  const box=overlay.querySelector('.modal-box');
+  box.innerHTML=`<button class="modal-close" id="modal-close-form">✕</button><div class="modal-title">Commander par formulaire</div><div class="order-recap"><strong>Totem</strong> : ${animal} &nbsp;·&nbsp; <strong>Signe</strong> : ${signe} &nbsp;·&nbsp; <strong>Chiffre</strong> : ${chiffre} &nbsp;·&nbsp; <strong>320 €</strong></div><form id="order-form"><input class="order-form-field" type="text" id="of-prenom" placeholder="Prénom" required><input class="order-form-field" type="email" id="of-email" placeholder="Email" required><input class="order-form-field" type="tel" id="of-tel" placeholder="Téléphone (optionnel)"><textarea class="order-form-field" id="of-msg" rows="3" placeholder="Une question ?"></textarea><button class="btn-submit-gold" type="submit">Envoyer ma commande</button></form>`;
+  document.getElementById('modal-close-form').addEventListener('click',closeCommanderModal);
+  document.getElementById('order-form').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const prenom=document.getElementById('of-prenom').value.trim();
+    const email=document.getElementById('of-email').value.trim();
+    if(!prenom||!email)return;
+    const btn=e.submitter||box.querySelector('.btn-submit-gold');
+    btn.disabled=true;btn.textContent='Envoi…';
+    try{
+      await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'vente',client:prenom,email,tableau:`${animal} · ${signe}`,montant:320})});
+    }catch(err){console.error('[DAÖ] Order form error:',err);}
+    box.innerHTML=`<button class="modal-close" id="modal-close-ok" style="position:absolute;top:14px;right:18px">✕</button><div class="order-success">✦ Commande reçue — on te contacte sous 24h pour le paiement</div>`;
+    document.getElementById('modal-close-ok').addEventListener('click',closeCommanderModal);
+  });
 }
 
 function closeCommanderModal(){
