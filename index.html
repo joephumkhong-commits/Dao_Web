@@ -879,7 +879,7 @@ function showOrderForm(overlay,animal,signe,chiffre){
     try{
       await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'vente',client:prenom,email,tableau:`${animal} · ${signe}`,montant:320})});
     }catch(err){console.error('[DAÖ] Order form error:',err);}
-    box.innerHTML=`<button class="modal-close" id="modal-close-ok" style="position:absolute;top:14px;right:18px">✕</button><div class="order-success">✦ Commande reçue — on te contacte sous 24h pour le paiement</div>`;
+    box.innerHTML=`<button class="modal-close" id="modal-close-ok" style="position:absolute;top:14px;right:18px">✕</button><div class="order-success">✦ Merci — ta commande est bien reçue !<br>On revient vers toi dans les 24h pour finaliser<br>ton tableau et t'envoyer le lien de paiement. 🌟</div>`;
     document.getElementById('modal-close-ok').addEventListener('click',closeCommanderModal);
   });
 }
