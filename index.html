@@ -17,7 +17,7 @@
 <link rel="icon" href="images/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
 :root{
@@ -324,6 +324,11 @@ section[id]{scroll-margin-top:var(--nav-h)}
 .btn-submit-gold:hover{opacity:.88}
 .btn-submit-gold:disabled{opacity:.35;cursor:not-allowed}
 .order-success{text-align:center;padding:28px 8px 8px;font-size:15px;color:var(--gold);line-height:1.8;letter-spacing:.03em}
+.animal-insight{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(201,169,110,.85);line-height:1.75;margin-bottom:20px;padding:0 4px}
+.badge-urgence{text-align:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);padding:12px 0 16px;opacity:.9}
+.reassurance-list{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;text-align:center}
+.reassurance-list li{font-size:12px;color:var(--text2)}
+.reassurance-list li .check{color:#1D9E75;margin-right:6px}
 </style>
 </head>
 <body>
@@ -677,6 +682,21 @@ const MBTI_ANIMALS={
   corbeau: {name:"Le Corbeau",emoji:"🐦‍⬛",devise:"Animal de Lug, maître du jeu",      tags:["Intelligent","Stratège","Imprévisible"],desc:"Tu joues toujours un coup d'avance. Tu observes longuement avant d'agir — et quand tu agis, c'est rarement par hasard. Ton influence est réelle, rarement visible.",key:[1,1,1,0]}
 };
 
+const ANIMAL_INSIGHTS={
+  loup:    "Esprit de meute, instinct de survie. Tu construis en silence et tu brilles quand personne ne s'y attend. Ceux qui te connaissent vraiment savent qu'on ne t'arrête pas.",
+  aigle:   "Vision large, décisions tranchées. Tu vois ce que les autres ne voient pas encore. Ton totem est celui des bâtisseurs de grands projets.",
+  ours:    "Force tranquille, présence qui rassure. Tu n'as pas besoin de crier pour être entendu. Les gens reviennent toujours vers toi.",
+  cerf:    "Noblesse intérieure, sensibilité rare. Tu ressens ce que les autres ignorent. C'est ta plus grande force.",
+  cheval:  "Liberté, mouvement, énergie pure. Tu ne supportes pas les cages — qu'elles soient visibles ou non.",
+  sanglier:"Courage brut, détermination sans filtre. Tu fonces là où les autres hésitent. Rien ne te dévie de ta route.",
+  serpent: "Maître de la transformation. Tu mues, tu t'adaptes, tu reviens toujours plus fort. Les autres ne comprennent pas comment tu fais.",
+  cygne:   "Grâce et idéal. Tu portes une vision du monde plus belle que la réalité — et tu passes ta vie à la construire.",
+  chat:    "Instinct acéré, indépendance totale. Tu observes tout, tu ne montres rien. Quand tu agis, c'est chirurgical.",
+  taureau: "Combattant des temps difficiles. Tu tiens quand tout s'effondre. Les gens comptent sur toi sans toujours le dire.",
+  corbeau: "Intelligence du jeu, maître des stratégies. Tu penses à 10 coups d'avance. C'est parfois solitaire — mais toujours juste.",
+  renard:  "Vivacité, adaptation, charme naturel. Tu trouves toujours la sortie. Les obstacles que les autres voient, tu les contournes en souriant."
+};
+
 const MBTI_Q=[
   {q:"Face à une difficulté, tu es plutôt :",axis:'D',
    a:[{i:"🤔",t:"Réfléchi(e) et posé(e)"},{i:"💫",t:"Guidé(e) par ton instinct"},{i:"⚡",t:"Rapide et déterminé(e)"},{i:"🌊",t:"Flexible et adaptable"}]},
@@ -788,7 +808,8 @@ function imageScreen(){
   if(state.tableau.loading)return`<div class="loading-wrap"><div class="spinner"></div><span>Génération de ton tableau…</span></div>`;
   if(state.tableau.error)return`<div class="error-msg">${state.tableau.error}</div><button class="btn-neon" id="btn-retry">Réessayer</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
   const r=state.quizResult,animal=MBTI_ANIMALS[r.winner];
-  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div><div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><div style="text-align:center;padding:10px 0 4px;font-size:13px;color:#c9a96e;letter-spacing:.08em">✦ Ton tableau est en cours de création</div><div style="text-align:center;font-size:11px;color:#888;letter-spacing:.05em;margin-bottom:16px">Tu recevras ton aperçu personnalisé par email</div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 320€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
+  const insight=ANIMAL_INSIGHTS[r.winner]||'';
+  return`<div class="tableau-header"><div class="tableau-title">Ton tableau Daö</div><div class="tableau-meta">${animal.name} · ${r.sign.name} · ${r.life}</div></div>${insight?`<p class="animal-insight">${insight}</p>`:''}<div class="tableau-frame"><img src="${state.tableau.image}" alt="Tableau Daö"></div><div class="badge-urgence">✦ Collection limitée · Pièce numérotée 1/10 · Fabriquée à la main</div><button class="btn-commander" id="btn-commander">Je veux ce tableau — 320€</button><button class="btn-restart" id="btn-restart">Recommencer depuis le début</button>`;
 }
 
 function animateAxes(){
@@ -874,7 +895,7 @@ function openCommanderModal(){
   const overlay=document.createElement('div');
   overlay.className='modal-overlay';
   overlay.id='modal-commander';
-  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">320€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a><button class="btn-formulaire" id="btn-show-form">Commander par formulaire</button></div>`;
+  overlay.innerHTML=`<div class="modal-box"><button class="modal-close" id="modal-close">✕</button><div class="modal-title">Ton tableau Daö</div><div class="modal-price">320€</div><div class="modal-recap"><strong>Animal totem</strong> : ${animal}<br><strong>Signe astrologique</strong> : ${signe}<br><strong>Chiffre de vie</strong> : ${chiffre}<br><strong>Lieu de naissance</strong> : ${lieu}</div><div class="modal-info">Ton tableau est fabriqué à la main en 7-10 jours. Édition limitée, signé.</div><ul class="reassurance-list"><li><span class="check">✓</span>Fabriqué à la main en Haute-Savoie</li><li><span class="check">✓</span>Livraison Chronopost incluse</li><li><span class="check">✓</span>Satisfait ou remboursé 14 jours</li></ul><a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.857L.057 23.882l6.187-1.45A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.722.872.937-3.625-.235-.373A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>Commander sur WhatsApp</a><button class="btn-formulaire" id="btn-show-form">Commander par formulaire</button></div>`;
   document.body.appendChild(overlay);
   document.getElementById('modal-close').addEventListener('click',closeCommanderModal);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeCommanderModal();});
